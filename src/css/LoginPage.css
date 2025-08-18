@@ -1,0 +1,50 @@
+body {
+  background-color: #f8f9fa; /* A light grey background */
+}
+
+.login-card {
+  background-color: #8bb7f6; /* The light blue color for the card */
+  border-radius: 15px; /* Rounded corners for the card */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  width: 100%;
+  max-width: 400px; /* Max width to keep it from stretching on large screens */
+}
+
+.revatix-logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3b5998; /* A dark blue similar to the logo in the image */
+  margin-bottom: 2rem;
+}
+
+.form-control {
+  border-radius: 10px; /* Rounded corners for input fields */
+  padding: 10px 15px;
+  border: none;
+}
+
+.login-button {
+  background-color: #f1f1f1; /* Light grey for the button */
+  color: #555; /* Dark text color */
+  border: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 10px; /* Rounded corners for the button */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
+  transition: all 0.2s ease-in-out;
+}
+
+.login-button:hover {
+  background-color: #e2e2e2;
+  transform: translateY(-2px);
+}
+
+.trouble-login {
+  color: #3b5998; /* Dark blue color for the link */
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.trouble-login:hover {
+  text-decoration: underline;
+}
