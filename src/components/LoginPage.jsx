@@ -48,14 +48,14 @@ const LoginPage = () => {
 
           {/* Login Button */}
           <div className="d-grid ">
-            <button type="submit" className="btn login-button  fw-bold rounded-pill">
+            <button type="submit" className="btn login-button  fw-bold">
               Login
             </button>
           </div>
         </form>
 
         {/* Trouble login */}
-        <p className="text-center trouble-login mt-3 fw-bold small text-dark">
+        <p className="text-center trouble-login mt-1 fw-bold small text-dark">
           Trouble login in?
         </p>
       </div>
