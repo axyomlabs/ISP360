@@ -1,6 +1,9 @@
 .container {
-  background-color: #f8f9fa; /* A light grey background */
-
+  min-height: 100vh;   /* full height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;  /* 👈 force white */
 }
 img{
     margin-left: 770px;
