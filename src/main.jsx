@@ -9,5 +9,6 @@ import DashBoard from './components/DashBoard.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <DashBoard/>
+    {/* <LoginPage/> */}
   </StrictMode>,
 )

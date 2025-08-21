@@ -102,3 +102,8 @@
   display: none !important; /* removes the default arrow and line spacing */
 }
 
+.first{
+  border: solid 1px black;
+  width: 200px;
+  height: 200px;
+}

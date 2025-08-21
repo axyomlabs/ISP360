@@ -32,10 +32,7 @@ const Dashboard = () => {
             sidebarOpen ? "d-block" : "d-none d-md-block"
           }`}
         >
-          <h4 className="mb-4 text-primary fw-bold">REVATIX</h4>
-          <div className="mb-3 bg-light text-dark text-center p-2 rounded">
-            Client logo
-          </div>
+          <h4 className="mb-4 text-primary fw-bold">ISP360</h4>
 
           <ul className="list-unstyled">
             <li className="sidebar-item">
@@ -45,7 +42,7 @@ const Dashboard = () => {
             {/* Accordion Menu */}
             <Accordion flush alwaysOpen={false}>
               <Accordion.Item eventKey="0">
-                <Accordion.Header >
+                <Accordion.Header>
                   <FaCog /> Administration
                 </Accordion.Header>
                 <Accordion.Body>
@@ -184,20 +181,10 @@ const Dashboard = () => {
               <FaUserCircle size={24} />
             </div>
           </div>
-
-          {/* Cards Area */}
-          <div className="p-3">
-            <div className="row g-3">
-              <div className="col-lg-8 col-md-12">
-                <div className="card shadow-sm p-4">Big Card</div>
+          <div className="d-flex ">
+              <div className="first">
+                  
               </div>
-              <div className="col-lg-4 col-md-12">
-                <div className="card shadow-sm p-4">Small Card</div>
-              </div>
-              <div className="col-lg-8 col-md-12">
-                <div className="card shadow-sm p-4">Another Big Card</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
