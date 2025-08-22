@@ -107,3 +107,16 @@
   width: 200px;
   height: 200px;
 }
+.main-1{
+  border: 1px solid black;
+  width: 360px;
+  height: 199px;
+  border-radius: 10px;
+
+}
+.transition-arrow {
+  transition: transform 0.3s ease;
+}
+a[aria-expanded="true"] .transition-arrow {
+  transform: rotate(180deg);
+}
