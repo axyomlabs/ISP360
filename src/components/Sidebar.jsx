@@ -6,12 +6,14 @@ import {
   FaBoxes, FaUserTie, FaBuilding, FaComments, FaChartBar, FaCog,
   FaUser, FaQuestionCircle, FaSignOutAlt, FaChevronDown
 } from "react-icons/fa";
-import { Container } from "react-bootstrap";
+import DashboardMain from "./dashboardMain";
+import isplogo from "../assets/isp360.png";
 import "../css/Sidebar.css";
 
-// 🔹 Sidebar menu data (with hrefs)
+// ✅ Sidebar Menu Items (full list)
 const menuItems = [
   { title: "Dashboard", icon: <FaHome />, link: "/dashboard" },
+
   {
     title: "Subscribers", icon: <FaUsers />, id: "subscribersMenu",
     children: [
@@ -23,6 +25,7 @@ const menuItems = [
       { title: "NAT Logs", link: "/subscribers/nat" },
     ]
   },
+
   {
     title: "Network Management", icon: <FaNetworkWired />, id: "networkMenu",
     children: [
@@ -33,7 +36,8 @@ const menuItems = [
       { title: "Network Map (GIS)", link: "/network/gis" },
     ]
   },
-  {
+
+    {
     title: "Monitoring", icon: <FaHeartbeat />, id: "monitorMenu",
     children: [
       { title: "Network Monitoring", link: "/monitoring/network" },
@@ -42,6 +46,7 @@ const menuItems = [
       { title: "Alerts & Notifications", link: "/monitoring/alerts" },
     ]
   },
+
   {
     title: "CRM & Support", icon: <FaHeadset />, id: "crmMenu",
     children: [
@@ -51,6 +56,7 @@ const menuItems = [
       { title: "Knowledge Base", link: "/crm/kb" },
     ]
   },
+
   {
     title: "Billing & Accounting", icon: <FaFileInvoice />, id: "billingMenu",
     children: [
@@ -61,6 +67,7 @@ const menuItems = [
       { title: "Franchise Commission", link: "/billing/commission" },
     ]
   },
+
   {
     title: "Inventory", icon: <FaBoxes />, id: "inventoryMenu",
     children: [
@@ -72,6 +79,7 @@ const menuItems = [
       { title: "AMC & Warranty", link: "/inventory/amc" },
     ]
   },
+
   {
     title: "HR & Workforce", icon: <FaUserTie />, id: "hrMenu",
     children: [
@@ -82,7 +90,7 @@ const menuItems = [
       { title: "Field Workforce App", link: "/hr/workforce" },
     ]
   },
-  {
+   {
     title: "Franchise Mgmt", icon: <FaBuilding />, id: "franchiseMenu",
     children: [
       { title: "All Franchises", link: "/franchise/all" },
@@ -93,7 +101,8 @@ const menuItems = [
       { title: "Distributor / Reseller", link: "/franchise/distributor" },
     ]
   },
-  {
+
+ {
     title: "Communications", icon: <FaComments />, id: "commMenu",
     children: [
       { title: "WhatsApp API", link: "/comm/whatsapp" },
@@ -103,6 +112,7 @@ const menuItems = [
       { title: "Push Notifications", link: "/comm/notifications" },
     ]
   },
+
   {
     title: "Analytics & Reports", icon: <FaChartBar />, id: "analyticsMenu",
     children: [
@@ -113,7 +123,8 @@ const menuItems = [
       { title: "Marketing Campaigns", link: "/analytics/marketing" },
     ]
   },
-  {
+
+   {
     title: "Admin & Settings", icon: <FaCog />, id: "adminMenu",
     children: [
       { title: "User Roles", link: "/admin/users" },
@@ -126,7 +137,7 @@ const menuItems = [
   },
 ];
 
-// 🔹 Reusable dropdown item
+// ✅ SidebarItem Component
 const SidebarItem = ({ item }) => {
   if (!item.children) {
     return (
@@ -157,30 +168,54 @@ const SidebarItem = ({ item }) => {
   );
 };
 
+// ✅ Sidebar Layout
 const Sidebar = () => (
-  <Container fluid className="dashboard p-0">
-    <div className="d-flex">
-      {/* Sidebar */}
-      <div className="sidebar bg-dark text-white p-3 d-flex flex-column" style={{ minHeight: "100vh", width: "250px" }}>
-        <h4 className="mb-4 text-primary fw-bold">ISP360</h4>
+  <div className="d-flex">
+    {/* 🔹 Sidebar (Fixed) */}
+    <div
+      className="sidebar bg-dark text-white p-3 d-flex flex-column"
+      style={{
+        width: "250px",
+        height: "100vh",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        overflowY: "auto",
+      }}
+    >
+      <img src={isplogo} alt="ISP Logo" className="mb-3" style={{ maxWidth: "100%" }} />
 
-        {/* Menu */}
-        <div id="sidebarMenu" className="flex-grow-1">
-          {menuItems.map((item, i) => <SidebarItem key={i} item={item} />)}
-        </div>
-
-        {/* Footer */}
-        <div className="pt-3 border-top mt-auto">
-          <a href="/profile" className="d-block text-white text-decoration-none mb-2"><FaUser className="me-2" /> My Profile</a>
-          <a href="/help" className="d-block text-white text-decoration-none mb-2"><FaQuestionCircle className="me-2" /> Help</a>
-          <a href="/logout" className="d-block text-white text-decoration-none"><FaSignOutAlt className="me-2" /> Logout</a>
-        </div>
+      <div id="sidebarMenu" className="flex-grow-1">
+        {menuItems.map((item, i) => <SidebarItem key={i} item={item} />)}
       </div>
 
-      {/* Main Content */}
-      
+      {/* Footer */}
+      <div className="pt-3 border-top mt-auto">
+        <a href="/profile" className="d-block text-white text-decoration-none mb-2">
+          <FaUser className="me-2" /> My Profile
+        </a>
+        <a href="/help" className="d-block text-white text-decoration-none mb-2">
+          <FaQuestionCircle className="me-2" /> Help
+        </a>
+        <a href="/logout" className="d-block text-white text-decoration-none">
+          <FaSignOutAlt className="me-2" /> Logout
+        </a>
+      </div>
     </div>
-  </Container>
+
+    {/* 🔹 Main Dashboard Content */}
+    <div
+      className="flex-grow-1 bg-light"
+      style={{
+        marginLeft: "250px", // offset for fixed sidebar
+        height: "100vh",
+        overflowY: "auto",
+        padding: "10px",
+      }}
+    >
+      <DashboardMain />
+    </div>
+  </div>
 );
 
 export default Sidebar;
