@@ -1,12 +1,10 @@
-.dashboard {
-  min-height: 100vh;
-  background-color: #f8f9fa;
-}
-
 .sidebar {
   width: 250px;
   min-height: 100vh;
   transition: all 0.3s ease;
+  background-color: black;
+  position: fixed;
+  z-index: 1000;
 }
 
 .sidebar-item {
@@ -19,9 +17,7 @@
 .sidebar-item:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-.sidebar {
-    background-color: black;
-}
+
 
 /* Submenu style */
 .sidebar-submenu li {
@@ -40,20 +36,17 @@
   max-width: 400px;
 }
 
-
-
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  min-height: 100vh;
-  background-color: #212529; /* Bootstrap dark */
-  transition: all 0.3s ease;
+.collapse {
+  z-index: 1001; /* or any value greater than the sidebar's z-index */
 }
+
+
 
 /* Accordion Header (make same as sidebar) */
 .accordion-button {
-  background-color: #212529 !important; /* same as sidebar */
-  color: #fff ;
+  background-color: #212529 !important;
+  /* same as sidebar */
+  color: #fff;
   font-weight: 500;
   padding: 10px 15px;
   border: none;
@@ -62,13 +55,15 @@
 
 /* Accordion Header when active */
 .accordion-button:not(.collapsed) {
-  background-color: #343a40 !important; /* slightly lighter dark */
+  background-color: #343a40 !important;
+  /* slightly lighter dark */
   color: #fff !important;
 }
 
 /* Accordion Body (submenu background) */
 .accordion-body {
-  background-color: #2c3034; /* dark gray */
+  background-color: #2c3034;
+  /* dark gray */
   padding: 0.5rem 1rem;
   color: #fff;
 }
@@ -99,29 +94,33 @@
 
 /* Also remove divider line between items */
 .accordion-button::after {
-  display: none !important; /* removes the default arrow and line spacing */
+  display: none !important;
+  /* removes the default arrow and line spacing */
 }
 
-.first{
+.first {
   border: solid 1px black;
   width: 200px;
   height: 200px;
 }
-.main-1{
+
+.main-1 {
   border: 1px solid black;
   width: 360px;
   height: 199px;
   border-radius: 10px;
 
 }
+
 .transition-arrow {
   transition: transform 0.3s ease;
 }
+
 a[aria-expanded="true"] .transition-arrow {
   transform: rotate(180deg);
 }
 
-img{
+img {
   width: 200px;
   height: 70px;
   margin-bottom: 40px;

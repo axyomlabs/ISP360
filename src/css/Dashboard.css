@@ -1,5 +1,7 @@
 /* Dashboard.css */
-
+.container-fluid{
+  background-color: rgb(238, 238, 238);
+}
 /* 🔹 Card Styling */
 .card {
   border: none !important;
