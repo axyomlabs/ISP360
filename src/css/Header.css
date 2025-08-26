@@ -1,0 +1,22 @@
+/* Rotate dropdown caret */
+.dropdown-toggle-custom::after {
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-toggle-custom.open::after {
+  transform: rotate(180deg);
+}
+#header {
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+  background: #fff;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  width: 100% !important;   /* ✅ force full width */
+  max-width: 100% !important;
+  /* display: flex; */
+  align-items: center;
+  justify-content: space-between;
+}

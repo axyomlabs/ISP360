@@ -1,18 +1,43 @@
-/* Dashboard.css */
-.container-fluid{
-  background-color: rgb(238, 238, 238);
+/* 🔹 Reset Bootstrap container spacing */
+.container-fluid {
+  background-color: white;
+  padding: 0 !important;   /* remove padding */
+  margin: 0 !important;    /* remove margin */
+  width: 100% !important;  /* full width */
+  max-width: 100% !important; /* prevent Bootstrap container limits */
 }
+
+/* 🔹 Header Section */
+
+
+/* Remove extra lines/borders inside header */
+.dashboard-header .form-control,
+.dashboard-header .input-group,
+.dashboard-header .dropdown-toggle,
+.dashboard-header .btn {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* 🔹 Main Content Section */
+.dashboard-content {
+  padding-top: 1rem;    /* space below header */
+}
+
 /* 🔹 Card Styling */
 .card {
-  border: none !important;
+  border: 0.5 solid black !important;
   border-radius: 12px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-  overflow: visible !important;   /* ✅ Helps with dropdowns */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20) !important;
+  overflow: visible !important;   /* ✅ dropdowns show properly */
+  z-index: 1;
+  position: relative;              /* ensure z-index applies */
 }
 
 /* 🔹 Card Header */
 .card-header {
-  background-color: #f8f9fa !important;
+  background-color: #f7f7f7 !important;
   font-weight: 600;
   font-size: 14px;
   padding: 10px 15px;
@@ -38,4 +63,9 @@
 /* 🔹 Small text tweaks */
 .card p {
   margin: 0 0 6px 0;
+}
+
+/* 🔹 Dropdown Menu Always on Top */
+.dropdown-menu {
+  z-index: 2000 !important; /* stays above cards */
 }

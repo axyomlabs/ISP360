@@ -2,31 +2,48 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import login_pic from "../assets/Login_pic.png";
 import logo from "../assets/logo.png";
-import '../css/LoginPage.css'
+import '../css/LoginPage.css';
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const LoginPage = () => {
   const [username, setuser] = useState("");
   const [password, setPassword] = useState("");
-    const [remember, setRemember] = useState();
+  const [remember, setRemember] = useState(false);
+  const [error, setError] = useState(""); // State for handling login errors
+  const navigate = useNavigate(); // Get the navigate function
+
+  // Dummy user credentials
+  const dummyUser = "user";
+  const dummyPassword = "123";
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`username: ${username}, Password: ${password},Remember: ${remember}`);
+
+    // Check if the username and password match the dummy user
+    if (username === dummyUser && password === dummyPassword) {
+      setError(""); // Clear any previous errors
+      alert("Login successful!");
+      // Redirect to the dashboard page on successful login
+      navigate("/dashboard");
+    } else {
+      // Set an error message if credentials don't match
+      setError("Invalid username or password.");
+    }
   };
 
   return (
     <div className="container-fluid vh-100 d-flex ">
       {/* Left Side */}
       <div className="col-md-4 d-flex flex-column justify-content-center align-items-center bg-light">
-  <motion.h2
-  className="fw-bold typing-text"
-  initial={{ x: -200, opacity: 0 }}
-  animate={{ x: 0, opacity: 1 }}
-  transition={{ duration: 1, ease: "easeOut" }}
->
-  Hi, Welcome back
-</motion.h2>
+        <motion.h2
+          className="fw-bold typing-text"
+          initial={{ x: -200, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          Hi, Welcome back
+        </motion.h2>
         <p className="text-muted">More effectively with optimized workflows.</p>
         <img
           src={login_pic}
@@ -42,6 +59,7 @@ const LoginPage = () => {
           <img src={logo} alt="LOGO" className="mb-3" />
           <h4 className="fw-bold mb-3">Sign in to your account</h4>
           <form onSubmit={handleSubmit}>
+            {error && <div className="alert alert-danger">{error}</div>}
             <div className="mb-3">
               <label className="form-label fw-bold">UserName</label>
               <input

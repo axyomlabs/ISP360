@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   FaHome,
   FaUsers,
@@ -19,14 +20,12 @@ import {
   FaSignOutAlt,
   FaChevronDown,
 } from "react-icons/fa";
-import DashboardMain from "./dashboardMain";
 import isplogo from "../assets/isp360.png";
 import "../css/Sidebar.css";
 
 // ✅ Sidebar Menu Items (full list)
 const menuItems = [
   { title: "Dashboard", icon: <FaHome />, link: "/dashboard" },
-
   {
     title: "Subscribers",
     icon: <FaUsers />,
@@ -40,7 +39,6 @@ const menuItems = [
       { title: "NAT Logs", link: "/subscribers/nat" },
     ],
   },
-
   {
     title: "Network Management",
     icon: <FaNetworkWired />,
@@ -53,7 +51,6 @@ const menuItems = [
       { title: "Network Map (GIS)", link: "/network/gis" },
     ],
   },
-
   {
     title: "Monitoring",
     icon: <FaHeartbeat />,
@@ -65,7 +62,6 @@ const menuItems = [
       { title: "Alerts & Notifications", link: "/monitoring/alerts" },
     ],
   },
-
   {
     title: "CRM & Support",
     icon: <FaHeadset />,
@@ -77,7 +73,6 @@ const menuItems = [
       { title: "Knowledge Base", link: "/crm/kb" },
     ],
   },
-
   {
     title: "Billing & Accounting",
     icon: <FaFileInvoice />,
@@ -90,7 +85,6 @@ const menuItems = [
       { title: "Franchise Commission", link: "/billing/commission" },
     ],
   },
-
   {
     title: "Inventory",
     icon: <FaBoxes />,
@@ -104,7 +98,6 @@ const menuItems = [
       { title: "AMC & Warranty", link: "/inventory/amc" },
     ],
   },
-
   {
     title: "HR & Workforce",
     icon: <FaUserTie />,
@@ -130,7 +123,6 @@ const menuItems = [
       { title: "Distributor / Reseller", link: "/franchise/distributor" },
     ],
   },
-
   {
     title: "Communications",
     icon: <FaComments />,
@@ -143,7 +135,6 @@ const menuItems = [
       { title: "Push Notifications", link: "/comm/notifications" },
     ],
   },
-
   {
     title: "Analytics & Reports",
     icon: <FaChartBar />,
@@ -156,7 +147,6 @@ const menuItems = [
       { title: "Marketing Campaigns", link: "/analytics/marketing" },
     ],
   },
-
   {
     title: "Admin & Settings",
     icon: <FaCog />,
@@ -174,24 +164,37 @@ const menuItems = [
 
 // ✅ SidebarItem Component
 const SidebarItem = ({ item }) => {
+  const location = useLocation();
+
   if (!item.children) {
+    // Use NavLink for single items to add an 'active' class
     return (
-      <a
-        href={item.link}
-        className="text-white text-decoration-none d-flex align-items-center mb-2"
+      <NavLink
+        to={item.link}
+        className={({ isActive }) =>
+          `text-white text-decoration-none d-flex align-items-center mb-3 ${
+            isActive ? "active-link" : ""
+          }`
+        }
       >
         {item.icon}
         <span className="ms-2">{item.title}</span>
-      </a>
+      </NavLink>
     );
   }
+
+  // Determine if any child link is active to keep the parent menu open
+  const isParentActive = item.children.some(
+    (child) => location.pathname === child.link
+  );
+
   return (
-    <div className="mb-2">
+    <div className="mb-3">
       <a
         className="d-flex justify-content-between align-items-center text-white text-decoration-none"
         data-bs-toggle="collapse"
         href={`#${item.id}`}
-        aria-expanded="false"
+        aria-expanded={isParentActive} // Use isParentActive to control expansion
       >
         <span>
           {item.icon}
@@ -199,15 +202,23 @@ const SidebarItem = ({ item }) => {
         </span>
         <FaChevronDown className="transition-arrow" />
       </a>
-      <div className="collapse ps-4" id={item.id} data-bs-parent="#sidebarMenu">
+      <div
+        className={`collapse ps-4 mt-2 ${isParentActive ? "show" : ""}`} // Use 'show' class to keep it open
+        id={item.id}
+        data-bs-parent="#sidebarMenu"
+      >
         {item.children.map((child, i) => (
-          <a
+          <NavLink
             key={i}
-            href={child.link}
-            className="d-block text-white text-decoration-none py-1"
+            to={child.link}
+            className={({ isActive }) =>
+              `d-block text-white text-decoration-none py-1 ${
+                isActive ? "active-link" : ""
+              }`
+            }
           >
             {child.title}
-          </a>
+          </NavLink>
         ))}
       </div>
     </div>
@@ -216,63 +227,47 @@ const SidebarItem = ({ item }) => {
 
 // ✅ Sidebar Layout
 const Sidebar = () => (
-  <div className="d-flex">
-    {/* 🔹 Sidebar (Fixed) */}
-    <div
-      className="sidebar bg-dark text-white p-3 d-flex flex-column"
-      style={{
-        width: "250px",
-        height: "100vh",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        overflowY: "auto",
-      }}
-    >
-      <img
-        src={isplogo}
-        alt="ISP Logo"
-        className="mb-3"
-        style={{ maxWidth: "100%" }}
-      />
+  <div
+    className="sidebar bg-dark text-white p-3 d-flex flex-column"
+    style={{
+      width: "250px",
+      height: "100vh",
+      position: "fixed",
+      top: 0,
+      left: 0,
+      overflowY: "auto",
+    }}
+  >
+    <img
+      src={isplogo}
+      alt="ISP Logo"
+      className="mb-4"
+      style={{ maxWidth: "100%" }}
+    />
 
-      <div id="sidebarMenu" className="flex-grow-1">
-        {menuItems.map((item, i) => (
-          <SidebarItem key={i} item={item} />
-        ))}
-      </div>
-
-      {/* Footer */}
-      <div className="pt-3 border-top mt-auto">
-        <a
-          href="/profile"
-          className="d-block text-white text-decoration-none mb-2"
-        >
-          <FaUser className="me-2" /> My Profile
-        </a>
-        <a
-          href="/help"
-          className="d-block text-white text-decoration-none mb-2"
-        >
-          <FaQuestionCircle className="me-2" /> Help
-        </a>
-        <a href="/logout" className="d-block text-white text-decoration-none">
-          <FaSignOutAlt className="me-2" /> Logout
-        </a>
-      </div>
+    <div id="sidebarMenu" className="flex-grow-2">
+      {menuItems.map((item, i) => (
+        <SidebarItem key={i} item={item} />
+      ))}
     </div>
 
-    {/* 🔹 Main Dashboard Content */}
-    <div
-      className="flex-grow-1 bg-light"
-      style={{
-        marginLeft: "250px", // offset for fixed sidebar
-        height: "100vh",
-        overflowY: "auto",
-        padding: "10px",
-      }}
-    >
-      <DashboardMain />
+    {/* Footer */}
+    <div className="pt-3 border-top mt-auto">
+      <Link
+        to="/profile"
+        className="d-block text-white text-decoration-none mb-3"
+      >
+        <FaUser className="me-2" /> My Profile
+      </Link>
+      <Link
+        to="/help"
+        className="d-block text-white text-decoration-none mb-3"
+      >
+        <FaQuestionCircle className="me-2" /> Help
+      </Link>
+      <Link to="/logout" className="d-block text-white text-decoration-none">
+        <FaSignOutAlt className="me-2" /> Logout
+      </Link>
     </div>
   </div>
 );

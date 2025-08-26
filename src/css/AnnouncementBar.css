@@ -1,0 +1,34 @@
+.announcement-bar-container {
+  background-color: #ffffff;
+  color: #4b1100;
+  padding: 8px 10px; /* Add horizontal padding for a better look */
+  overflow: visible; /* Use 'hidden' to clip the text outside the container */
+  position: relative;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.announcement-bar-content {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: scroll-left linear infinite;
+  animation-duration: 10s;
+  white-space: nowrap; /* Ensures the text stays in one line */
+}
+
+.announcement-text {
+  /* No specific padding needed here, the animation handles the gap */
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
