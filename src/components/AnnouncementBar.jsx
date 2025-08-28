@@ -1,3 +1,5 @@
+// src/components/AnnouncementBar.jsx
+
 import React from "react";
 import { FaBullhorn } from "react-icons/fa";
 import "../css/AnnouncementBar.css";
@@ -14,10 +16,15 @@ const AnnouncementBar = () => {
   return (
     <div className="announcement-bar-container">
       <div className="announcement-bar-content">
-        <FaBullhorn className="me-2" />
-        <div className="announcement-text-wrapper">
-          <span className="announcement-text">{announcementText}</span>
-        </div>
+        <span className="announcement-text-item">
+          <FaBullhorn className="me-2" />
+          {announcementText}
+        </span>
+        {/* Duplicate the content for a seamless loop */}
+        <span className="announcement-text-item">
+          <FaBullhorn className="me-2" />
+          {announcementText}
+        </span>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 .announcement-bar-container {
   background-color: #ffffff;
-  color: #bd0606;
-  padding: 8px 10px; /* Add horizontal padding for a better look */
-  overflow: visible; /* Use 'hidden' to clip the text outside the container */
+  color: #4b1100;
+  padding: 8px 10px; /* This padding adds space inside the container */
+  overflow: hidden; /* This is the most crucial fix; it hides any overflowing content */
   position: relative;
   width: 100%;
   border-radius: 5px;
@@ -10,25 +10,17 @@
 }
 
 .announcement-bar-content {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  animation: scroll-left linear infinite;
-  animation-duration: 20s;
-  white-space: nowrap; /* Ensures the text stays in one line */
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee-scroll 25s linear infinite; /* Adjust duration to control speed */
 }
 
-.announcement-text {
-  /* No specific padding needed here, the animation handles the gap */
+.announcement-text-item {
+  display: inline-block;
+  padding-right: 50px; /* This creates a gap between the announcements */
 }
 
-@keyframes scroll-left {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+@keyframes marquee-scroll {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
