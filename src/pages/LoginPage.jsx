@@ -49,7 +49,7 @@ const LoginPage = () => {
           src={login_pic}
           alt="illustration"
           className="img-fluid mt-4"
-          style={{ maxWidth: "800px" }}
+          style={{ maxWidth: "700px" }}
         />
       </div>
 

@@ -12,7 +12,7 @@
 .announcement-bar-content {
   display: inline-block;
   white-space: nowrap;
-  animation: marquee-scroll 25s linear infinite; /* Adjust duration to control speed */
+  animation: marquee-scroll 35s linear infinite; /* Adjust duration to control speed */
 }
 
 .announcement-text-item {
