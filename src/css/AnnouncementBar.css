@@ -1,6 +1,6 @@
 .announcement-bar-container {
   background-color: #ffffff;
-  color: #4b1100;
+  color: #bd0606;
   padding: 8px 10px; /* Add horizontal padding for a better look */
   overflow: visible; /* Use 'hidden' to clip the text outside the container */
   position: relative;
@@ -16,7 +16,7 @@
   top: 50%;
   transform: translateY(-50%);
   animation: scroll-left linear infinite;
-  animation-duration: 10s;
+  animation-duration: 20s;
   white-space: nowrap; /* Ensures the text stays in one line */
 }
 
