@@ -15,6 +15,7 @@ import {
 import Layout from './components/Layout';
 import DashboardPage from './pages/DashBoard'; // Renamed DashboardMain to DashboardPage
 import LoginPage from './pages/LoginPage';
+import AllSubscribers from './pages/AllSubscribers';
  // A simple component for 404 errors
 
 createRoot(document.getElementById('root')).render(
@@ -31,7 +32,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="dashboard" element={<DashboardPage />} />
           
           {/* Add all your other routes here */}
-          <Route path="subscribers" element={<div>All Subscribers Page</div>} />
+          <Route path="subscribers" element={<div><AllSubscribers/></div>} />
           <Route path="subscribers/add" element={<div>Add Subscriber Page</div>} />
           <Route path="subscribers/plans" element={<div>Plans & Packages Page</div>} />
           <Route path="subscribers/logs" element={<div>Usage & Session Logs Page</div>} />

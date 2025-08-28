@@ -1,0 +1,58 @@
+/* src/css/SubscriberTable.css */
+
+.subscriber-datatable {
+  width: 80%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+}
+
+.subscriber-datatable thead tr {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.subscriber-datatable th,
+.subscriber-datatable td {
+  padding: 15px ;
+  width: 100px;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+  text-align: left;
+}
+
+.subscriber-datatable th {
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.subscriber-datatable th svg { 
+  margin-left: 5px; 
+  font-size: 0.8em;
+  color: #6c757d;
+}
+
+.subscriber-datatable tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.status-icon,
+.conn-status-icon {
+  /* This is the key change */
+  /* margin-right: 12px; Increased from 8px to give more space */
+  font-size: 1em; /* Increased icon size for better visibility */
+  display: inline-block; /* Ensures the margin is applied correctly */
+}
+
+/* Status icon colors */
+.status-icon.text-success { color: #28a745; }
+.status-icon.text-danger { color: #dc3545; }
+
+/* Connection status icon colors */
+.conn-status-icon.text-success { color: #28a745; }
+.conn-status-icon.text-danger { color: #dc3545; }
+

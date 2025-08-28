@@ -69,10 +69,10 @@ function Header() {
 
       {/* 🔹 Right Side Icons */}
       <div className="d-flex align-items-center">
-        <button className="btn btn-light me-2">
+        <button className="btn  me-2">
           <FaBell />
         </button>
-        <button className="btn btn-light rounded-circle">
+        <button className="btn  rounded-circle">
           <FaUserCircle />
         </button>
       </div>
