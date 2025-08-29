@@ -10,9 +10,11 @@ import {
 } from "react-icons/fa";
 import { Button, Form } from "react-bootstrap";
 import { IoIosRefresh } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllSubscribers = () => {
+  const navigate = useNavigate();
   const dummySubscribers = [
     // ... (Your dummy data from the previous step) ...
     {
@@ -290,12 +292,13 @@ const AllSubscribers = () => {
         <h2>All Subscribers</h2>
       </div>
       <div className="d-flex">
-          <Button
-            variant="outline-success"
-            className="m-2 d-flex align-items-center"
-          >
-            <FaUserPlus className="me-1" /> Add Subscriber
-          </Button>
+        <Button
+          variant="outline-success"
+          className="m-2 d-flex align-items-center"
+          onClick={() => navigate("/subscribers/add")} // 👈 correct path
+        >
+          <FaUserPlus className="me-1" /> Add Subscriber
+        </Button>
       </div>
 
       <div className="card mb-4 p-3 m-1">

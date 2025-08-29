@@ -59,3 +59,12 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Only applies to cards with .no-hover-move */
+.no-hover-move {
+  transition: none !important;
+}
+
+.no-hover-move:hover {
+  transform: none !important;
+}
