@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../css/AddSubscriber.css";
+import "../css/addSubscriber.css";
 import { Button } from "react-bootstrap"; // <-- added
 
 const SECTIONS = [
@@ -448,8 +448,8 @@ function Addsubscriber() {
   };
 
   return (
-    <div className="container-fluid px-3">
-      <div className="card w-100 no-hover-move">
+    <div className="container-fluid px-3  ">
+      <div className="card  no-hover-move m-2">
         <div className="card-header">
           <h4 className="mb-0">CAF Registration</h4>
         </div>
@@ -584,7 +584,7 @@ function Addsubscriber() {
               >
                 Clear
               </Button>
-              <button type="button" className="btn btn-primary">
+              <button type="button" className="btn btn-primary ">
                 Submit
               </button>
             </div>
