@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../css/addSubscriber.css";
+import "../css/addsubscriber.css";
 import { Button } from "react-bootstrap"; // <-- added
 
 const SECTIONS = [
