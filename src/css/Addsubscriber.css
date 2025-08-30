@@ -66,3 +66,5 @@ input:checked + .slider::after {
   right: auto;
   color: white;
 }
+
+

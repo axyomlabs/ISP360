@@ -22,7 +22,7 @@ const TablePagination = ({ totalResults, currentPage, totalPages, onPageChange }
 
   return (
     <div className="d-flex justify-content-between align-items-center mt-3">
-      <div className="text-muted">
+      <div className="text-muted p-2">
         Total result found {totalResults}
       </div>
       <div className="d-flex align-items-center">

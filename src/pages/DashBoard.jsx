@@ -53,7 +53,7 @@ function Dashboard() {
     <div className="row">
       {/* ================= Left Column ================= */}
     <AnnouncementBar />
-      <div className="col-md-5">
+      <div className="col-md-5 p-2">
         {/* User Stats */}
         <div className="card mb-3">
           <div className="card-header">

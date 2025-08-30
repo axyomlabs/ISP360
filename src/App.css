@@ -46,3 +46,17 @@
   height: 100vh;
 }
 
+/* Hide the page's scrollbar */
+body, html {
+  height: 100%; /* Ensure the body takes full height */
+  overflow: hidden; /* Prevent page scrolling */
+}
+
+/* Set the table container to be scrollable */
+.card-body {
+  max-height: 100vh; /* Take up the full height of the page */
+  overflow-y: auto;  /* Make the table scrollable vertically */
+  padding-right: 17px; /* Optional: to prevent content from being cut off */
+}
+
+

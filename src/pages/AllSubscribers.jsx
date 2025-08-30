@@ -2,21 +2,16 @@
 import React, { useState } from "react";
 import SubscriberTable from "../components/SubscriberTable";
 import FilterModal from "../components/FilterModal";
-import {
-  FaUserPlus,
-  FaFileExport,
-  FaFilter,
-  FaRegCreditCard,
-} from "react-icons/fa";
-import { Button, Form } from "react-bootstrap";
-import { IoIosRefresh } from "react-icons/io";
+import TablePagination from "../components/TablePagination";
+import "../css/Allsubscriber.css";
+import { FaUserPlus, FaFileExport, FaFilter } from "react-icons/fa";
+import { Button, Form, InputGroup, Row, Col } from "react-bootstrap"; // Make sure to import Row and Col
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllSubscribers = () => {
   const navigate = useNavigate();
   const dummySubscribers = [
-    // ... (Your dummy data from the previous step) ...
     {
       id: "2025001",
       status: "Active",
@@ -88,8 +83,8 @@ const AllSubscribers = () => {
     },
     {
       id: "2025004",
-      status: "Pending",
-      connStatus: "Pending",
+      status: "Terminated",
+      connStatus: "Disconnected",
       accountType: "Trial",
       franchiseName: "Main Office",
       branch: "Main Branch",
@@ -111,7 +106,7 @@ const AllSubscribers = () => {
     },
     {
       id: "2025005",
-      status: "Terminated",
+      status: "Pending",
       connStatus: "Disconnected",
       accountType: "Regular",
       franchiseName: "Sub Office B",
@@ -132,7 +127,6 @@ const AllSubscribers = () => {
       switch: "Switch-04",
       installationAddress: "654 Old Road, Gandhidham",
     },
-    // Repeat dummy data to reach 66 entries
     {
       id: "2025006",
       status: "Active",
@@ -204,8 +198,8 @@ const AllSubscribers = () => {
     },
     {
       id: "2025009",
-      status: "Pending",
-      connStatus: "Pending",
+      status: "Terminated",
+      connStatus: "Disconnected",
       accountType: "Trial",
       franchiseName: "Main Office",
       branch: "Main Branch",
@@ -248,36 +242,42 @@ const AllSubscribers = () => {
       switch: "Switch-04",
       installationAddress: "655 Old Road, Gandhidham",
     },
-    //... add more data here to make a long list
   ];
 
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filters, setFilters] = useState({});
+  const [modalFilters, setModalFilters] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleShowFilterModal = () => setShowFilterModal(true);
   const handleCloseFilterModal = () => setShowFilterModal(false);
 
-  const handleFilter = (newFilters) => {
-    setFilters(newFilters);
+  const handleModalFilter = (newFilters) => {
+    setModalFilters(newFilters);
+    setCurrentPage(1);
     handleCloseFilterModal();
   };
 
+  const handleMainFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+    setCurrentPage(1);
+  };
+
   const filteredSubscribers = dummySubscribers.filter((subscriber) => {
-    for (const key in filters) {
-      if (filters[key]) {
-        if (key === "accNo" || key === "username") {
-          // Case-insensitive text search for A/C No and Username
-          if (
-            !String(subscriber[key])
-              .toLowerCase()
-              .includes(filters[key].toLowerCase())
-          ) {
+    const allFilters = { ...filters, ...modalFilters };
+    for (const key in allFilters) {
+      if (allFilters[key]) {
+        if (key === "username") {
+          if (!subscriber[key].toLowerCase().includes(allFilters[key].toLowerCase())) {
             return false;
           }
         } else {
-          // Exact match for dropdowns
-          if (subscriber[key] !== filters[key]) {
+          if (subscriber[key] !== allFilters[key]) {
             return false;
           }
         }
@@ -286,45 +286,67 @@ const AllSubscribers = () => {
     return true;
   });
 
+  const totalResults = filteredSubscribers.length;
+  const totalPages = Math.ceil(totalResults / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const subscribersToShow = filteredSubscribers.slice(startIndex, endIndex);
+
   return (
     <div className="container-fluid py-4">
-      <div className="d-flex justify-content-center align-items-center ">
-        <h2>All Subscribers</h2>
-      </div>
-      <div className="d-flex">
-        <Button
-          variant="outline-success"
-          className="m-2 d-flex align-items-center"
-          onClick={() => navigate("/subscribers/add")} // 👈 correct path
-        >
-          <FaUserPlus className="me-1" /> Add Subscriber
-        </Button>
-      </div>
-
-      <div className="card mb-4 p-3 m-1">
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <span>Show</span>
-            <Form.Select
-              className="mx-2"
-              style={{ width: "80px" }}
-              value={itemsPerPage}
-              onChange={(e) => setItemsPerPage(Number(e.target.value))}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-            </Form.Select>
-            <span>rows</span>
-          </div>
-          <div className="d-flex">
+      <div className="card mb-4 p-3 m-2">
+        <Row className="align-items-end mb-3">
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label>Status</Form.Label>
+              <Form.Select
+                name="status"
+                value={filters.status}
+                onChange={handleMainFilterChange}
+              >
+                <option value="">--All--</option>
+                <option value="Active">Active</option>
+                <option value="Suspended">Suspended</option>
+                <option value="Pending">Pending</option>
+                <option value="Terminated">Terminated</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label>Conn. Status</Form.Label>
+              <Form.Select
+                name="connStatus"
+                value={filters.connStatus}
+                onChange={handleMainFilterChange}
+              >
+                <option value="">--All--</option>
+                <option value="Connected">Connected</option>
+                <option value="Disconnected">Disconnected</option>
+       
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Form.Group>
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                name="username"
+                placeholder="Search Username"
+                value={filters.username}
+                onChange={handleMainFilterChange}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={3} className="d-flex justify-content-end gap-2">
             <Button
               variant="outline-primary"
-              className="me-2 d-flex align-items-center"
+              className="d-flex align-items-center"
               onClick={handleShowFilterModal}
+              style={{ minHeight: "45px" }}
             >
-              <FaFilter className="me-1" /> Filter
+              <FaFilter className="p-0" /> Filter
             </Button>
             <Button
               variant="outline-dark"
@@ -332,23 +354,60 @@ const AllSubscribers = () => {
             >
               <FaFileExport className="me-1" /> Export
             </Button>
-          </div>
+            <Button
+              variant="outline-success"
+              className="d-flex align-items-center"
+              onClick={() => navigate("/subscribers/add")}
+            >
+              <FaUserPlus className="me-1" /> Add Subscriber
+            </Button>
+          </Col>
+        </Row>
+      </div>
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="text-muted p-2">
+          Showing {startIndex + 1} to {Math.min(endIndex, totalResults)} of {totalResults} entries
+        </div>
+        <div className="d-flex align-items-center mx-4">
+          <span>Show</span>
+          <Form.Select
+            className="mx-2"
+            style={{ width: "80px" }}
+            value={itemsPerPage}
+            onChange={(e) => {
+              setItemsPerPage(Number(e.target.value));
+              setCurrentPage(1);
+            }}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </Form.Select>
+          <span>rows</span>
         </div>
       </div>
-
-      <div className="card m-1">
-        <div className="card-body">
-          <SubscriberTable
-            subscribers={filteredSubscribers}
-            itemsPerPage={itemsPerPage}
-          />
+      <div className="card m-2" style={{ height: "70vh", overflow: "hidden" }}>
+        <div
+          className="card-body"
+          style={{
+            height: "calc(100% - 80px)",
+            overflowY: "auto",
+          }}
+        >
+          <SubscriberTable subscribers={subscribersToShow} />
         </div>
+        <TablePagination
+          totalResults={totalResults}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
-
       <FilterModal
         show={showFilterModal}
         handleClose={handleCloseFilterModal}
-        handleFilter={handleFilter}
+        handleFilter={handleModalFilter}
       />
     </div>
   );

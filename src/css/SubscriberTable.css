@@ -1,7 +1,7 @@
 /* src/css/SubscriberTable.css */
 
 .subscriber-datatable {
-  width: 80%;
+  width: 100%; /* Changed from 80% to 100% for full width */
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 8px;
@@ -17,11 +17,11 @@
 
 .subscriber-datatable th,
 .subscriber-datatable td {
-  padding: 15px ;
-  width: 100px;
+  padding: 15px;
   vertical-align: middle;
   border-bottom: 1px solid #dee2e6;
   text-align: left;
+  white-space: nowrap; /* Ensures content doesn't wrap to the next line */
 }
 
 .subscriber-datatable th {
@@ -42,17 +42,16 @@
 
 .status-icon,
 .conn-status-icon {
-  /* This is the key change */
-  /* margin-right: 12px; Increased from 8px to give more space */
-  font-size: 1em; /* Increased icon size for better visibility */
-  display: inline-block; /* Ensures the margin is applied correctly */
+  font-size: 1em;
+  display: inline-block;
 }
 
 /* Status icon colors */
 .status-icon.text-success { color: #28a745; }
+.status-icon.text-secondary { color: #6c757d; }
+.status-icon.text-warning { color: #ffc107; }
 .status-icon.text-danger { color: #dc3545; }
 
 /* Connection status icon colors */
 .conn-status-icon.text-success { color: #28a745; }
 .conn-status-icon.text-danger { color: #dc3545; }
-

@@ -56,7 +56,7 @@ const FilterModal = ({ show, handleClose, handleFilter }) => {
                   <option value="">--All--</option>
                   <option value="Connected">Connected</option>
                   <option value="Disconnected">Disconnected</option>
-                  <option value="Pending">Pending</option>
+                 
                 </Form.Select>
               </Form.Group>
             </Col>
