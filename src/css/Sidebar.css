@@ -123,5 +123,6 @@ a[aria-expanded="true"] .transition-arrow {
 img {
   width: 200px;
   height: 70px;
-  margin-bottom: 40px;
+  margin-bottom: 10%;
+  
 }

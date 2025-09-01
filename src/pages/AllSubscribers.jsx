@@ -1,11 +1,11 @@
-// src/pages/AllSubscribers.jsx
 import React, { useState } from "react";
 import SubscriberTable from "../components/SubscriberTable";
 import FilterModal from "../components/FilterModal";
 import TablePagination from "../components/TablePagination";
+import CustomiseColumnsModal from "../components/CustomiseColumnsModal";
 import "../css/Allsubscriber.css";
-import { FaUserPlus, FaFileExport, FaFilter } from "react-icons/fa";
-import { Button, Form, InputGroup, Row, Col } from "react-bootstrap"; // Make sure to import Row and Col
+import { FaUserPlus, FaFileExport, FaFilter, FaColumns } from "react-icons/fa";
+import { Button, Form, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -34,6 +34,17 @@ const AllSubscribers = () => {
       pop: "POP 1",
       switch: "Switch-01",
       installationAddress: "123 Main St, Bhuj",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "00:1A:2B:3C:4D:5E",
+      "User Type": "Home",
+      "Alt. Mobile": "9123456789",
+      Email: "john.doe@example.com",
     },
     {
       id: "2025002",
@@ -57,6 +68,17 @@ const AllSubscribers = () => {
       pop: "POP 2",
       switch: "Switch-02",
       installationAddress: "456 Side St, Anjar",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "6A:B7:C8:D9:E0:F1",
+      "User Type": "Business",
+      "Alt. Mobile": "9876543210",
+      Email: "jane.smith@example.com",
     },
     {
       id: "2025003",
@@ -80,6 +102,17 @@ const AllSubscribers = () => {
       pop: "POP 3",
       switch: "Switch-03",
       installationAddress: "789 Business Ave, Bhuj",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "22:2C:3D:4E:5F:6G",
+      "User Type": "Corporate",
+      "Alt. Mobile": "9988776655",
+      Email: "tech.corp@example.com",
     },
     {
       id: "2025004",
@@ -103,6 +136,17 @@ const AllSubscribers = () => {
       pop: "POP 1",
       switch: "Switch-01",
       installationAddress: "321 Test St, Bhuj",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "33:3A:4B:5C:6D:7E",
+      "User Type": "Trial",
+      "Alt. Mobile": "9765432109",
+      Email: "trial.user@example.com",
     },
     {
       id: "2025005",
@@ -126,6 +170,17 @@ const AllSubscribers = () => {
       pop: "POP 4",
       switch: "Switch-04",
       installationAddress: "654 Old Road, Gandhidham",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "44:4A:5B:6C:7D:8E",
+      "User Type": "Home",
+      "Alt. Mobile": "9123456780",
+      Email: "old.user@example.com",
     },
     {
       id: "2025006",
@@ -149,6 +204,17 @@ const AllSubscribers = () => {
       pop: "POP 1",
       switch: "Switch-01",
       installationAddress: "124 Main St, Bhuj",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "55:5A:6B:7C:8D:9E",
+      "User Type": "Home",
+      "Alt. Mobile": "9988776650",
+      Email: "user.six@example.com",
     },
     {
       id: "2025007",
@@ -172,6 +238,17 @@ const AllSubscribers = () => {
       pop: "POP 2",
       switch: "Switch-02",
       installationAddress: "457 Side St, Anjar",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "66:6A:7B:8C:9D:0E",
+      "User Type": "Business",
+      "Alt. Mobile": "9123456781",
+      Email: "user.seven@example.com",
     },
     {
       id: "2025008",
@@ -195,6 +272,17 @@ const AllSubscribers = () => {
       pop: "POP 3",
       switch: "Switch-03",
       installationAddress: "790 Business Ave, Bhuj",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "77:7A:8B:9C:0D:1E",
+      "User Type": "Corporate",
+      "Alt. Mobile": "9000000001",
+      Email: "user.eight@example.com",
     },
     {
       id: "2025009",
@@ -218,6 +306,17 @@ const AllSubscribers = () => {
       pop: "POP 1",
       switch: "Switch-01",
       installationAddress: "322 Test St, Bhuj",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "88:8A:9B:0C:1D:2E",
+      "User Type": "Trial",
+      "Alt. Mobile": "9765432108",
+      Email: "user.nine@example.com",
     },
     {
       id: "2025010",
@@ -241,17 +340,45 @@ const AllSubscribers = () => {
       pop: "POP 4",
       switch: "Switch-04",
       installationAddress: "655 Old Road, Gandhidham",
+      lastRenewal: "20/08/2025",
+      packagePrice: 1000,
+      customPrice: 950,
+      currentBalance: 500,
+      nasPortId: "NAS-002",
+      latitude: "23.0225",
+      longitude: "72.5714",
+      MAC: "99:9A:0B:1C:2D:3E",
+      "User Type": "Home",
+      "Alt. Mobile": "9123456789",
+      Email: "user.ten@example.com",
     },
   ];
 
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [showCustomiseModal, setShowCustomiseModal] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [filters, setFilters] = useState({});
   const [modalFilters, setModalFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
 
+  const allPossibleColumns = [
+    "accountType", "franchiseName", "branch", "username", "name", "gstin", "packageName", "subPackage",
+    "mobile", "lastLogoff", "expiryDate", "dateAdded", "ipAddress", "city", "node", "pop", "switch", "installationAddress", "lastRenewal",
+    "packagePrice", "customPrice", "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"
+  ];
+  const [visibleColumns, setVisibleColumns] = useState([
+    "id", "status", "connStatus", "username", "name", "packageName", "mobile",
+  ]);
+
   const handleShowFilterModal = () => setShowFilterModal(true);
   const handleCloseFilterModal = () => setShowFilterModal(false);
+
+  const handleShowCustomiseModal = () => setShowCustomiseModal(true);
+  const handleCloseCustomiseModal = () => setShowCustomiseModal(false);
+  const handleSaveColumns = (newVisibleColumns) => {
+    setVisibleColumns(newVisibleColumns);
+    handleCloseCustomiseModal();
+  };
 
   const handleModalFilter = (newFilters) => {
     setModalFilters(newFilters);
@@ -273,7 +400,11 @@ const AllSubscribers = () => {
     for (const key in allFilters) {
       if (allFilters[key]) {
         if (key === "username") {
-          if (!subscriber[key].toLowerCase().includes(allFilters[key].toLowerCase())) {
+          if (
+            !subscriber[key]
+              .toLowerCase()
+              .includes(allFilters[key].toLowerCase())
+          ) {
             return false;
           }
         } else {
@@ -293,9 +424,9 @@ const AllSubscribers = () => {
   const subscribersToShow = filteredSubscribers.slice(startIndex, endIndex);
 
   return (
-    <div className="container-fluid py-4">
-      <div className="card mb-4 p-3 m-2">
-        <Row className="align-items-end mb-3">
+    <div className="container-fluid">
+      <div className="card mb-4 p-3 mx-2">
+        <Row className="align-items-end mb-3 justify-content-center">
           <Col md={3}>
             <Form.Group>
               <Form.Label>Status</Form.Label>
@@ -323,7 +454,6 @@ const AllSubscribers = () => {
                 <option value="">--All--</option>
                 <option value="Connected">Connected</option>
                 <option value="Disconnected">Disconnected</option>
-       
               </Form.Select>
             </Form.Group>
           </Col>
@@ -339,20 +469,27 @@ const AllSubscribers = () => {
               />
             </Form.Group>
           </Col>
-          <Col md={3} className="d-flex justify-content-end gap-2">
+        </Row>
+        <Col className="d-flex justify-content-start gap-2">
+          <Button
+            variant="outline-primary"
+            className="d-flex align-items-center"
+            onClick={handleShowFilterModal}
+            style={{ minHeight: "45px" }}
+          >
+            <FaFilter className="p-0" /> Filter
+          </Button>
+          <Button variant="outline-dark" className="d-flex align-items-center">
+            <FaFileExport className="me-1" /> Export
+          </Button>
+
+          <Col className="d-flex justify-content-end gap-2">
             <Button
-              variant="outline-primary"
+              variant="outline-info"
               className="d-flex align-items-center"
-              onClick={handleShowFilterModal}
-              style={{ minHeight: "45px" }}
+              onClick={handleShowCustomiseModal}
             >
-              <FaFilter className="p-0" /> Filter
-            </Button>
-            <Button
-              variant="outline-dark"
-              className="d-flex align-items-center"
-            >
-              <FaFileExport className="me-1" /> Export
+              <FaColumns className="me-1" /> Customise Columns
             </Button>
             <Button
               variant="outline-success"
@@ -362,32 +499,40 @@ const AllSubscribers = () => {
               <FaUserPlus className="me-1" /> Add Subscriber
             </Button>
           </Col>
-        </Row>
+        </Col>
       </div>
-      <div className="d-flex justify-content-between align-items-center">
-        <div className="text-muted p-2">
-          Showing {startIndex + 1} to {Math.min(endIndex, totalResults)} of {totalResults} entries
+       <div className="card-footer d-flex justify-content-between align-items-center mx-2">
+          {/* Moved the showing entries to the left of the footer */}
+          <div className="text-muted me-3">
+            Showing {startIndex + 1} to {Math.min(endIndex, totalResults)} of{" "}
+            {totalResults} entries
+          </div>
+          {/* Grouped the "Show rows" and pagination on the right */}
+          <div className="d-flex align-items-center gap-2 mx-2">
+            <div className="d-flex align-items-center mb-1">
+              <span>Show</span>
+              <Form.Select
+                className="mx-2"
+                style={{ width: "80px" }}
+                value={itemsPerPage}
+                onChange={(e) => {
+                  setItemsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </Form.Select>
+              <span>rows</span>
+            </div>
+            
+          
+          </div>
         </div>
-        <div className="d-flex align-items-center mx-4">
-          <span>Show</span>
-          <Form.Select
-            className="mx-2"
-            style={{ width: "80px" }}
-            value={itemsPerPage}
-            onChange={(e) => {
-              setItemsPerPage(Number(e.target.value));
-              setCurrentPage(1);
-            }}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-          </Form.Select>
-          <span>rows</span>
-        </div>
-      </div>
-      <div className="card m-2" style={{ height: "70vh", overflow: "hidden" }}>
+    
+      <div className="card m-1" style={{ height: "68vh", overflow: "hidden" }}>
         <div
           className="card-body"
           style={{
@@ -395,19 +540,37 @@ const AllSubscribers = () => {
             overflowY: "auto",
           }}
         >
-          <SubscriberTable subscribers={subscribersToShow} />
+          <SubscriberTable
+            subscribers={subscribersToShow}
+            visibleColumns={visibleColumns}
+          />
         </div>
-        <TablePagination
-          totalResults={totalResults}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        <div className="mx-2">
+          <div>
+            <TablePagination
+            
+              totalResults={totalResults}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        </div>
       </div>
       <FilterModal
         show={showFilterModal}
         handleClose={handleCloseFilterModal}
         handleFilter={handleModalFilter}
+      />
+
+      <CustomiseColumnsModal
+        show={showCustomiseModal}
+        handleClose={handleCloseCustomiseModal}
+        initialColumns={{
+          available: allPossibleColumns.filter((col) => !visibleColumns.includes(col)),
+          visible: visibleColumns,
+        }}
+        onSave={handleSaveColumns}
       />
     </div>
   );

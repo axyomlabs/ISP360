@@ -1,13 +1,101 @@
 // src/components/SubscriberTable.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { FaSort, FaLink, FaUnlink } from "react-icons/fa";
 import { BsCircleFill } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/SubscriberTable.css";
 
-const SubscriberTable = ({ subscribers }) => {
+const SubscriberTable = ({ subscribers, visibleColumns }) => {
   const [sortConfig, setSortConfig] = useState(null);
+
+  // Drag-to-scroll refs
+  const scrollRef = useRef(null);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
+  useEffect(() => {
+    const slider = scrollRef.current;
+    if (!slider) return;
+
+    const handleMouseDown = (e) => {
+      isDown.current = true;
+      slider.classList.add("active-drag");
+      startX.current = e.pageX - slider.offsetLeft;
+      scrollLeft.current = slider.scrollLeft;
+    };
+
+    const handleMouseLeave = () => {
+      isDown.current = false;
+      slider.classList.remove("active-drag");
+    };
+
+    const handleMouseUp = () => {
+      isDown.current = false;
+      slider.classList.remove("active-drag");
+    };
+
+    const handleMouseMove = (e) => {
+      if (!isDown.current) return;
+      e.preventDefault(); // prevents text selection
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX.current) * 1.5; // drag speed
+      slider.scrollLeft = scrollLeft.current - walk;
+    };
+
+    slider.addEventListener("mousedown", handleMouseDown);
+    slider.addEventListener("mouseleave", handleMouseLeave);
+    slider.addEventListener("mouseup", handleMouseUp);
+    slider.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      slider.removeEventListener("mousedown", handleMouseDown);
+      slider.removeEventListener("mouseleave", handleMouseLeave);
+      slider.removeEventListener("mouseup", handleMouseUp);
+      slider.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  const columnMapping = {
+    id: "Id",
+    status: "Status",
+    connStatus: "Conn. Status",
+    accountType: "Account Type",
+    franchiseName: "Franchise's Name",
+    branch: "Branch",
+    username: "Username",
+    name: "Name",
+    gstin: "GSTIN",
+    packageName: "Package Name",
+    subPackage: "Sub Package",
+    mobile: "Mobile",
+    lastLogoff: "Last Logoff",
+    dateAdded: "Date Added",
+    expiryDate: "Expiry Date",
+    ipAddress: "IpAddress",
+    city: "City",
+    node: "Node",
+    pop: "POP",
+    switch: "Switch",
+    installationAddress: "Installation Address",
+    "CAF No": "CAF No",
+    Outage: "Outage",
+    MAC: "MAC",
+    "User Type": "User Type",
+    "Alt. Mobile": "Alt. Mobile",
+    "FUP Limit": "FUP Limit",
+    Area: "Area",
+    Colony: "Colony",
+    Building: "Building",
+    State: "State",
+    "Door No": "Door No",
+    "Billing Address": "Billing Address",
+    Email: "Email",
+    "User Added": "User Added",
+    "Commitment Date": "Commitment Date",
+    "Wallet Credit": "Wallet Credit",
+  };
 
   const sortedData = useMemo(() => {
     let sortableItems = [...subscribers];
@@ -44,122 +132,61 @@ const SubscriberTable = ({ subscribers }) => {
     Terminated: "text-danger",
   };
 
+  const renderCellContent = (subscriber, columnKey) => {
+    switch (columnKey) {
+      case "status":
+        return (
+          <div className="d-flex justify-content-center">
+            <span
+              className={statusColors[subscriber.status]}
+              title={subscriber.status}
+            >
+              <BsCircleFill />
+            </span>
+          </div>
+        );
+      case "connStatus":
+        return (
+          <>
+            <span
+              className={`conn-status-icon p-1 ${
+                subscriber.connStatus === "Connected"
+                  ? "text-success"
+                  : "text-danger"
+              }`}
+            >
+              {subscriber.connStatus === "Connected" ? <FaLink /> : <FaUnlink />}
+            </span>
+            {subscriber.connStatus}
+          </>
+        );
+      default:
+        return subscriber[columnKey];
+    }
+  };
+
   return (
-    <div>
-      <div className="table-responsive">
-        <Table responsive hover className="subscriber-datatable">
-          <thead>
-            <tr className="table-header">
-              <th onClick={() => requestSort("id")}>
-                Id <FaSort />
+    <div ref={scrollRef} className="drag-scroll">
+      <Table hover className="subscriber-datatable">
+        <thead>
+          <tr className="table-header">
+            {visibleColumns.map((key) => (
+              <th key={key} onClick={() => requestSort(key)}>
+                {columnMapping[key] || key} <FaSort />
               </th>
-              <th onClick={() => requestSort("status")}>
-                Status <FaSort />
-              </th>
-              <th onClick={() => requestSort("connStatus")}>
-                Conn. status <FaSort />
-              </th>
-              <th onClick={() => requestSort("accountType")}>
-                Account type <FaSort />
-              </th>
-              <th onClick={() => requestSort("franchiseName")}>
-                Franchise's name <FaSort />
-              </th>
-              <th onClick={() => requestSort("branch")}>
-                Branch <FaSort />
-              </th>
-              <th onClick={() => requestSort("username")}>
-                Username <FaSort />
-              </th>
-              <th onClick={() => requestSort("name")}>
-                Name <FaSort />
-              </th>
-              <th onClick={() => requestSort("gstin")}>
-                GSTIN <FaSort />
-              </th>
-              <th onClick={() => requestSort("packageName")}>
-                Package Name <FaSort />
-              </th>
-              <th onClick={() => requestSort("subPackage")}>
-                Sub Package <FaSort />
-              </th>
-              <th onClick={() => requestSort("mobile")}>
-                Mobile <FaSort />
-              </th>
-              <th onClick={() => requestSort("lastLogoff")}>
-                Last logoff <FaSort />
-              </th>
-              <th onClick={() => requestSort("dateAdded")}>
-                Date Added <FaSort />
-              </th>
-              <th onClick={() => requestSort("expiryDate")}>
-                Expiry date <FaSort />
-              </th>
-              <th onClick={() => requestSort("ipAddress")}>
-                IpAddress <FaSort />
-              </th>
-              <th onClick={() => requestSort("city")}>
-                City <FaSort />
-              </th>
-              <th onClick={() => requestSort("node")}>
-                Node <FaSort />
-              </th>
-              <th onClick={() => requestSort("pop")}>
-                POP <FaSort />
-              </th>
-              <th onClick={() => requestSort("switch")}>
-                Switch <FaSort />
-              </th>
-              <th onClick={() => requestSort("installationAddress")}>
-                Installation Address <FaSort />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedData.map((subscriber) => (
-              <tr key={subscriber.id}>
-                <td>{subscriber.id}</td>
-                <td>
-                  <span
-                    className={statusColors[subscriber.status]}
-                    title={subscriber.status}
-                  >
-                    <BsCircleFill />
-                  </span>
-                </td>
-                <td>
-                  <span
-                    className={`conn-status-icon p-1 ${
-                      subscriber.connStatus === "Connected" ? "text-success" : "text-danger"
-                    }`}
-                  >
-                    {subscriber.connStatus === "Connected" ? <FaLink /> : <FaUnlink />}
-                  </span>
-                  {subscriber.connStatus}
-                </td>
-                <td>{subscriber.accountType}</td>
-                <td>{subscriber.franchiseName}</td>
-                <td>{subscriber.branch}</td>
-                <td>{subscriber.username}</td>
-                <td>{subscriber.name}</td>
-                <td>{subscriber.gstin}</td>
-                <td>{subscriber.packageName}</td>
-                <td>{subscriber.subPackage}</td>
-                <td>{subscriber.mobile}</td>
-                <td>{subscriber.lastLogoff}</td>
-                <td>{subscriber.dateAdded}</td>
-                <td>{subscriber.expiryDate}</td>
-                <td>{subscriber.ipAddress}</td>
-                <td>{subscriber.city}</td>
-                <td>{subscriber.node}</td>
-                <td>{subscriber.pop}</td>
-                <td>{subscriber.switch}</td>
-                <td>{subscriber.installationAddress}</td>
-              </tr>
             ))}
-          </tbody>
-        </Table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedData.map((subscriber) => (
+            <tr key={subscriber.id}>
+              {visibleColumns.map((key) => (
+                <td key={key}>{renderCellContent(subscriber, key)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 };

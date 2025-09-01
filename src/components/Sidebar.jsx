@@ -21,6 +21,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import isplogo from "../assets/isp360.png";
+import secondLogo from '../assets/logo.png'
 import "../css/Sidebar.css";
 
 // ✅ Sidebar Menu Items (full list)
@@ -238,13 +239,21 @@ const Sidebar = () => (
       overflowY: "auto",
     }}
   >
-    <img
-      src={isplogo}
-      alt="ISP Logo"
-      className="mb-4"
-      style={{ maxWidth: "100%" }}
-    />
+    {/* Logos Section */}
+       <div className="text-center ">
+      <img
+        src={isplogo}
+        alt="ISP Logo"
+        style={{ width: "120px", height: "auto", marginBottom: "10px" }}
+      />
+      <img
+        src={secondLogo}
+        alt="Second Logo"
+        style={{ width: "220px", height: "auto" }}
+      />
+    </div>
 
+    {/* Menu Items */}
     <div id="sidebarMenu" className="flex-grow-2">
       {menuItems.map((item, i) => (
         <SidebarItem key={i} item={item} />

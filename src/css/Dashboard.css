@@ -1,16 +1,36 @@
+/* 🔹 Prevent horizontal scroll */
+html, body {
+  overflow-x: hidden;
+}
+
 /* 🔹 Reset Bootstrap container spacing */
 .container-fluid {
   background-color: white;
   padding: 0 !important;   /* remove padding */
   margin: 0 !important;    /* remove margin */
-  width: 100% !important;  /* full width */
-  max-width: 100% !important; /* prevent Bootstrap container limits */
+  width: 100% !important;  
+  max-width: 100% !important; 
+}
+
+/* 🔹 Fix row margins */
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* 🔹 Fix column padding */
+[class*="col-"] {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* 🔹 Keep charts inside cards */
+.recharts-responsive-container {
+  width: 100% !important;
+  overflow: hidden;
 }
 
 /* 🔹 Header Section */
-
-
-/* Remove extra lines/borders inside header */
 .dashboard-header .form-control,
 .dashboard-header .input-group,
 .dashboard-header .dropdown-toggle,
@@ -22,7 +42,7 @@
 
 /* 🔹 Main Content Section */
 .dashboard-content {
-  padding-top: 1rem;    /* space below header */
+  padding-top: 1rem;
 }
 
 /* 🔹 Card Styling */
@@ -30,9 +50,9 @@
   border: 0.5 solid black !important;
   border-radius: 12px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20) !important;
-  overflow: visible !important;   /* ✅ dropdowns show properly */
+  overflow: visible !important;
   z-index: 1;
-  position: relative;              /* ensure z-index applies */
+  position: relative;
 }
 
 /* 🔹 Card Header */
@@ -67,5 +87,5 @@
 
 /* 🔹 Dropdown Menu Always on Top */
 .dropdown-menu {
-  z-index: 2000 !important; /* stays above cards */
+  z-index: 2000 !important;
 }

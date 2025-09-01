@@ -1,13 +1,14 @@
 /* src/css/SubscriberTable.css */
 
 .subscriber-datatable {
-  width: 100%; /* Changed from 80% to 100% for full width */
+  width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 8px;
-  overflow: hidden; 
+  overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 0;
+  min-width: 1200px; /* ensure scroll */
 }
 
 .subscriber-datatable thead tr {
@@ -17,21 +18,20 @@
 
 .subscriber-datatable th,
 .subscriber-datatable td {
-  padding: 15px;
+  padding: 10px 15px; /* balanced padding */
   vertical-align: middle;
   border-bottom: 1px solid #dee2e6;
   text-align: left;
-  white-space: nowrap; /* Ensures content doesn't wrap to the next line */
+  white-space: nowrap;
 }
 
 .subscriber-datatable th {
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.subscriber-datatable th svg { 
-  margin-left: 5px; 
+.subscriber-datatable th svg {
+  margin-left: 5px;
   font-size: 0.8em;
   color: #6c757d;
 }
@@ -55,3 +55,56 @@
 /* Connection status icon colors */
 .conn-status-icon.text-success { color: #28a745; }
 .conn-status-icon.text-danger { color: #dc3545; }
+
+/* Center align the status column */
+.subscriber-datatable td:nth-child(2),
+.subscriber-datatable th:nth-child(2) {
+  text-align: center;
+}
+
+/* Drag scroll wrapper */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  cursor: grab;
+  user-select: none; /* no text selection */
+}
+
+.table-wrapper.active-drag {
+  cursor: grabbing;
+}
+.subscriber-datatable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  min-width: 1200px; /* force horizontal scroll */
+}
+
+.subscriber-datatable th,
+.subscriber-datatable td {
+  padding: 15px; /* same padding as before */
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.subscriber-datatable th {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.drag-scroll {
+  width: 100%;
+  overflow-x: auto;
+  cursor: grab;
+  user-select: none; /* disable text selection while dragging */
+}
+
+.drag-scroll.active-drag {
+  cursor: grabbing;
+}

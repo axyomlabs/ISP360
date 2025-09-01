@@ -28,7 +28,7 @@ function Header() {
         <input
           type="text"
           className="form-control rounded-pill pe-5 ps-5"
-          placeholder={`Search ${searchType}...`}
+          placeholder={`Search By ${searchType}...`}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ height: "45px" }}
