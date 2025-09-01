@@ -30,7 +30,9 @@ const CustomiseColumnsModal = ({ show, handleClose, initialColumns, onSave }) =>
   };
 
   const handleRestoreDefault = () => {
-    const defaultAvailable = ["CAF No", "Outage", "MAC", "User Type"];
+    const defaultAvailable = ["accountType", "franchiseName", "branch", "username", "name", "gstin", "packageName", "subPackage",
+    "mobile", "lastLogoff", "expiryDate", "dateAdded", "ipAddress", "city", "node", "pop", "switch", "installationAddress", "lastRenewal",
+    "packagePrice", "customPrice", "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"];
     const defaultVisible = ["Id", "Status", "Conn. Status", "Franchise Name"];
     setAvailableColumns(defaultAvailable);
     setVisibleColumns(defaultVisible);
