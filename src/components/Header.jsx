@@ -16,14 +16,13 @@ function Header({ toggleSidebar, isSidebarOpen }) {
 
   return (
     <div
-      className="main-header d-flex flex-wrap justify-content-between align-items-center p-3 border-bottom bg-white"
+      className="main-header p-3 border-bottom bg-white" // Keep Bootstrap classes for spacing, etc.
       id="header"
     >
       {/* Left Section: Logo & Sidebar Button */}
       <div className="header-section header-left">
-        {/* Sidebar toggle button (visible on mobile only) */}
         <button
-          className="btn btn-dark d-md-none me-2"
+          className="btn btn-dark d-md-none me-2" // This class is fine for hiding on medium and up
           onClick={toggleSidebar}
         >
           {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
@@ -34,7 +33,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       <div className="header-section header-center">
         <form
           onSubmit={handleSearch}
-          className="search-form d-flex align-items-center search-form-desktop-center" // Add the new class here
+          className="search-form d-flex align-items-center" // Add the responsive class here
         >
           {/* Search icon is now conditionally rendered */}
           <FaSearch className="search-icon d-none d-md-block" />

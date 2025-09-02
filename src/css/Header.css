@@ -2,12 +2,33 @@
 .main-header {
   z-index: 1040;
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Allows items to wrap on a new line if needed */
 }
 
-/* Base styles for the search form */
+/* Mobile-first base styles for all sections */
+.header-section {
+  display: flex;
+  align-items: center;
+}
+
+/* Mobile-first styling for the left section */
+.header-left {
+  flex-shrink: 0;
+}
+
+/* Mobile-first styling for the right section */
+.header-right {
+  flex-shrink: 0;
+}
+
+/* Mobile-first styling for the search form */
 .search-form {
   position: relative;
-  width: 100%;
+  width: 100%; /* Take up the full width on small screens */
+  margin-top: 10px; /* Adds space between button/icons and search bar */
   border: 1px solid #dee2e6;
   border-radius: 30px;
   background-color: #f8f9fa;
@@ -31,11 +52,6 @@
   padding: 0;
 }
 
-.search-input:focus {
-  box-shadow: none;
-  background-color: transparent;
-}
-
 .search-dropdown {
   position: absolute;
   right: 15px;
@@ -43,56 +59,27 @@
   transform: translateY(-50%);
 }
 
-.header-logo {
-  height: 40px;
-  width: auto;
-}
-/* Add this new rule */
-.search-form-desktop-center {
-  width: 550px; /* Or any fixed width you prefer */
-  margin: 0 auto;
-}
-
-/* Ensure the main container is a flexbox */
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Make sure the center section is a flex item that can grow */
-.header-center {
-  flex-grow: 1; /* This is important for the centering to work */
-  display: flex;
-  justify-content: center; /* This will center the child element */
-}
-
-/* Continue with your existing styles */
-.search-form {
-  position: relative;
-  border: 1px solid #dee2e6;
-  border-radius: 30px;
-  background-color: #f8f9fa;
-  padding-left: 40px;
-  padding-right: 15px;
-}     
-
-/* Mobile-first approach for the search bar, shown only on smaller screens */
-.search-form-mobile {
-  width: 100%;
-  margin-top: 10px; /* Add some space below the header items */
-}
-
-/* Adjustments for larger screens (medium and up) */
+/* Desktop-specific styles using a media query */
 @media (min-width: 768px) {
+  /* On desktop, keep all items in a single row */
+  .main-header {
+    flex-wrap: nowrap;
+  }
+
+  /* Center the search form */
+  .header-center {
+    flex-grow: 1; /* Allows the center section to take up space */
+    justify-content: center; /* Centers its child horizontally */
+  }
+  
+  /* Set a max-width on the search form for desktop to keep it from getting too wide */
   .search-form {
     max-width: 550px;
+    margin-top: 0; /* Remove top margin on desktop */
+  }
+
+  /* Hide the sidebar toggle button on desktop */
+  .d-md-none {
+    display: none !important;
   }
 }
-
-/* Hides search bar on small screens and shows a simpler layout */
-@media (max-width: 767.98px) {
-  .search-form {
-    display: none; /* Hides the search bar on mobile */
-  }
-} 
