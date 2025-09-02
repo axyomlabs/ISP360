@@ -1,11 +1,10 @@
-// src/components/Header.jsx
-
 import React, { useState } from "react";
-import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
+import { FaSearch, FaBell, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { Dropdown } from "react-bootstrap";
+import isp360Logo from "../assets/isp360.png";
 import "../css/Header.css";
 
-function Header() {
+function Header({ toggleSidebar, isSidebarOpen }) {
   const [searchType, setSearchType] = useState("Username");
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -17,55 +16,65 @@ function Header() {
 
   return (
     <div
-      className="d-flex flex-wrap justify-content-between align-items-center p-3 border-bottom bg-white header-container"
+      className="main-header d-flex flex-wrap justify-content-between align-items-center p-3 border-bottom bg-white"
       id="header"
     >
-      {/* 🔹 Searchbar */}
-      <form
-        onSubmit={handleSearch}
-        className="position-relative d-flex align-items-center search-form"
-      >
-        <input
-          type="text"
-          className="form-control rounded-pill pe-5 ps-5"
-          placeholder={`Search By ${searchType}...`}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ height: "45px" }}
-        />
-        <FaSearch className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
-
-        {/* 🔹 Dropdown */}
-        <Dropdown
-          onSelect={(val) => setSearchType(val)}
-          onToggle={(isOpen) => setIsDropdownOpen(isOpen)}
-          className="position-absolute top-50 end-0 translate-middle-y me-2"
+      {/* Left Section: Logo & Sidebar Button */}
+      <div className="header-section header-left">
+        {/* Sidebar toggle button (visible on mobile only) */}
+        <button
+          className="btn btn-dark d-md-none me-2" // Corrected class for visibility
+          onClick={toggleSidebar}
         >
-          <Dropdown.Toggle
-            variant="light"
-            size="sm"
-            className={`border-0 bg-transparent text-dark dropdown-toggle-custom ${
-              isDropdownOpen ? "open" : ""
-            }`}
-          >
-            {searchType}
-          </Dropdown.Toggle>
+          {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+        </button>
+        
+      </div>
 
-          <Dropdown.Menu
-            align="end"
-            renderOnMount
-            container={document.body}
-            style={{ zIndex: 1050, position: "absolute" }}
+      {/* Center Section: Search Bar */}
+      <div className="header-section header-center">
+        <form
+          onSubmit={handleSearch}
+          className="search-form d-flex align-items-center"
+        >
+          {/* Search icon is now conditionally rendered */}
+          <FaSearch className="search-icon d-none d-md-block" />
+          <input
+            type="text"
+            className="form-control rounded-pill search-input"
+            placeholder={`Search By ${searchType}...`}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Dropdown
+            onSelect={(val) => setSearchType(val)}
+            onToggle={(isOpen) => setIsDropdownOpen(isOpen)}
+            className="search-dropdown"
           >
-            <Dropdown.Item eventKey="Username">Username</Dropdown.Item>
-            <Dropdown.Item eventKey="Email">Email</Dropdown.Item>
-            <Dropdown.Item eventKey="Mobile">Mobile</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </form>
+            <Dropdown.Toggle
+              variant="light"
+              size="sm"
+              className="border-0 bg-transparent text-dark"
+            >
+              {/* The searchType text is now hidden on mobile */}
+              <span className="d-none d-md-inline">{searchType}</span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu
+              align="end"
+              renderOnMount
+              container={document.body}
+              style={{ zIndex: 1050, position: "absolute" }}
+            >
+              <Dropdown.Item eventKey="Username">Username</Dropdown.Item>
+              <Dropdown.Item eventKey="Email">Email</Dropdown.Item>
+              <Dropdown.Item eventKey="Mobile">Mobile</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </form>
+      </div>
 
-      {/* 🔹 Right Side Icons */}
-      <div className="d-flex align-items-center mt-2 mt-md-0">
+      {/* Right Section: Icons */}
+      <div className="header-section header-right">
         <button className="btn me-2">
           <FaBell />
         </button>

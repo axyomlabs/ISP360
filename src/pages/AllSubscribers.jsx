@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SubscriberTable from "../components/SubscriberTable";
 import FilterModal from "../components/FilterModal";
 import TablePagination from "../components/TablePagination";
@@ -11,8 +11,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllSubscribers = () => {
   const navigate = useNavigate();
-  const dummySubscribers = [
-    {
+  const dummySubscribers = [ 
+    // ✅ keep your dummy subscribers here (unchanged)
+        {
       id: "2025001",
       status: "Active",
       connStatus: "Connected",
@@ -362,22 +363,35 @@ const AllSubscribers = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const allPossibleColumns = [
-    "accountType", "franchiseName", "branch", "username", "name", "gstin", "packageName", "subPackage",
-    "mobile", "lastLogoff", "expiryDate", "dateAdded", "ipAddress", "city", "node", "pop", "switch", "installationAddress", "lastRenewal",
-    "packagePrice", "customPrice", "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"
+    "accountType", "franchiseName", "branch", "username", "name", "gstin",
+    "packageName", "subPackage", "mobile", "lastLogoff", "expiryDate",
+    "dateAdded", "ipAddress", "city", "node", "pop", "switch",
+    "installationAddress", "lastRenewal", "packagePrice", "customPrice",
+    "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"
   ];
-  const [visibleColumns, setVisibleColumns] = useState([
-    "id", "status", "connStatus", "username", "name", "packageName", "mobile",
-  ]);
+
+  // ✅ Load from localStorage on mount
+  const [visibleColumns, setVisibleColumns] = useState(() => {
+    const saved = localStorage.getItem("visibleColumns");
+    return saved
+      ? JSON.parse(saved)
+      : ["id", "status", "connStatus", "username", "name", "packageName", "mobile"];
+  });
+
+  // ✅ Save whenever visibleColumns changes
+  useEffect(() => {
+    localStorage.setItem("visibleColumns", JSON.stringify(visibleColumns));
+  }, [visibleColumns]);
 
   const handleShowFilterModal = () => setShowFilterModal(true);
   const handleCloseFilterModal = () => setShowFilterModal(false);
 
   const handleShowCustomiseModal = () => setShowCustomiseModal(true);
   const handleCloseCustomiseModal = () => setShowCustomiseModal(false);
+
   const handleSaveColumns = (newVisibleColumns) => {
     setVisibleColumns(newVisibleColumns);
-    handleCloseCustomiseModal();
+    setShowCustomiseModal(false); // close modal
   };
 
   const handleModalFilter = (newFilters) => {
@@ -400,11 +414,7 @@ const AllSubscribers = () => {
     for (const key in allFilters) {
       if (allFilters[key]) {
         if (key === "username") {
-          if (
-            !subscriber[key]
-              .toLowerCase()
-              .includes(allFilters[key].toLowerCase())
-          ) {
+          if (!subscriber[key]?.toLowerCase().includes(allFilters[key].toLowerCase())) {
             return false;
           }
         } else {
@@ -432,7 +442,7 @@ const AllSubscribers = () => {
               <Form.Label>Status</Form.Label>
               <Form.Select
                 name="status"
-                value={filters.status}
+                value={filters.status || ""}
                 onChange={handleMainFilterChange}
               >
                 <option value="">--All--</option>
@@ -448,7 +458,7 @@ const AllSubscribers = () => {
               <Form.Label>Conn. Status</Form.Label>
               <Form.Select
                 name="connStatus"
-                value={filters.connStatus}
+                value={filters.connStatus || ""}
                 onChange={handleMainFilterChange}
               >
                 <option value="">--All--</option>
@@ -464,12 +474,13 @@ const AllSubscribers = () => {
                 type="text"
                 name="username"
                 placeholder="Search Username"
-                value={filters.username}
+                value={filters.username || ""}
                 onChange={handleMainFilterChange}
               />
             </Form.Group>
           </Col>
         </Row>
+
         <Col className="d-flex justify-content-start gap-2">
           <Button
             variant="outline-primary"
@@ -501,37 +512,34 @@ const AllSubscribers = () => {
           </Col>
         </Col>
       </div>
-       <div className="card-footer d-flex justify-content-between align-items-center mx-2">
-          {/* Moved the showing entries to the left of the footer */}
-          <div className="text-muted me-3">
-            Showing {startIndex + 1} to {Math.min(endIndex, totalResults)} of{" "}
-            {totalResults} entries
-          </div>
-          {/* Grouped the "Show rows" and pagination on the right */}
-          <div className="d-flex align-items-center gap-2 mx-2">
-            <div className="d-flex align-items-center mb-1">
-              <span>Show</span>
-              <Form.Select
-                className="mx-2"
-                style={{ width: "80px" }}
-                value={itemsPerPage}
-                onChange={(e) => {
-                  setItemsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </Form.Select>
-              <span>rows</span>
-            </div>
-            
-          
+
+      <div className="card-footer d-flex justify-content-between align-items-center mx-2">
+        <div className="text-muted me-3">
+          Showing {startIndex + 1} to {Math.min(endIndex, totalResults)} of{" "}
+          {totalResults} entries
+        </div>
+        <div className="d-flex align-items-center gap-2 mx-2">
+          <div className="d-flex align-items-center mb-1">
+            <span>Show</span>
+            <Form.Select
+              className="mx-2"
+              style={{ width: "80px" }}
+              value={itemsPerPage}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </Form.Select>
+            <span>rows</span>
           </div>
         </div>
-    
+      </div>
+
       <div className="card m-1" style={{ height: "68vh", overflow: "hidden" }}>
         <div
           className="card-body"
@@ -546,17 +554,15 @@ const AllSubscribers = () => {
           />
         </div>
         <div className="mx-2">
-          <div>
-            <TablePagination
-            
-              totalResults={totalResults}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-          </div>
+          <TablePagination
+            totalResults={totalResults}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
+
       <FilterModal
         show={showFilterModal}
         handleClose={handleCloseFilterModal}

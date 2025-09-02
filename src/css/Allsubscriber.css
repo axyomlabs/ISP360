@@ -1,0 +1,47 @@
+/*
+  This CSS file is designed to be used with Bootstrap.
+  The classes here add custom behaviors and styles not included in the default framework.
+*/
+
+/* Custom styles for the card body to handle content overflow and scrolling */
+.card-body-scroll {
+  height: calc(100% - 80px);
+  overflow-y: auto;
+}
+
+/*
+  Media query to hide the button text on smaller screens (below 768px, which
+  is Bootstrap's standard 'md' breakpoint). This makes the buttons icon-only
+  on mobile devices.
+*/
+@media (max-width: 767.98px) {
+  .btn span {
+    display: none;
+  }
+}
+
+/* Ensures a consistent height for all action buttons */
+.btn-min-height {
+  min-height: 45px;
+}
+
+/* Basic styling for form labels to improve readability */
+.form-label {
+  font-weight: 500;
+}
+
+/* Optional: Additional styles for better visual separation */
+.card {
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Style for the table within its container to handle horizontal scrolling */
+.table-responsive-custom {
+  overflow-x: auto;
+}

@@ -19,12 +19,12 @@ import {
   FaQuestionCircle,
   FaSignOutAlt,
   FaChevronDown,
+  FaTimes,
 } from "react-icons/fa";
 import isplogo from "../assets/isp360.png";
-import secondLogo from '../assets/logo.png'
+import secondLogo from '../assets/logo.png';
 import "../css/Sidebar.css";
 
-// ✅ Sidebar Menu Items (full list)
 const menuItems = [
   { title: "Dashboard", icon: <FaHome />, link: "/dashboard" },
   {
@@ -163,12 +163,10 @@ const menuItems = [
   },
 ];
 
-// ✅ SidebarItem Component
-const SidebarItem = ({ item }) => {
+const SidebarItem = ({ item, toggleSidebar }) => {
   const location = useLocation();
 
   if (!item.children) {
-    // Use NavLink for single items to add an 'active' class
     return (
       <NavLink
         to={item.link}
@@ -177,6 +175,7 @@ const SidebarItem = ({ item }) => {
             isActive ? "active-link" : ""
           }`
         }
+        onClick={toggleSidebar} // Add onClick handler here
       >
         {item.icon}
         <span className="ms-2">{item.title}</span>
@@ -184,7 +183,6 @@ const SidebarItem = ({ item }) => {
     );
   }
 
-  // Determine if any child link is active to keep the parent menu open
   const isParentActive = item.children.some(
     (child) => location.pathname === child.link
   );
@@ -195,7 +193,7 @@ const SidebarItem = ({ item }) => {
         className="d-flex justify-content-between align-items-center text-white text-decoration-none"
         data-bs-toggle="collapse"
         href={`#${item.id}`}
-        aria-expanded={isParentActive} // Use isParentActive to control expansion
+        aria-expanded={isParentActive}
       >
         <span>
           {item.icon}
@@ -204,7 +202,7 @@ const SidebarItem = ({ item }) => {
         <FaChevronDown className="transition-arrow" />
       </a>
       <div
-        className={`collapse ps-4 mt-2 ${isParentActive ? "show" : ""}`} // Use 'show' class to keep it open
+        className={`collapse ps-4 mt-2 ${isParentActive ? "show" : ""}`}
         id={item.id}
         data-bs-parent="#sidebarMenu"
       >
@@ -217,6 +215,7 @@ const SidebarItem = ({ item }) => {
                 isActive ? "active-link" : ""
               }`
             }
+            onClick={toggleSidebar} // Add onClick handler here as well
           >
             {child.title}
           </NavLink>
@@ -226,59 +225,65 @@ const SidebarItem = ({ item }) => {
   );
 };
 
-// ✅ Sidebar Layout
-const Sidebar = () => (
-  <div
-    className="sidebar bg-dark text-white p-3 d-flex flex-column"
-    style={{
-      width: "250px",
-      height: "100vh",
-      position: "fixed",
-      top: 0,
-      left: 0,
-      overflowY: "auto",
-    }}
-  >
-    {/* Logos Section */}
-       <div className="text-center ">
-      <img
-        src={isplogo}
-        alt="ISP Logo"
-        style={{ width: "120px", height: "auto", marginBottom: "10px" }}
-      />
-      <img
-        src={secondLogo}
-        alt="Second Logo"
-        style={{ width: "220px", height: "auto" }}
-      />
-    </div>
-
-    {/* Menu Items */}
-    <div id="sidebarMenu" className="flex-grow-2">
-      {menuItems.map((item, i) => (
-        <SidebarItem key={i} item={item} />
-      ))}
-    </div>
-
-    {/* Footer */}
-    <div className="pt-3 border-top mt-auto">
-      <Link
-        to="/profile"
-        className="d-block text-white text-decoration-none mb-3"
+const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
+  return (
+    <>
+   {isSidebarOpen && (
+        <div className="sidebar-overlay d-md-none" onClick={toggleSidebar}></div>
+      )}
+      <div
+        className={`sidebar bg-dark text-white p-3 d-flex flex-column ${
+          isSidebarOpen ? "sidebar-open" : ""
+        }`}
       >
-        <FaUser className="me-2" /> My Profile
-      </Link>
-      <Link
-        to="/help"
-        className="d-block text-white text-decoration-none mb-3"
-      >
-        <FaQuestionCircle className="me-2" /> Help
-      </Link>
-      <Link to="/logout" className="d-block text-white text-decoration-none">
-        <FaSignOutAlt className="me-2" /> Logout
-      </Link>
-    </div>
-  </div>
-);
+        <div className="text-center position-relative">
+          {/* The close button is now at the top of the sidebar's JSX */}
+        <button
+          className="btn btn-dark d-block d-md-none close-sidebar-btn"
+          onClick={toggleSidebar}
+        >
+          <FaTimes size={24} />
+        </button>
+          <img
+            src={isplogo}
+            alt="ISP Logo"
+            style={{ width: "120px", height: "auto", marginBottom: "10px" }}
+          />
+          <img
+            src={secondLogo}
+            alt="Second Logo"
+            style={{ width: "220px", height: "auto" }}
+          />
+        </div>
+        <div id="sidebarMenu" className="flex-grow-2">
+          {menuItems.map((item, i) => (
+            <SidebarItem key={i} item={item} toggleSidebar={toggleSidebar} />
+          ))}
+        </div>
+        <div className="pt-3 border-top mt-auto">
+          <Link
+            to="/profile"
+            className="d-block text-white text-decoration-none mb-3"
+            onClick={toggleSidebar} // Add onClick to these links too
+          >
+            <FaUser className="me-2" /> My Profile
+          </Link>
+          <Link
+            to="/help"
+            className="d-block text-white text-decoration-none mb-3"
+            onClick={toggleSidebar} // Add onClick
+          >
+            <FaQuestionCircle className="me-2" /> Help
+          </Link>
+          <Link to="/logout" className="d-block text-white text-decoration-none"
+            onClick={toggleSidebar} // Add onClick
+          >
+            <FaSignOutAlt className="me-2" /> Logout
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default Sidebar;

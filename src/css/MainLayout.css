@@ -1,0 +1,18 @@
+.main-content-container {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* On desktop, push the content to the right to make space for the fixed sidebar */
+@media (min-width: 768px) {
+  .main-content-container {
+    margin-left: 250px;
+  }
+}
+
+/* On mobile, the main content is full-width by default */
+@media (max-width: 767.98px) {
+  .main-content-container {
+    margin-left: 0;
+  }
+}
