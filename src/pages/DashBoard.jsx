@@ -65,6 +65,7 @@ function Dashboard() {
                       style={{
                         background: stat.color,
                         borderRadius: "8px",
+                        padding:'10px',
                       }}
                     >
                       <h4 className="mb-0">{stat.value}</h4>
