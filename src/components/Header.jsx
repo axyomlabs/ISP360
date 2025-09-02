@@ -78,7 +78,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       </div>
 
       {/* Right Section: Icons */}
-      <div className="header-section header-right d-flex justify-content-center">
+      <div className="header-section header-right d-flex justify-content-end">
         <button className="btn me-2">
           <FaBell />
         </button>
