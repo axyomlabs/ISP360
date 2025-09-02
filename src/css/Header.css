@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* Allows items to wrap on a new line if needed */
+  flex-wrap: wrap; 
 }
 
 /* Mobile-first base styles for all sections */
@@ -27,8 +27,8 @@
 /* Mobile-first styling for the search form */
 .search-form {
   position: relative;
-  width: 100%; /* Take up the full width on small screens */
-  margin-top: 10px; /* Adds space between button/icons and search bar */
+  width: 100%; 
+  margin-top: 10px; 
   border: 1px solid #dee2e6;
   border-radius: 30px;
   background-color: #f8f9fa;
@@ -68,14 +68,14 @@
 
   /* Center the search form */
   .header-center {
-    flex-grow: 1; /* Allows the center section to take up space */
-    justify-content: center; /* Centers its child horizontally */
+    flex-grow: 1; 
+    justify-content: center; 
   }
   
   /* Set a max-width on the search form for desktop to keep it from getting too wide */
   .search-form {
     max-width: 550px;
-    margin-top: 0; /* Remove top margin on desktop */
+    margin-top: 0; 
   }
 
   /* Hide the sidebar toggle button on desktop */

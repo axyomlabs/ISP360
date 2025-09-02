@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FaSearch, FaBell, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
+import {
+  FaSearch,
+  FaBell,
+  FaUserCircle,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 import { Dropdown } from "react-bootstrap";
 import isp360Logo from "../assets/isp360.png";
 import "../css/Header.css";
@@ -36,7 +42,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
           className="search-form d-flex align-items-center" // Add the responsive class here
         >
           {/* Search icon is now conditionally rendered */}
-          <FaSearch className="search-icon d-none d-md-block" />
+          <FaSearch className="search-icon " />
           <input
             type="text"
             className="form-control rounded-pill search-input"
@@ -72,7 +78,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       </div>
 
       {/* Right Section: Icons */}
-      <div className="header-section header-right">
+      <div className="header-section header-right d-flex justify-content-center">
         <button className="btn me-2">
           <FaBell />
         </button>
