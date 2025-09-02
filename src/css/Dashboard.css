@@ -1,108 +1,129 @@
-  /* 🔹 Prevent horizontal scroll */
-  html, body {
-    overflow-x: hidden;
-  }
+/* This is your original CSS, which should apply to all devices */
 
-  /* 🔹 Reset Bootstrap container spacing */
-  .container-fluid {
-    background-color: white;
-    padding: 0 !important;   /* remove padding */
-    margin: 0 !important;    /* remove margin */
-    width: 100% !important;  
-    max-width: 100% !important; 
-  }
+html, body {
+  overflow-x: hidden;
+}
 
-  /* 🔹 Fix row margins */
-  .row {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
+.container-fluid {
+  background-color: white;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
 
-  /* 🔹 Fix column padding */
-  [class*="col-"] {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
 
-  /* 🔹 Keep charts inside cards */
-  .recharts-responsive-container {
-    width: 100% !important;
-    overflow: hidden;
-  }
+[class*="col-"] {
+  padding-left: 8px;
+  padding-right: 8px;
+}
 
-  /* 🔹 Header Section */
-  .dashboard-header .form-control,
-  .dashboard-header .input-group,
-  .dashboard-header .dropdown-toggle,
-  .dashboard-header .btn {
-    border: none !important;
-    box-shadow: none !important;
-    background: transparent !important;
-  }
+.recharts-responsive-container {
+  width: 100% !important;
+  overflow: hidden;
+}
 
-  /* 🔹 Main Content Section */
-  .dashboard-content {
-    padding-top: 1rem;
-  }
+.dashboard-header .form-control,
+.dashboard-header .input-group,
+.dashboard-header .dropdown-toggle,
+.dashboard-header .btn {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
 
-  /* 🔹 Card Styling */
-  .card {
-    border: 0.5 solid black !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20) !important;
-    overflow: visible !important;
-    z-index: 1;
-    position: relative;
-  }
+.dashboard-content {
+  padding-top: 1rem;
+}
 
-  /* 🔹 Card Header */
-  .card-header {
-    background-color: #f7f7f7 !important;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 15px;
-    border-bottom: 1px solid #e0e0e0 !important;
-    border-top-left-radius: 12px !important;
-    border-top-right-radius: 12px !important;
-  }
+.card {
+  border: 0.5 solid black !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20) !important;
+  overflow: visible !important;
+  z-index: 1;
+  position: relative;
+}
 
-  /* 🔹 Card Body */
-  .card-body {
-    padding: 15px;
-    font-size: 14px;
-    color: #333;
-  }
+.card-header {
+  background-color: #f7f7f7 !important;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+}
 
-  /* 🔹 Hover Effect */
-  .card:hover {
-    transform: translateY(-3px);
-    transition: 0.2s ease-in-out;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
-  }
+.card-body {
+  padding: 15px;
+  font-size: 14px;
+  color: #333;
+}
 
-  /* 🔹 Small text tweaks */
-  .card p {
-    margin: 0 0 6px 0;
-  }
+.card:hover {
+  transform: translateY(-3px);
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+}
 
-  /* 🔹 Dropdown Menu Always on Top */
-  .dropdown-menu {
-    z-index: 2000 !important;
-  }
-/* 🔹 User Stat Card Text Responsive */
+.card p {
+  margin: 0 0 6px 0;
+}
+
+.dropdown-menu {
+  z-index: 2000 !important;
+}
+
+/* Base styles for user stat card text (apply to all devices) */
 .user-stat-card h4 {
-  font-size: clamp(14px, 2vw, 20px); /* min 14px, scale with screen, max 20px */
+  font-size: clamp(14px, 2vw, 20px);
   font-weight: 700;
   margin: 0;
 }
 
 .user-stat-card small {
-  font-size: clamp(10px, 1.5vw, 14px); /* min 10px, max 14px */
+  font-size: clamp(10px, 1.5vw, 14px);
   font-weight: 500;
 }
 
-/* 🔹 Optional: remove default card border/shadow */
 .user-stat-card {
   border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ========================================= */
+/* MOBILE-ONLY STYLES (will not affect desktop) */
+/* ========================================= */
+@media (max-width: 767.98px) {
+  /* This is a specific rule to ensure the mobile layout of cards */
+  .card-body > .row.g-2 > [class*="col-"] {
+    flex-basis: 50%;
+    max-width: 50%;
+  }
+
+  /* Adjust font sizes for mobile to be larger */
+  .user-stat-card h4 {
+    font-size: clamp(16px, 4vw, 24px);
+  }
+
+  /* Add ellipsis for long labels on mobile */
+  .user-stat-card small {
+    font-size: clamp(10px, 2.5vw, 14px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Adjust the height of the user stat cards on mobile */
+  .user-stat-card {
+    height: 90px;
+    padding: 5px;
+  }
 }
