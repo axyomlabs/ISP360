@@ -1,91 +1,108 @@
-/* 🔹 Prevent horizontal scroll */
-html, body {
-  overflow-x: hidden;
+  /* 🔹 Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* 🔹 Reset Bootstrap container spacing */
+  .container-fluid {
+    background-color: white;
+    padding: 0 !important;   /* remove padding */
+    margin: 0 !important;    /* remove margin */
+    width: 100% !important;  
+    max-width: 100% !important; 
+  }
+
+  /* 🔹 Fix row margins */
+  .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* 🔹 Fix column padding */
+  [class*="col-"] {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  /* 🔹 Keep charts inside cards */
+  .recharts-responsive-container {
+    width: 100% !important;
+    overflow: hidden;
+  }
+
+  /* 🔹 Header Section */
+  .dashboard-header .form-control,
+  .dashboard-header .input-group,
+  .dashboard-header .dropdown-toggle,
+  .dashboard-header .btn {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* 🔹 Main Content Section */
+  .dashboard-content {
+    padding-top: 1rem;
+  }
+
+  /* 🔹 Card Styling */
+  .card {
+    border: 0.5 solid black !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20) !important;
+    overflow: visible !important;
+    z-index: 1;
+    position: relative;
+  }
+
+  /* 🔹 Card Header */
+  .card-header {
+    background-color: #f7f7f7 !important;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e0e0e0 !important;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+  }
+
+  /* 🔹 Card Body */
+  .card-body {
+    padding: 15px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  /* 🔹 Hover Effect */
+  .card:hover {
+    transform: translateY(-3px);
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  /* 🔹 Small text tweaks */
+  .card p {
+    margin: 0 0 6px 0;
+  }
+
+  /* 🔹 Dropdown Menu Always on Top */
+  .dropdown-menu {
+    z-index: 2000 !important;
+  }
+/* 🔹 User Stat Card Text Responsive */
+.user-stat-card h4 {
+  font-size: clamp(14px, 2vw, 20px); /* min 14px, scale with screen, max 20px */
+  font-weight: 700;
+  margin: 0;
 }
 
-/* 🔹 Reset Bootstrap container spacing */
-.container-fluid {
-  background-color: white;
-  padding: 0 !important;   /* remove padding */
-  margin: 0 !important;    /* remove margin */
-  width: 100% !important;  
-  max-width: 100% !important; 
+.user-stat-card small {
+  font-size: clamp(10px, 1.5vw, 14px); /* min 10px, max 14px */
+  font-weight: 500;
 }
 
-/* 🔹 Fix row margins */
-.row {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-/* 🔹 Fix column padding */
-[class*="col-"] {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-/* 🔹 Keep charts inside cards */
-.recharts-responsive-container {
-  width: 100% !important;
-  overflow: hidden;
-}
-
-/* 🔹 Header Section */
-.dashboard-header .form-control,
-.dashboard-header .input-group,
-.dashboard-header .dropdown-toggle,
-.dashboard-header .btn {
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
-/* 🔹 Main Content Section */
-.dashboard-content {
-  padding-top: 1rem;
-}
-
-/* 🔹 Card Styling */
-.card {
-  border: 0.5 solid black !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20) !important;
-  overflow: visible !important;
-  z-index: 1;
-  position: relative;
-}
-
-/* 🔹 Card Header */
-.card-header {
-  background-color: #f7f7f7 !important;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 10px 15px;
-  border-bottom: 1px solid #e0e0e0 !important;
-  border-top-left-radius: 12px !important;
-  border-top-right-radius: 12px !important;
-}
-
-/* 🔹 Card Body */
-.card-body {
-  padding: 15px;
-  font-size: 14px;
-  color: #333;
-}
-
-/* 🔹 Hover Effect */
-.card:hover {
-  transform: translateY(-3px);
-  transition: 0.2s ease-in-out;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
-}
-
-/* 🔹 Small text tweaks */
-.card p {
-  margin: 0 0 6px 0;
-}
-
-/* 🔹 Dropdown Menu Always on Top */
-.dropdown-menu {
-  z-index: 2000 !important;
+/* 🔹 Optional: remove default card border/shadow */
+.user-stat-card {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }

@@ -2,38 +2,12 @@
 .main-header {
   z-index: 1040;
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
-/* Common style for all header sections */
-.header-section {
-  display: flex;
-  align-items: center;
-}
-
-/* Left Section (for button) */
-.header-left {
-  flex-shrink: 0;
-}
-
-/* Center Section (for search bar) */
-.header-center {
-  flex-grow: 1;
-  justify-content: center;
-}
-
-/* Right Section (for icons) */
-.header-right {
-  flex-shrink: 0;
-}
-
-/* Search Form */
+/* Base styles for the search form */
 .search-form {
   position: relative;
-  width: 550px;
-  max-width: 100%;
+  width: 100%;
   border: 1px solid #dee2e6;
   border-radius: 30px;
   background-color: #f8f9fa;
@@ -44,6 +18,8 @@
 .search-icon {
   position: absolute;
   left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
   color: #6c757d;
 }
 
@@ -63,47 +39,60 @@
 .search-dropdown {
   position: absolute;
   right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-/* Logo image */
 .header-logo {
   height: 40px;
   width: auto;
 }
+/* Add this new rule */
+.search-form-desktop-center {
+  width: 550px; /* Or any fixed width you prefer */
+  margin: 0 auto;
+}
 
-/* --- */
+/* Ensure the main container is a flexbox */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-@media (max-width: 767.98px) {
-  .main-header {
-    flex-direction: row; /* Keep content in a single row */
-    align-items: center;
-    flex-wrap: wrap; /* Allow items to wrap to a new line */
-  }
+/* Make sure the center section is a flex item that can grow */
+.header-center {
+  flex-grow: 1; /* This is important for the centering to work */
+  display: flex;
+  justify-content: center; /* This will center the child element */
+}
 
-  .header-left {
-    flex-grow: 0;
-    margin-right: 10%; /* Adds space between button and search bar */
-  }
+/* Continue with your existing styles */
+.search-form {
+  position: relative;
+  border: 1px solid #dee2e6;
+  border-radius: 30px;
+  background-color: #f8f9fa;
+  padding-left: 40px;
+  padding-right: 15px;
+}     
 
-  .header-center {
-    flex-grow: 1; /* Allows search bar to fill remaining space on the line */
-    justify-content: flex-start;
-  }
-  
+/* Mobile-first approach for the search bar, shown only on smaller screens */
+.search-form-mobile {
+  width: 100%;
+  margin-top: 10px; /* Add some space below the header items */
+}
+
+/* Adjustments for larger screens (medium and up) */
+@media (min-width: 768px) {
   .search-form {
-    width: auto; /* Let the search bar's width be determined by its flex container */
-  }
-
-  /* Moves icons below and centers them */
-  .header-right {
-    flex-basis: 100%; /* Forces icons to a new line */
-    justify-content: center;
-    margin-top: 10px;
-  }
-
-  .header-left .header-logo,
-  .search-icon,
-  .search-dropdown .dropdown-toggle span {
-    display: none;
+    max-width: 550px;
   }
 }
+
+/* Hides search bar on small screens and shows a simpler layout */
+@media (max-width: 767.98px) {
+  .search-form {
+    display: none; /* Hides the search bar on mobile */
+  }
+} 

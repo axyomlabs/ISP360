@@ -52,7 +52,7 @@
           <AnnouncementBar />
           {/* ================= Left Column ================= */}
         <div className="row">
-          <div className="col-md-5 p-2">
+          <div className="col-md-5 ">
             {/* User Stats */}
             <div className="card mb-3">
               <div className="card-header">
@@ -88,7 +88,7 @@
                 <ResponsiveContainer width="100%" height={250}>
                   <BarChart
                     data={paymentData}
-                    margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                    margin={{ top: 30, right: 20, left: 0, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />

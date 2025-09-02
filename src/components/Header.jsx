@@ -23,19 +23,18 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       <div className="header-section header-left">
         {/* Sidebar toggle button (visible on mobile only) */}
         <button
-          className="btn btn-dark d-md-none me-2" // Corrected class for visibility
+          className="btn btn-dark d-md-none me-2"
           onClick={toggleSidebar}
         >
           {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
         </button>
-        
       </div>
 
       {/* Center Section: Search Bar */}
       <div className="header-section header-center">
         <form
           onSubmit={handleSearch}
-          className="search-form d-flex align-items-center"
+          className="search-form d-flex align-items-center search-form-desktop-center" // Add the new class here
         >
           {/* Search icon is now conditionally rendered */}
           <FaSearch className="search-icon d-none d-md-block" />
