@@ -1,13 +1,18 @@
 /* src/css/Header.css */
 
 /* Main Header Container */
+/* Main Header Container (MAKE IT STICKY) */
 .main-header {
-  z-index: 1040;
-  position: relative;
+  position: sticky;          /* was: relative */
+  top: 0;
+  z-index: 1050;             /* above page content */
+  background: #fff;          /* cover content underneath while scrolling */
   display: flex;
-  flex-direction: column; /* Mobile: stack sections */
-  padding: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
 }
+
 
 /* Sections */
 .header-section {
