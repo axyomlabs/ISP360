@@ -233,7 +233,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         ></div>
       )}
       <div
-        className={`sidebar bg-dark text-white ${isOpen ? "sidebar-open" : ""}`}
+        className={`sidebar bg-dark text-white ${isSidebarOpen ? "sidebar-open" : ""}`}
       >
         {/* Header */}
         <div className="sidebar-header">
@@ -268,5 +268,6 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     </>
   );
 };
+
 
 export default Sidebar;
