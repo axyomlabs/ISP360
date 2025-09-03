@@ -1,3 +1,4 @@
+// src/pages/AllSubscribers.jsx
 import React, { useState, useEffect } from "react";
 import SubscriberTable from "../components/SubscriberTable";
 import FilterModal from "../components/FilterModal";
@@ -6,14 +7,17 @@ import CustomiseColumnsModal from "../components/CustomiseColumnsModal";
 import "../css/Allsubscriber.css";
 import { FaUserPlus, FaFileExport, FaFilter, FaColumns } from "react-icons/fa";
 import { Button, Form, Col, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // 👈 Import useLocation
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllSubscribers = () => {
   const navigate = useNavigate();
-  const dummySubscribers = [ 
+  const location = useLocation(); // 👈 Initialize useLocation hook
+  const [filterStateFromDashboard, setFilterStateFromDashboard] = useState(null);
+
+  const dummySubscribers = [
     // ✅ keep your dummy subscribers here (unchanged)
-        {
+    {
       id: "2025001",
       status: "Active",
       connStatus: "Connected",
@@ -362,6 +366,19 @@ const AllSubscribers = () => {
   const [modalFilters, setModalFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
 
+  // 👈 New useEffect hook to handle filters from dashboard clicks
+  useEffect(() => {
+    // Check if there is state passed from the dashboard
+    if (location.state && location.state.filter) {
+      const { filter } = location.state;
+      setFilters(filter); // Apply the filter
+      setModalFilters({}); // Clear modal filters to avoid conflicts
+      setCurrentPage(1); // Reset to the first page
+      // Clear the state from the URL so it doesn't re-apply on refresh
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location.state]); // Re-run effect when location state changes
+
   const allPossibleColumns = [
     "accountType", "franchiseName", "branch", "username", "name", "gstin",
     "packageName", "subPackage", "mobile", "lastLogoff", "expiryDate",
@@ -370,7 +387,6 @@ const AllSubscribers = () => {
     "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"
   ];
 
-  // ✅ Load from localStorage on mount
   const [visibleColumns, setVisibleColumns] = useState(() => {
     const saved = localStorage.getItem("visibleColumns");
     return saved
@@ -378,7 +394,6 @@ const AllSubscribers = () => {
       : ["id", "status", "connStatus", "username", "name", "packageName", "mobile"];
   });
 
-  // ✅ Save whenever visibleColumns changes
   useEffect(() => {
     localStorage.setItem("visibleColumns", JSON.stringify(visibleColumns));
   }, [visibleColumns]);
@@ -391,7 +406,7 @@ const AllSubscribers = () => {
 
   const handleSaveColumns = (newVisibleColumns) => {
     setVisibleColumns(newVisibleColumns);
-    setShowCustomiseModal(false); // close modal
+    setShowCustomiseModal(false);
   };
 
   const handleModalFilter = (newFilters) => {
@@ -411,14 +426,18 @@ const AllSubscribers = () => {
 
   const filteredSubscribers = dummySubscribers.filter((subscriber) => {
     const allFilters = { ...filters, ...modalFilters };
+
     for (const key in allFilters) {
-      if (allFilters[key]) {
+      if (allFilters[key] && allFilters[key] !== "all") { // 👈 Add check for "all" filter
+        const subscriberValue = subscriber[key]?.toLowerCase();
+        const filterValue = allFilters[key]?.toLowerCase();
+
         if (key === "username") {
-          if (!subscriber[key]?.toLowerCase().includes(allFilters[key].toLowerCase())) {
+          if (!subscriberValue.includes(filterValue)) {
             return false;
           }
         } else {
-          if (subscriber[key] !== allFilters[key]) {
+          if (subscriberValue !== filterValue) {
             return false;
           }
         }
@@ -480,7 +499,6 @@ const AllSubscribers = () => {
             </Form.Group>
           </Col>
         </Row>
-
         <Col className="d-flex justify-content-start gap-2">
           <Button
             variant="outline-primary"
@@ -488,12 +506,11 @@ const AllSubscribers = () => {
             onClick={handleShowFilterModal}
             style={{ minHeight: "45px" }}
           >
-            <FaFilter className="p-0" /> 
+            <FaFilter className="p-0" />
           </Button>
           <Button variant="outline-dark" className="d-flex align-items-center">
             <FaFileExport className="me-1" /> Export
           </Button>
-
           <Col className="d-flex justify-content-end gap-2">
             <Button
               variant="outline-info"
