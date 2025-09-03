@@ -16,13 +16,11 @@ import {
   FaChartBar,
   FaCog,
   FaUser,
-  FaQuestionCircle,
-  FaSignOutAlt,
   FaChevronDown,
   FaTimes,
 } from "react-icons/fa";
 import isplogo from "../assets/isp360.png";
-import secondLogo from '../assets/logo.png';
+import secondLogo from "../assets/logo.png";
 import "../css/Sidebar.css";
 
 const menuItems = [
@@ -175,7 +173,7 @@ const SidebarItem = ({ item, toggleSidebar }) => {
             isActive ? "active-link" : ""
           }`
         }
-        onClick={toggleSidebar} // Add onClick handler here
+        onClick={toggleSidebar}
       >
         {item.icon}
         <span className="ms-2">{item.title}</span>
@@ -215,7 +213,7 @@ const SidebarItem = ({ item, toggleSidebar }) => {
                 isActive ? "active-link" : ""
               }`
             }
-            onClick={toggleSidebar} // Add onClick handler here as well
+            onClick={toggleSidebar}
           >
             {child.title}
           </NavLink>
@@ -228,22 +226,22 @@ const SidebarItem = ({ item, toggleSidebar }) => {
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   return (
     <>
-   {isSidebarOpen && (
+      {isSidebarOpen && (
         <div className="sidebar-overlay d-md-none" onClick={toggleSidebar}></div>
       )}
       <div
-        className={`sidebar bg-dark text-white p-3 d-flex flex-column ${
+        className={`sidebar bg-dark text-white ${
           isSidebarOpen ? "sidebar-open" : ""
         }`}
       >
-        <div className="text-center position-relative">
-          {/* The close button is now at the top of the sidebar's JSX */}
-        <button
-          className="btn btn-dark d-block d-md-none close-sidebar-btn"
-          onClick={toggleSidebar}
-        >
-          <FaTimes size={24} />
-        </button>
+        {/* Header */}
+        <div className="sidebar-header">
+          <button
+            className="btn btn-dark d-block d-md-none close-sidebar-btn"
+            onClick={toggleSidebar}
+          >
+            <FaTimes size={24} />
+          </button>
           <img
             src={isplogo}
             alt="ISP Logo"
@@ -255,30 +253,22 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             style={{ width: "220px", height: "auto" }}
           />
         </div>
-        <div id="sidebarMenu" className="flex-grow-2">
+
+        {/* Scrollable Menu */}
+        <div className="sidebar-menu flex-grow-1" id="sidebarMenu">
           {menuItems.map((item, i) => (
             <SidebarItem key={i} item={item} toggleSidebar={toggleSidebar} />
           ))}
         </div>
-        <div className="pt-3 border-top mt-auto">
+
+        {/* Footer */}
+        <div className="sidebar-footer">
           <Link
             to="/profile"
             className="d-block text-white text-decoration-none mb-3"
-            onClick={toggleSidebar} // Add onClick to these links too
+            onClick={toggleSidebar}
           >
             <FaUser className="me-2" /> My Profile
-          </Link>
-          <Link
-            to="/help"
-            className="d-block text-white text-decoration-none mb-3"
-            onClick={toggleSidebar} // Add onClick
-          >
-            <FaQuestionCircle className="me-2" /> Help
-          </Link>
-          <Link to="/logout" className="d-block text-white text-decoration-none"
-            onClick={toggleSidebar} // Add onClick
-          >
-            <FaSignOutAlt className="me-2" /> Logout
           </Link>
         </div>
       </div>

@@ -1,17 +1,39 @@
 /* Sidebar */
-/* Sidebar */
 .sidebar {
   width: 250px;
-  min-height: 100vh;
-  transition: transform 0.3s ease;
-  background-color: black;
+  height: 100vh;              /* Full screen height */
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2000; /* higher than header */
-  overflow-y: auto;
+  z-index: 2000;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
 }
 
+/* Header (logos + close button) */
+.sidebar-header {
+  flex-shrink: 0; /* Prevent shrinking */
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  text-align: center;
+}
+
+/* Scrollable menu */
+.sidebar-menu {
+  flex: 1; /* Take available space */
+  overflow-y: auto; /* Only this part scrolls */
+  padding-right: 5px; /* For smooth scroll without overlay */
+}
+
+/* Footer (profile) */
+.sidebar-footer {
+  flex-shrink: 0; /* Prevent moving */
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
 
 /* Close button for the sidebar */
 .close-sidebar-btn {
@@ -40,12 +62,12 @@
     transform: translateX(-100%);
   }
 
-  .sidebar-open {
+  .sidebar.sidebar-open {
     transform: translateX(0);
   }
 }
 
-/* Other styles */
+/* Sidebar items */
 .sidebar-item {
   padding: 10px;
   margin-bottom: 5px;
@@ -57,26 +79,30 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Submenu items */
 .sidebar-submenu li {
   padding: 8px 15px;
   margin: 3px 0;
   border-radius: 4px;
-  color: black;
+  color: #ddd;
   cursor: pointer;
 }
 
 .sidebar-submenu li:hover {
   background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }
 
-.search-bar {
-  max-width: 400px;
+/* Collapse arrows */
+.transition-arrow {
+  transition: transform 0.3s ease;
 }
 
-.collapse {
-  z-index: 1001;
+a[aria-expanded="true"] .transition-arrow {
+  transform: rotate(180deg);
 }
 
+/* Accordion cleanup */
 .accordion-button {
   background-color: #212529 !important;
   color: #fff;
@@ -97,55 +123,22 @@
   color: #fff;
 }
 
-.sidebar-submenu li {
-  padding: 8px 15px;
-  margin: 3px 0;
-  border-radius: 4px;
-  color: #ddd;
-  cursor: pointer;
-}
-
-.sidebar-submenu li:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
 .accordion-item {
   border: none !important;
-}
-
-.accordion-button {
-  border: none !important;
-  box-shadow: none !important;
 }
 
 .accordion-button::after {
   display: none !important;
 }
 
-.first {
-  border: solid 1px black;
-  width: 200px;
-  height: 200px;
-}
-
-.main-1 {
-  border: 1px solid black;
-  width: 360px;
-  height: 199px;
-  border-radius: 10px;
-}
-
-.transition-arrow {
-  transition: transform 0.3s ease;
-}
-
-a[aria-expanded="true"] .transition-arrow {
-  transform: rotate(180deg);
-}
-
+/* Sidebar logo styling */
 img {
   width: 200px;
   height: 70px;
-  margin-bottom: 10%;
+  /* margin-bottom: 10%; */
+}/* Add spacing to icons */
+.sidebar a svg {
+  margin-left: 8px;   /* push icon inside a bit */
+  min-width: 18px;    /* keep icons aligned */
 }
+
