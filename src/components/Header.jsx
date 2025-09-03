@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import React, { useState } from "react";
 import {
   FaSearch,
@@ -6,11 +5,11 @@ import {
   FaUserCircle,
   FaBars,
   FaTimes,
-  FaGlobe,
-  FaStore,
-  FaLink,
-  FaWhatsapp,
-  FaTelegramPlane,
+  FaGlobe, // Language
+  FaStore, // Franchise
+  FaLink, // Quick Links
+  FaWhatsapp, // WhatsApp
+  FaTelegramPlane, // Telegram
 } from "react-icons/fa";
 import { Dropdown } from "react-bootstrap";
 import isp360Logo from "../assets/isp360.png";
@@ -28,21 +27,18 @@ function Header({ toggleSidebar, isSidebarOpen }) {
 
   return (
     <div
-      className="main-header p-3 border-bottom bg-white"
+      className="main-header p-3 border-bottom bg-white d-flex flex-column flex-md-row justify-content-between align-items-center"
       id="header"
     >
-      {/* Left Section */}
-      <div className="header-section header-left">
+      {/* Sidebar Button + Search Bar in one row */}
+      <div className="header-section header-search-wrapper flex-grow-1 order-md-2 my-2 my-md-0">
         <button
           className="btn btn-dark d-md-none me-2"
           onClick={toggleSidebar}
         >
           {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
         </button>
-      </div>
 
-      {/* Center Section: Search Bar */}
-      <div className="header-section header-center">
         <form
           onSubmit={handleSearch}
           className="search-form d-flex align-items-center"
@@ -63,7 +59,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
             <Dropdown.Toggle
               variant="light"
               size="sm"
-              className={`border-0 bg-transparent text-dark ${isDropdownOpen ? 'dropdown-open' : ''}`}
+              className={`border-0 bg-transparent text-dark ${isDropdownOpen ? "dropdown-open" : ""}`}
             >
               <span className="d-none d-md-inline">{searchType}</span>
             </Dropdown.Toggle>
@@ -82,7 +78,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       </div>
 
       {/* Right Section: Icons */}
-      <div className="header-section header-right d-flex justify-content-end align-items-center">
+      <div className="header-section header-right d-flex flex-row justify-content-center justify-content-md-end align-items-center order-md-3 mt-2 mt-md-0">
         <button className="btn header-icon-btn" title="Language">
           <FaGlobe className="header-icon" />
         </button>

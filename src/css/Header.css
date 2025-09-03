@@ -5,49 +5,39 @@
   z-index: 1040;
   position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap; /* Prevent wrapping on one line for better control */
+  flex-direction: column; /* Mobile: stack sections */
+  padding: 0.5rem;
 }
 
-/* Mobile-first base styles for all sections */
+/* Sections */
 .header-section {
   display: flex;
   align-items: center;
 }
 
-/* Mobile-first styling for the left section */
+/* Left (sidebar toggle) */
 .header-left {
   flex-shrink: 0;
 }
 
-/* Mobile-first styling for the right section */
-.header-right {
-  flex-shrink: 0;
-  display: flex; /* Ensure icons are side by side */
-  align-items: center;
-  gap: 8px; /* Adds space between the icon buttons */
-}
-
-/* Mobile-first styling for the search form */
+/* Center (search) */
 .header-center {
-  flex-grow: 1; /* Allow the center section to grow */
-  justify-content: center;
-  width: 100%; /* Important for mobile to take full width */
-  padding: 0 15px; /* Add some padding to prevent it from touching the edges */
-  order: 2; /* Change order to make it wrap below header-left and header-right */
-  margin-top: 10px;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
+/* Search form */
 .search-form {
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
+  flex: 1; /* take full available width */
   border: 1px solid #dee2e6;
   border-radius: 30px;
   background-color: #f8f9fa;
-  padding: 0 15px 0 40px; /* Adjust padding to make it a flex container */
+  padding: 0 15px 0 40px;
+  min-width: 0; /* important so it shrinks on small screens */
 }
 
 .search-icon {
@@ -64,69 +54,83 @@
   width: 100%;
   height: 45px;
   padding: 0;
-  flex-grow: 1;
+  flex: 1;
+  min-width: 0;
 }
 
+/* Search dropdown */
 .search-dropdown {
-  position: relative; /* Position relative for in-flow layout */
-  transform: none; /* Remove transform */
-  margin-left: auto; /* Push to the right */
+  margin-left: auto;
 }
 
 .search-dropdown .dropdown-toggle {
   padding: 0.5rem 0.75rem;
 }
 
-.search-dropdown .dropdown-toggle::after {
-  display: inline-block;
-  vertical-align: 0.255em;
-  content: "";
-  border-top: 0.3em solid;
-  border-right: 0.3em solid transparent;
-  border-bottom: 0;
-  border-left: 0.3em solid transparent;
-  transition: transform 0.2s ease-in-out; /* Add transition for a smooth animation */
+/* Right (icons) */
+.header-right {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.search-dropdown .dropdown-toggle.dropdown-open::after {
-  transform: rotate(180deg);
+.header-icon-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
 }
-/* Desktop-specific styles using a media query */
+
+.header-icon {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Desktop layout */
 @media (min-width: 768px) {
-  /* On desktop, keep all items in a single row */
   .main-header {
-    flex-wrap: nowrap;
+    flex-direction: row; /* Desktop: all in one row */
+    align-items: center;
+    justify-content: space-between;
   }
-  
+
   .header-left {
     order: 1;
+    margin-right: 10px;
   }
 
   .header-center {
-    flex-grow: 1;
-    justify-content: center;
     order: 2;
-    padding: 0;
-    margin-top: 0;
-  }
-  
-  .header-right {
-    order: 3;
+    justify-content: center;
   }
 
-  /* Set a max-width on the search form for desktop to keep it from getting too wide */
   .search-form {
     max-width: 550px;
+  }
+
+  .header-right {
+    order: 3;
     margin-top: 0;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 15px;
   }
 
-  .search-dropdown {
-    position: relative; /* Keep it relative */
-    right: initial;
-  }
-
-  /* Hide the sidebar toggle button on desktop */
   .d-md-none {
     display: none !important;
   }
+}
+/* Wrapper for sidebar button + search */
+.header-search-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
+
+.header-search-wrapper .search-form {
+  flex: 1; /* search bar expands */
+  min-width: 0; /* allow shrinking */
 }
