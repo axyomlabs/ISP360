@@ -1,3 +1,25 @@
-.container-fluid{
+.container-fluid {
   padding-left: 0%;
+}
+
+.w-70 {
+  width: 40% !important;
+}
+
+/* Media query for phone screens (max-width of 767px) */
+@media (max-width: 767px) {
+  /* Hide the left column */
+  .d-flex.flex-column.justify-content-center.align-items-center.bg-light {
+    display: none !important;
+  }
+  
+  /* Make the right column full width */
+  .col-md-8 {
+    width: 100% !important;
+  }
+  
+  /* Make the form container full width on small screens */
+  .w-70 {
+    width: 90% !important;
+  }
 }

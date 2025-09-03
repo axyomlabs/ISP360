@@ -13,7 +13,7 @@ import {
 
 // Import your page components
 import Layout from './components/Layout';
-import DashboardPage from './pages/DashBoard'; // Renamed DashboardMain to DashboardPage
+import Dashboard from './pages/DashBoard'; // Renamed DashboardMain to DashboardPage
 import LoginPage from './pages/LoginPage';
 import AllSubscribers from './pages/AllSubscribers';
 import Addsubscriber from './pages/Addsubscriber';
@@ -23,36 +23,34 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        {/* Route for the login page without the layout */}
-        <Route path="/login" element={<LoginPage />} />
+  {/* Default route shows login first */}
+  <Route path="/" element={<LoginPage />} />
+  <Route path="/login" element={<LoginPage />} />
 
-        {/* This is the main layout route that contains the sidebar and header */}
-        <Route path="/" element={<Layout />}>
-          {/* Dashboard as the default page when visiting the root path */}
-          <Route index element={<DashboardPage />} />
-          <Route path="dashboard" element={<DashboardPage />} />
-          
-          {/* Add all your other routes here */}
-          <Route path="subscribers" element={<div><AllSubscribers/></div>} />
-          <Route path="subscribers/add" element={<div><Addsubscriber/></div>} />
-          <Route path="subscribers/plans" element={<div>Plans & Packages Page</div>} />
-          <Route path="subscribers/logs" element={<div>Usage & Session Logs Page</div>} />
-          <Route path="subscribers/ipdr" element={<div>IPDR Logs Page</div>} />
-          <Route path="subscribers/nat" element={<div>NAT Logs Page</div>} />
+  {/* This is the main layout route that contains the sidebar and header */}
+  <Route path="/app" element={<Layout />}>
+    {/* Dashboard as the default page when visiting /app */}
+    <Route index element={<Dashboard />} />
+    <Route path="dashboard" element={<Dashboard />} />
+    
+    {/* Add all your other routes here */}
+    <Route path="subscribers" element={<div><AllSubscribers/></div>} />
+    <Route path="subscribers/add" element={<div><Addsubscriber/></div>} />
+    <Route path="subscribers/plans" element={<div>Plans & Packages Page</div>} />
+    <Route path="subscribers/logs" element={<div>Usage & Session Logs Page</div>} />
+    <Route path="subscribers/ipdr" element={<div>IPDR Logs Page</div>} />
+    <Route path="subscribers/nat" element={<div>NAT Logs Page</div>} />
 
-          {/* Add the other routes from your menuItems list here */}
-          <Route path="network/nas" element={<div>NAS / BNG Status Page</div>} />
-          <Route path="network/olt" element={<div>OLT & ONU Mgmt Page</div>} />
-          <Route path="network/cpe" element={<div>TR-069 / TR-369 CPE Page</div>} />
-          <Route path="network/backup" element={<div>Config Backup Page</div>} />
-          <Route path="network/gis" element={<div>Network Map (GIS) Page</div>} />
-          
-          {/* ... and so on for all menu items ... */}
+    <Route path="network/nas" element={<div>NAS / BNG Status Page</div>} />
+    <Route path="network/olt" element={<div>OLT & ONU Mgmt Page</div>} />
+    <Route path="network/cpe" element={<div>TR-069 / TR-369 CPE Page</div>} />
+    <Route path="network/backup" element={<div>Config Backup Page</div>} />
+    <Route path="network/gis" element={<div>Network Map (GIS) Page</div>} />
+    
+    {/* ... and so on for all menu items ... */}
+  </Route>
+</Routes>
 
-          {/* A catch-all route for any undefined URLs */}
-      
-        </Route>
-      </Routes>
     </BrowserRouter>
   </StrictMode>
 );
