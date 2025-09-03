@@ -7,7 +7,7 @@ const CustomiseColumnsModal = ({ show, handleClose, initialColumns, onSave }) =>
   const [availableColumns, setAvailableColumns] = useState([]);
   const [visibleColumns, setVisibleColumns] = useState([]);
 
-  // NEW: states to track selected columns
+  // states to track selected columns
   const [selectedAvailable, setSelectedAvailable] = useState(null);
   const [selectedVisible, setSelectedVisible] = useState(null);
 
@@ -90,11 +90,22 @@ const CustomiseColumnsModal = ({ show, handleClose, initialColumns, onSave }) =>
 
           {/* Buttons */}
           <div className="d-flex flex-row flex-md-column justify-content-center align-items-center my-3 my-md-0">
-            <Button className="mb-md-2 me-2 me-md-0" onClick={handleMoveToVisible} disabled={!selectedAvailable}>
-              &gt;&gt;
+            <Button
+              className="mb-md-2 me-2 me-md-0"
+              onClick={handleMoveToVisible}
+              disabled={!selectedAvailable}
+            >
+              {/* Conditional rendering for button text */}
+              <span className="d-md-none">&darr;</span>
+              <span className="d-none d-md-inline">&gt;&gt;</span>
             </Button>
-            <Button onClick={handleMoveToAvailable} disabled={!selectedVisible}>
-              &lt;&lt;
+            <Button
+              onClick={handleMoveToAvailable}
+              disabled={!selectedVisible}
+            >
+              {/* Conditional rendering for button text */}
+              <span className="d-md-none">&uarr;</span>
+              <span className="d-none d-md-inline">&lt;&lt;</span>
             </Button>
           </div>
 
