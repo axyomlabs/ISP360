@@ -227,12 +227,13 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   return (
     <>
       {isSidebarOpen && (
-        <div className="sidebar-overlay d-md-none" onClick={toggleSidebar}></div>
+        <div
+          className="sidebar-overlay d-md-none"
+          onClick={toggleSidebar}
+        ></div>
       )}
       <div
-        className={`sidebar bg-dark text-white ${
-          isSidebarOpen ? "sidebar-open" : ""
-        }`}
+        className={`sidebar bg-dark text-white ${isOpen ? "sidebar-open" : ""}`}
       >
         {/* Header */}
         <div className="sidebar-header">
@@ -242,20 +243,12 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
           >
             <FaTimes size={24} />
           </button>
-          <img
-            src={isplogo}
-            alt="ISP Logo"
-            style={{ width: "120px", height: "auto", marginBottom: "10px" }}
-          />
-          <img
-            src={secondLogo}
-            alt="Second Logo"
-            style={{ width: "220px", height: "auto" }}
-          />
+          <img src={isplogo} alt="ISP Logo" />
+          <img src={secondLogo} alt="Second Logo" />
         </div>
 
-        {/* Scrollable Menu */}
-        <div className="sidebar-menu flex-grow-1" id="sidebarMenu">
+        {/* Scrollable menu */}
+        <div className="sidebar-menu" id="sidebarMenu">
           {menuItems.map((item, i) => (
             <SidebarItem key={i} item={item} toggleSidebar={toggleSidebar} />
           ))}
