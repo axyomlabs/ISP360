@@ -24,18 +24,18 @@ import secondLogo from "../assets/logo.png";
 import "../css/Sidebar.css";
 
 const menuItems = [
-  { title: "Dashboard", icon: <FaHome />, link: "/dashboard" },
+  { title: "Dashboard", icon: <FaHome />, link: "/app/dashboard" }, // Corrected link
   {
     title: "Subscribers",
     icon: <FaUsers />,
     id: "subscribersMenu",
     children: [
-      { title: "All Subscribers", link: "/subscribers" },
-      { title: "Add Subscriber", link: "/subscribers/add" },
-      { title: "Plans & Packages", link: "/subscribers/plans" },
-      { title: "Usage & Session Logs", link: "/subscribers/logs" },
-      { title: "IPDR Logs", link: "/subscribers/ipdr" },
-      { title: "NAT Logs", link: "/subscribers/nat" },
+      { title: "All Subscribers", link: "/app/subscribers" }, // Corrected link
+      { title: "Add Subscriber", link: "/app/subscribers/add" }, // Corrected link
+      { title: "Plans & Packages", link: "/app/subscribers/plans" }, // Corrected link
+      { title: "Usage & Session Logs", link: "/app/subscribers/logs" }, // Corrected link
+      { title: "IPDR Logs", link: "/app/subscribers/ipdr" }, // Corrected link
+      { title: "NAT Logs", link: "/app/subscribers/nat" }, // Corrected link
     ],
   },
   {
@@ -43,11 +43,11 @@ const menuItems = [
     icon: <FaNetworkWired />,
     id: "networkMenu",
     children: [
-      { title: "NAS / BNG Status", link: "/network/nas" },
-      { title: "OLT & ONU Mgmt", link: "/network/olt" },
-      { title: "TR-069 / TR-369 CPE", link: "/network/cpe" },
-      { title: "Config Backup", link: "/network/backup" },
-      { title: "Network Map (GIS)", link: "/network/gis" },
+      { title: "NAS / BNG Status", link: "/app/network/nas" }, // Corrected link
+      { title: "OLT & ONU Mgmt", link: "/app/network/olt" }, // Corrected link
+      { title: "TR-069 / TR-369 CPE", link: "/app/network/cpe" }, // Corrected link
+      { title: "Config Backup", link: "/app/network/backup" }, // Corrected link
+      { title: "Network Map (GIS)", link: "/app/network/gis" }, // Corrected link
     ],
   },
   {
@@ -55,10 +55,10 @@ const menuItems = [
     icon: <FaHeartbeat />,
     id: "monitorMenu",
     children: [
-      { title: "Network Monitoring", link: "/monitoring/network" },
-      { title: "Capacity Dashboard", link: "/monitoring/capacity" },
-      { title: "QoE Monitoring", link: "/monitoring/qoe" },
-      { title: "Alerts & Notifications", link: "/monitoring/alerts" },
+      { title: "Network Monitoring", link: "/app/monitoring/network" }, // Corrected link
+      { title: "Capacity Dashboard", link: "/app/monitoring/capacity" }, // Corrected link
+      { title: "QoE Monitoring", link: "/app/monitoring/qoe" }, // Corrected link
+      { title: "Alerts & Notifications", link: "/app/monitoring/alerts" }, // Corrected link
     ],
   },
   {
@@ -66,10 +66,10 @@ const menuItems = [
     icon: <FaHeadset />,
     id: "crmMenu",
     children: [
-      { title: "Customer Profiles", link: "/crm/customers" },
-      { title: "Complaint Tickets", link: "/crm/tickets" },
-      { title: "SLA Dashboard", link: "/crm/sla" },
-      { title: "Knowledge Base", link: "/crm/kb" },
+      { title: "Customer Profiles", link: "/app/crm/customers" }, // Corrected link
+      { title: "Complaint Tickets", link: "/app/crm/tickets" }, // Corrected link
+      { title: "SLA Dashboard", link: "/app/crm/sla" }, // Corrected link
+      { title: "Knowledge Base", link: "/app/crm/kb" }, // Corrected link
     ],
   },
   {
@@ -77,11 +77,11 @@ const menuItems = [
     icon: <FaFileInvoice />,
     id: "billingMenu",
     children: [
-      { title: "Invoices & Payments", link: "/billing/invoices" },
-      { title: "Wallet / Recharge", link: "/billing/wallet" },
-      { title: "Refunds & Credits", link: "/billing/refunds" },
-      { title: "Tax / GST Reports", link: "/billing/tax" },
-      { title: "Franchise Commission", link: "/billing/commission" },
+      { title: "Invoices & Payments", link: "/app/billing/invoices" }, // Corrected link
+      { title: "Wallet / Recharge", link: "/app/billing/wallet" }, // Corrected link
+      { title: "Refunds & Credits", link: "/app/billing/refunds" }, // Corrected link
+      { title: "Tax / GST Reports", link: "/app/billing/tax" }, // Corrected link
+      { title: "Franchise Commission", link: "/app/billing/commission" }, // Corrected link
     ],
   },
   {
@@ -89,12 +89,12 @@ const menuItems = [
     icon: <FaBoxes />,
     id: "inventoryMenu",
     children: [
-      { title: "Devices", link: "/inventory/devices" },
-      { title: "Assign to Customer", link: "/inventory/assign" },
-      { title: "Returns & Faulty Items", link: "/inventory/returns" },
-      { title: "Stock Tracking", link: "/inventory/stock" },
-      { title: "POP Infra", link: "/inventory/pop" },
-      { title: "AMC & Warranty", link: "/inventory/amc" },
+      { title: "Devices", link: "/app/inventory/devices" }, // Corrected link
+      { title: "Assign to Customer", link: "/app/inventory/assign" }, // Corrected link
+      { title: "Returns & Faulty Items", link: "/app/inventory/returns" }, // Corrected link
+      { title: "Stock Tracking", link: "/app/inventory/stock" }, // Corrected link
+      { title: "POP Infra", link: "/app/inventory/pop" }, // Corrected link
+      { title: "AMC & Warranty", link: "/app/inventory/amc" }, // Corrected link
     ],
   },
   {
@@ -102,11 +102,11 @@ const menuItems = [
     icon: <FaUserTie />,
     id: "hrMenu",
     children: [
-      { title: "Employee Profiles", link: "/hr/employees" },
-      { title: "Attendance Tracking", link: "/hr/attendance" },
-      { title: "Salary & Payroll", link: "/hr/payroll" },
-      { title: "Expense Claims", link: "/hr/expenses" },
-      { title: "Field Workforce App", link: "/hr/workforce" },
+      { title: "Employee Profiles", link: "/app/hr/employees" }, // Corrected link
+      { title: "Attendance Tracking", link: "/app/hr/attendance" }, // Corrected link
+      { title: "Salary & Payroll", link: "/app/hr/payroll" }, // Corrected link
+      { title: "Expense Claims", link: "/app/hr/expenses" }, // Corrected link
+      { title: "Field Workforce App", link: "/app/hr/workforce" }, // Corrected link
     ],
   },
   {
@@ -114,12 +114,12 @@ const menuItems = [
     icon: <FaBuilding />,
     id: "franchiseMenu",
     children: [
-      { title: "All Franchises", link: "/franchise/all" },
-      { title: "Add Franchise", link: "/franchise/add" },
-      { title: "Self-Franchise", link: "/franchise/self" },
-      { title: "Revenue Sharing", link: "/franchise/revenue" },
-      { title: "Hybrid Model", link: "/franchise/hybrid" },
-      { title: "Distributor / Reseller", link: "/franchise/distributor" },
+      { title: "All Franchises", link: "/app/franchise/all" }, // Corrected link
+      { title: "Add Franchise", link: "/app/franchise/add" }, // Corrected link
+      { title: "Self-Franchise", link: "/app/franchise/self" }, // Corrected link
+      { title: "Revenue Sharing", link: "/app/franchise/revenue" }, // Corrected link
+      { title: "Hybrid Model", link: "/app/franchise/hybrid" }, // Corrected link
+      { title: "Distributor / Reseller", link: "/app/franchise/distributor" }, // Corrected link
     ],
   },
   {
@@ -127,11 +127,11 @@ const menuItems = [
     icon: <FaComments />,
     id: "commMenu",
     children: [
-      { title: "WhatsApp API", link: "/comm/whatsapp" },
-      { title: "SMS API", link: "/comm/sms" },
-      { title: "Email Gateway", link: "/comm/email" },
-      { title: "IVR Setup", link: "/comm/ivr" },
-      { title: "Push Notifications", link: "/comm/notifications" },
+      { title: "WhatsApp API", link: "/app/comm/whatsapp" }, // Corrected link
+      { title: "SMS API", link: "/app/comm/sms" }, // Corrected link
+      { title: "Email Gateway", link: "/app/comm/email" }, // Corrected link
+      { title: "IVR Setup", link: "/app/comm/ivr" }, // Corrected link
+      { title: "Push Notifications", link: "/app/comm/notifications" }, // Corrected link
     ],
   },
   {
@@ -139,11 +139,11 @@ const menuItems = [
     icon: <FaChartBar />,
     id: "analyticsMenu",
     children: [
-      { title: "Revenue Reports", link: "/analytics/revenue" },
-      { title: "Churn Analysis", link: "/analytics/churn" },
-      { title: "Subscriber Reports", link: "/analytics/subscribers" },
-      { title: "Capacity Planning", link: "/analytics/capacity" },
-      { title: "Marketing Campaigns", link: "/analytics/marketing" },
+      { title: "Revenue Reports", link: "/app/analytics/revenue" }, // Corrected link
+      { title: "Churn Analysis", link: "/app/analytics/churn" }, // Corrected link
+      { title: "Subscriber Reports", link: "/app/analytics/subscribers" }, // Corrected link
+      { title: "Capacity Planning", link: "/app/analytics/capacity" }, // Corrected link
+      { title: "Marketing Campaigns", link: "/app/analytics/marketing" }, // Corrected link
     ],
   },
   {
@@ -151,12 +151,12 @@ const menuItems = [
     icon: <FaCog />,
     id: "adminMenu",
     children: [
-      { title: "User Roles", link: "/admin/users" },
-      { title: "API Gateway", link: "/admin/api" },
-      { title: "Branding", link: "/admin/branding" },
-      { title: "Compliance Reports", link: "/admin/compliance" },
-      { title: "Lawful Intercept", link: "/admin/intercept" },
-      { title: "System Backup", link: "/admin/backup" },
+      { title: "User Roles", link: "/app/admin/users" }, // Corrected link
+      { title: "API Gateway", link: "/app/admin/api" }, // Corrected link
+      { title: "Branding", link: "/app/admin/branding" }, // Corrected link
+      { title: "Compliance Reports", link: "/app/admin/compliance" }, // Corrected link
+      { title: "Lawful Intercept", link: "/app/admin/intercept" }, // Corrected link
+      { title: "System Backup", link: "/app/admin/backup" }, // Corrected link
     ],
   },
 ];
@@ -252,7 +252,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         {/* Footer */}
         <div className="sidebar-footer">
           <Link
-            to="/profile"
+            to="/app/profile" // Corrected link
             className="d-block text-white text-decoration-none mb-3"
             onClick={toggleSidebar}
           >

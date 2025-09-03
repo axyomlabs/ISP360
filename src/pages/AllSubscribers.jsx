@@ -1,4 +1,3 @@
-// src/pages/AllSubscribers.jsx
 import React, { useState, useEffect } from "react";
 import SubscriberTable from "../components/SubscriberTable";
 import FilterModal from "../components/FilterModal";
@@ -7,16 +6,15 @@ import CustomiseColumnsModal from "../components/CustomiseColumnsModal";
 import "../css/Allsubscriber.css";
 import { FaUserPlus, FaFileExport, FaFilter, FaColumns } from "react-icons/fa";
 import { Button, Form, Col, Row } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom"; // 👈 Import useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllSubscribers = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // 👈 Initialize useLocation hook
+  const location = useLocation();
   const [filterStateFromDashboard, setFilterStateFromDashboard] = useState(null);
 
   const dummySubscribers = [
-    // ✅ keep your dummy subscribers here (unchanged)
     {
       id: "2025001",
       status: "Active",
@@ -366,18 +364,15 @@ const AllSubscribers = () => {
   const [modalFilters, setModalFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 👈 New useEffect hook to handle filters from dashboard clicks
   useEffect(() => {
-    // Check if there is state passed from the dashboard
     if (location.state && location.state.filter) {
       const { filter } = location.state;
-      setFilters(filter); // Apply the filter
-      setModalFilters({}); // Clear modal filters to avoid conflicts
-      setCurrentPage(1); // Reset to the first page
-      // Clear the state from the URL so it doesn't re-apply on refresh
+      setFilters(filter);
+      setModalFilters({});
+      setCurrentPage(1);
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [location.state]); // Re-run effect when location state changes
+  }, [location.state]);
 
   const allPossibleColumns = [
     "accountType", "franchiseName", "branch", "username", "name", "gstin",
@@ -428,7 +423,7 @@ const AllSubscribers = () => {
     const allFilters = { ...filters, ...modalFilters };
 
     for (const key in allFilters) {
-      if (allFilters[key] && allFilters[key] !== "all") { // 👈 Add check for "all" filter
+      if (allFilters[key] && allFilters[key] !== "all") {
         const subscriberValue = subscriber[key]?.toLowerCase();
         const filterValue = allFilters[key]?.toLowerCase();
 
@@ -522,14 +517,13 @@ const AllSubscribers = () => {
             <Button
               variant="outline-success"
               className="d-flex align-items-center"
-              onClick={() => navigate("/subscribers/add")}
+              onClick={() => navigate("/app/subscribers/add")} // Correct path
             >
               <FaUserPlus className="me-1" /> Add
             </Button>
           </Col>
         </Col>
       </div>
-
       <div className="card-footer d-flex justify-content-between align-items-center mx-2">
         <div className="text-muted me-3">
           Showing {startIndex + 1} to {Math.min(endIndex, totalResults)} of{" "}
@@ -556,7 +550,6 @@ const AllSubscribers = () => {
           </div>
         </div>
       </div>
-
       <div className="card m-1" style={{ height: "68vh", overflow: "hidden" }}>
         <div
           className="card-body"
@@ -579,13 +572,11 @@ const AllSubscribers = () => {
           />
         </div>
       </div>
-
       <FilterModal
         show={showFilterModal}
         handleClose={handleCloseFilterModal}
         handleFilter={handleModalFilter}
       />
-
       <CustomiseColumnsModal
         show={showCustomiseModal}
         handleClose={handleCloseCustomiseModal}
