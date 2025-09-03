@@ -36,14 +36,7 @@
 }
 
 /* Close button for the sidebar */
-.close-sidebar-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: transparent;
-  border: none;
-  color: #fff;
-}
+
 
 /* Sidebar Overlay for Mobile */
 .sidebar-overlay {
@@ -133,8 +126,8 @@ a[aria-expanded="true"] .transition-arrow {
 
 /* Sidebar logo styling */
 img {
-  width: 200px;
-  height: 70px;
+  width: 180px;
+  height: 55px;
   /* margin-bottom: 10%; */
 }/* Add spacing to icons */
 .sidebar a svg {

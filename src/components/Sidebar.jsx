@@ -236,14 +236,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         className={`sidebar bg-dark text-white ${isSidebarOpen ? "sidebar-open" : ""}`}
       >
         {/* Header */}
-        <div className="sidebar-header">
-          <button
-            className="btn btn-dark d-block d-md-none close-sidebar-btn"
-            onClick={toggleSidebar}
-          >
-            <FaTimes size={24} />
-          </button>
+        <div className="sidebar-header p-1">
           <img src={isplogo} alt="ISP Logo" />
+
           <img src={secondLogo} alt="Second Logo" />
         </div>
 

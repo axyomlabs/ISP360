@@ -128,7 +128,7 @@ const FilterModal = ({ show, handleClose, handleFilter }) => {
           Close
         </Button>
         <Button variant="primary" onClick={handleSubmit}>
-          Apply Filters
+          Apply 
         </Button>
       </Modal.Footer>
     </Modal>
