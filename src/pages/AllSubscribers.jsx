@@ -507,7 +507,7 @@ const AllSubscribers = () => {
               className="d-flex align-items-center"
               onClick={() => navigate("/subscribers/add")}
             >
-              <FaUserPlus className="me-1" /> Add Subscriber
+              <FaUserPlus className="me-1" /> Add
             </Button>
           </Col>
         </Col>
