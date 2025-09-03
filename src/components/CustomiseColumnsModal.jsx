@@ -41,22 +41,20 @@ const CustomiseColumnsModal = ({ show, handleClose, initialColumns, onSave }) =>
     handleClose();
   };
 
-const handleRestoreDefault = () => {
-  const defaultAvailable = [
-    "accountType", "franchiseName", "branch", "username", "name", "gstin",
-    "packageName", "subPackage", "mobile", "lastLogoff", "expiryDate",
-    "dateAdded", "ipAddress", "city", "node", "pop", "switch",
-    "installationAddress", "lastRenewal", "packagePrice", "customPrice",
-    "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"
-  ];
-  const defaultVisible = ["id", "status", "connStatus", "username", "name", "packageName", "mobile",]; // ✅ match keys from SubscriberTable
+  const handleRestoreDefault = () => {
+    const defaultAvailable = [
+      "accountType", "franchiseName", "branch", "username", "name", "gstin",
+      "packageName", "subPackage", "mobile", "lastLogoff", "expiryDate",
+      "dateAdded", "ipAddress", "city", "node", "pop", "switch",
+      "installationAddress", "lastRenewal", "packagePrice", "customPrice",
+      "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"
+    ];
+    const defaultVisible = ["id", "status", "connStatus", "username", "name", "packageName", "mobile",];
 
-  setAvailableColumns(defaultAvailable);
-  setVisibleColumns(defaultVisible);
-
-  // ✅ Immediately update parent so table re-renders
-  onSave(defaultVisible);
-};
+    setAvailableColumns(defaultAvailable);
+    setVisibleColumns(defaultVisible);
+    onSave(defaultVisible);
+  };
 
 
   return (
@@ -67,9 +65,9 @@ const handleRestoreDefault = () => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="d-flex justify-content-center align-items-center">
+        <div className="d-flex flex-column flex-md-row justify-content-center align-items-center">
           {/* Available Columns */}
-          <div className="me-4">
+          <div className="me-md-4 mb-3 mb-md-0 w-100">
             <h5>Available Columns</h5>
             <div
               className="list-group"
@@ -91,8 +89,8 @@ const handleRestoreDefault = () => {
           </div>
 
           {/* Buttons */}
-          <div className="d-flex flex-column">
-            <Button className="mb-2" onClick={handleMoveToVisible} disabled={!selectedAvailable}>
+          <div className="d-flex flex-row flex-md-column justify-content-center align-items-center my-3 my-md-0">
+            <Button className="mb-md-2 me-2 me-md-0" onClick={handleMoveToVisible} disabled={!selectedAvailable}>
               &gt;&gt;
             </Button>
             <Button onClick={handleMoveToAvailable} disabled={!selectedVisible}>
@@ -101,7 +99,7 @@ const handleRestoreDefault = () => {
           </div>
 
           {/* Visible Columns */}
-          <div className="ms-4">
+          <div className="ms-md-4 w-100">
             <h5>Visible Columns</h5>
             <div
               className="list-group"
@@ -124,12 +122,12 @@ const handleRestoreDefault = () => {
         </div>
       </Modal.Body>
 
-      <Modal.Footer className="d-flex justify-content-between">
+      <Modal.Footer className="d-flex justify-content-between flex-wrap">
         <Button variant="danger" onClick={handleRestoreDefault}>
           Restore Default
         </Button>
-        <div>
-          <Button variant="secondary" onClick={handleClose} className="me-2">
+        <div className="d-flex gap-2 mt-2 mt-sm-0">
+          <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
           <Button variant="primary" onClick={handleSave}>
