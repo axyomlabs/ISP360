@@ -1,3 +1,4 @@
+// src/components/Header.jsx
 import React, { useState } from "react";
 import {
   FaSearch,
@@ -5,6 +6,11 @@ import {
   FaUserCircle,
   FaBars,
   FaTimes,
+  FaGlobe,
+  FaStore,
+  FaLink,
+  FaWhatsapp,
+  FaTelegramPlane,
 } from "react-icons/fa";
 import { Dropdown } from "react-bootstrap";
 import isp360Logo from "../assets/isp360.png";
@@ -22,13 +28,13 @@ function Header({ toggleSidebar, isSidebarOpen }) {
 
   return (
     <div
-      className="main-header p-3 border-bottom bg-white" // Keep Bootstrap classes for spacing, etc.
+      className="main-header p-3 border-bottom bg-white"
       id="header"
     >
-      {/* Left Section: Logo & Sidebar Button */}
+      {/* Left Section */}
       <div className="header-section header-left">
         <button
-          className="btn btn-dark d-md-none me-2" // This class is fine for hiding on medium and up
+          className="btn btn-dark d-md-none me-2"
           onClick={toggleSidebar}
         >
           {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
@@ -39,10 +45,9 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       <div className="header-section header-center">
         <form
           onSubmit={handleSearch}
-          className="search-form d-flex align-items-center" // Add the responsive class here
+          className="search-form d-flex align-items-center"
         >
-          {/* Search icon is now conditionally rendered */}
-          <FaSearch className="search-icon " />
+          <FaSearch className="search-icon" />
           <input
             type="text"
             className="form-control rounded-pill search-input"
@@ -58,9 +63,8 @@ function Header({ toggleSidebar, isSidebarOpen }) {
             <Dropdown.Toggle
               variant="light"
               size="sm"
-              className="border-0 bg-transparent text-dark"
+              className={`border-0 bg-transparent text-dark ${isDropdownOpen ? 'dropdown-open' : ''}`}
             >
-              {/* The searchType text is now hidden on mobile */}
               <span className="d-none d-md-inline">{searchType}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu
@@ -78,12 +82,27 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       </div>
 
       {/* Right Section: Icons */}
-      <div className="header-section header-right d-flex justify-content-end">
-        <button className="btn me-2">
-          <FaBell />
+      <div className="header-section header-right d-flex justify-content-end align-items-center">
+        <button className="btn header-icon-btn" title="Language">
+          <FaGlobe className="header-icon" />
         </button>
-        <button className="btn rounded-circle">
-          <FaUserCircle />
+        <button className="btn header-icon-btn" title="Franchise">
+          <FaStore className="header-icon" />
+        </button>
+        <button className="btn header-icon-btn" title="Quick Links">
+          <FaLink className="header-icon" />
+        </button>
+        <button className="btn header-icon-btn" title="WhatsApp">
+          <FaWhatsapp className="header-icon" />
+        </button>
+        <button className="btn header-icon-btn" title="Telegram">
+          <FaTelegramPlane className="header-icon" />
+        </button>
+        <button className="btn header-icon-btn" title="Notifications">
+          <FaBell className="header-icon" />
+        </button>
+        <button className="btn header-icon-btn" title="Profile">
+          <FaUserCircle className="header-icon" />
         </button>
       </div>
     </div>

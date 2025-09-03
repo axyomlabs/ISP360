@@ -1,3 +1,5 @@
+/* src/css/Header.css */
+
 /* Main Header Container */
 .main-header {
   z-index: 1040;
@@ -5,7 +7,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; 
+  flex-wrap: nowrap; /* Prevent wrapping on one line for better control */
 }
 
 /* Mobile-first base styles for all sections */
@@ -22,18 +24,30 @@
 /* Mobile-first styling for the right section */
 .header-right {
   flex-shrink: 0;
+  display: flex; /* Ensure icons are side by side */
+  align-items: center;
+  gap: 8px; /* Adds space between the icon buttons */
 }
 
 /* Mobile-first styling for the search form */
+.header-center {
+  flex-grow: 1; /* Allow the center section to grow */
+  justify-content: center;
+  width: 100%; /* Important for mobile to take full width */
+  padding: 0 15px; /* Add some padding to prevent it from touching the edges */
+  order: 2; /* Change order to make it wrap below header-left and header-right */
+  margin-top: 10px;
+}
+
 .search-form {
   position: relative;
-  width: 100%; 
-  margin-top: 10px; 
+  display: flex;
+  align-items: center;
+  width: 100%;
   border: 1px solid #dee2e6;
   border-radius: 30px;
   background-color: #f8f9fa;
-  padding-left: 40px;
-  padding-right: 15px;
+  padding: 0 15px 0 40px; /* Adjust padding to make it a flex container */
 }
 
 .search-icon {
@@ -50,32 +64,65 @@
   width: 100%;
   height: 45px;
   padding: 0;
+  flex-grow: 1;
 }
 
 .search-dropdown {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative; /* Position relative for in-flow layout */
+  transform: none; /* Remove transform */
+  margin-left: auto; /* Push to the right */
 }
 
+.search-dropdown .dropdown-toggle {
+  padding: 0.5rem 0.75rem;
+}
+
+.search-dropdown .dropdown-toggle::after {
+  display: inline-block;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+  transition: transform 0.2s ease-in-out; /* Add transition for a smooth animation */
+}
+
+.search-dropdown .dropdown-toggle.dropdown-open::after {
+  transform: rotate(180deg);
+}
 /* Desktop-specific styles using a media query */
 @media (min-width: 768px) {
   /* On desktop, keep all items in a single row */
   .main-header {
     flex-wrap: nowrap;
   }
+  
+  .header-left {
+    order: 1;
+  }
 
-  /* Center the search form */
   .header-center {
-    flex-grow: 1; 
-    justify-content: center; 
+    flex-grow: 1;
+    justify-content: center;
+    order: 2;
+    padding: 0;
+    margin-top: 0;
   }
   
+  .header-right {
+    order: 3;
+  }
+
   /* Set a max-width on the search form for desktop to keep it from getting too wide */
   .search-form {
     max-width: 550px;
-    margin-top: 0; 
+    margin-top: 0;
+  }
+
+  .search-dropdown {
+    position: relative; /* Keep it relative */
+    right: initial;
   }
 
   /* Hide the sidebar toggle button on desktop */
