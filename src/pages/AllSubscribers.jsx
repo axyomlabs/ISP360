@@ -488,7 +488,7 @@ const AllSubscribers = () => {
             onClick={handleShowFilterModal}
             style={{ minHeight: "45px" }}
           >
-            <FaFilter className="p-0" /> Filter
+            <FaFilter className="p-0" /> 
           </Button>
           <Button variant="outline-dark" className="d-flex align-items-center">
             <FaFileExport className="me-1" /> Export
