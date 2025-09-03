@@ -5,30 +5,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; 
+  flex-wrap: wrap; /* allows stacking on small screens */
 }
 
-/* Mobile-first base styles for all sections */
+/* Section base styles */
 .header-section {
   display: flex;
   align-items: center;
 }
 
-/* Mobile-first styling for the left section */
-.header-left {
-  flex-shrink: 0;
+/* Logo */
+.header-logo {
+  height: 35px;
 }
 
-/* Mobile-first styling for the right section */
-.header-right {
-  flex-shrink: 0;
-}
-
-/* Mobile-first styling for the search form */
+/* Search Form - Mobile First */
 .search-form {
   position: relative;
-  width: 100%; 
-  margin-top: 10px; 
+  width: 100%;          /* full width on phones & tablets */
+  margin-top: 10px;
   border: 1px solid #dee2e6;
   border-radius: 30px;
   background-color: #f8f9fa;
@@ -52,6 +47,11 @@
   padding: 0;
 }
 
+.search-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .search-dropdown {
   position: absolute;
   right: 15px;
@@ -59,27 +59,25 @@
   transform: translateY(-50%);
 }
 
-/* Desktop-specific styles using a media query */
-@media (min-width: 768px) {
-  /* On desktop, keep all items in a single row */
+/* Desktop & Large Devices (≥992px) */
+@media (min-width: 992px) {
   .main-header {
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* keep items in one row */
   }
 
-  /* Center the search form */
   .header-center {
-    flex-grow: 1; 
-    justify-content: center; 
-  }
-  
-  /* Set a max-width on the search form for desktop to keep it from getting too wide */
-  .search-form {
-    max-width: 550px;
-    margin-top: 0; 
+    flex-grow: 1;
+    justify-content: center;
+    display: flex;
   }
 
-  /* Hide the sidebar toggle button on desktop */
-  .d-md-none {
+  .search-form {
+    max-width: 550px;   /* limit width */
+    margin-top: 0;
+  }
+
+  /* Hide sidebar toggle on desktop */
+  .d-lg-none {
     display: none !important;
   }
 }
