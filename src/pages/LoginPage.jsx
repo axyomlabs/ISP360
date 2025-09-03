@@ -15,7 +15,7 @@
     const navigate = useNavigate();
 
     // Dummy user credentials
-    const dummyUser = "user";
+    const dummyUser = "User";
     const dummyPassword = "123";
 
     const handleSubmit = (e) => {
