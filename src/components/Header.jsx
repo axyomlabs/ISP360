@@ -11,7 +11,7 @@ import { HiOutlineLanguage, HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { PiLinkSimple } from "react-icons/pi";
 import { TbBrandTelegram } from "react-icons/tb";
 import { Dropdown } from "react-bootstrap";
-import isplogo from "../assets/Logo.png";
+import isplogo from "../assets/isp360.png";
 import "../css/Header.css";
 
 function Header({ toggleSidebar, isSidebarOpen }) {
