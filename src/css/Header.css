@@ -43,6 +43,7 @@
     background-color: #f8f9fa;
     padding: 0 15px 0 40px;
     min-width: 0; /* important so it shrinks on small screens */
+    margin-left: 15%;
   }
 
   .search-icon {

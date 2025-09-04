@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import {
   FaSearch,
-  FaBell,
-  FaUserCircle,
+  FaRegBell,
+  FaRegUserCircle,
   FaBars,
   FaTimes,
-  FaGlobe, // Language
-  FaStore, // Franchise
-  FaLink, // Quick Links
-  FaWhatsapp, // WhatsApp
-  FaTelegramPlane, // Telegram
+  FaWhatsapp,
 } from "react-icons/fa";
+import { HiOutlineLanguage, HiOutlineBuildingOffice2 } from "react-icons/hi2";
+import { PiLinkSimple } from "react-icons/pi";
+import { TbBrandTelegram } from "react-icons/tb";
 import { Dropdown } from "react-bootstrap";
-import isp360Logo from "../assets/isp360.png";
+import isplogo from "../assets/Logo.png";
 import "../css/Header.css";
 
 function Header({ toggleSidebar, isSidebarOpen }) {
@@ -30,8 +29,9 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       className="main-header p-3 border-bottom bg-white d-flex flex-column flex-md-row justify-content-between align-items-center"
       id="header"
     >
-      {/* Sidebar Button + Search Bar in one row */}
-      <div className="header-section header-search-wrapper flex-grow-1 order-md-2 my-2 my-md-0">
+      {/* Sidebar Button + Logo + Search Bar in one row */}
+      <div className="header-section header-search-wrapper flex-grow-1 order-md-2 my-2 my-md-0 d-flex align-items-center">
+        {/* Sidebar toggle (mobile) */}
         <button
           className="btn btn-dark d-md-none me-2"
           onClick={toggleSidebar}
@@ -39,9 +39,19 @@ function Header({ toggleSidebar, isSidebarOpen }) {
           {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
         </button>
 
+        {/* ✅ Logo near search bar */}
+        <img
+          src={isplogo}
+          alt="ISP Logo"
+          className="me-3"
+          style={{ height: "45px", width: "200px", marginRight:"50%"}}
+        />
+
+        {/* Search Form */}
         <form
           onSubmit={handleSearch}
-          className="search-form d-flex align-items-center"
+          className="search-form d-flex align-items-cente flex-grow-1"
+          
         >
           <FaSearch className="search-icon" />
           <input
@@ -59,7 +69,9 @@ function Header({ toggleSidebar, isSidebarOpen }) {
             <Dropdown.Toggle
               variant="light"
               size="sm"
-              className={`border-0 bg-transparent text-dark ${isDropdownOpen ? "dropdown-open" : ""}`}
+              className={`border-0 bg-transparent text-dark ${
+                isDropdownOpen ? "dropdown-open" : ""
+              }`}
             >
               <span className="d-none d-md-inline">{searchType}</span>
             </Dropdown.Toggle>
@@ -80,25 +92,25 @@ function Header({ toggleSidebar, isSidebarOpen }) {
       {/* Right Section: Icons */}
       <div className="header-section header-right d-flex flex-row justify-content-center justify-content-md-end align-items-center order-md-3 mt-2 mt-md-0">
         <button className="btn header-icon-btn" title="Language">
-          <FaGlobe className="header-icon" />
+          <HiOutlineLanguage className="header-icon" />
         </button>
         <button className="btn header-icon-btn" title="Franchise">
-          <FaStore className="header-icon" />
+          <HiOutlineBuildingOffice2 className="header-icon" />
         </button>
         <button className="btn header-icon-btn" title="Quick Links">
-          <FaLink className="header-icon" />
+          <PiLinkSimple className="header-icon" />
         </button>
         <button className="btn header-icon-btn" title="WhatsApp">
           <FaWhatsapp className="header-icon" />
         </button>
         <button className="btn header-icon-btn" title="Telegram">
-          <FaTelegramPlane className="header-icon" />
+          <TbBrandTelegram className="header-icon " />
         </button>
         <button className="btn header-icon-btn" title="Notifications">
-          <FaBell className="header-icon" />
+          <FaRegBell className="header-icon" />
         </button>
         <button className="btn header-icon-btn" title="Profile">
-          <FaUserCircle className="header-icon" />
+          <FaRegUserCircle className="header-icon" />
         </button>
       </div>
     </div>
