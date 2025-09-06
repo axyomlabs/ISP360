@@ -4,7 +4,6 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 import {
-  FaNetworkWired,
   FaRegBuilding,
   FaRegComments,
   FaChartBar,
@@ -12,7 +11,12 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
-import { PiUsersThreeLight, PiHeartbeat, PiHeadset } from "react-icons/pi";
+import {
+  PiUsersThreeLight,
+  PiHeartbeat,
+  PiHeadset,
+  PiNetworkLight,
+} from "react-icons/pi";
 import { HiOutlineCog } from "react-icons/hi";
 import { LiaUserTieSolid } from "react-icons/lia";
 import { TbFileInvoice } from "react-icons/tb";
@@ -21,15 +25,21 @@ import { BsBoxSeam } from "react-icons/bs";
 import isplogo from "../assets/isp360dark.png";
 import "../css/Sidebar.css";
 
+//
+// ------------------- MENU ITEMS -------------------
+// Each menu item can be either:
+// - a simple link (Dashboard)
+// - a parent item with children (e.g., Clients, Network Management, etc.)
+//
 const menuItems = [
   { title: "Dashboard", icon: <AiOutlineHome />, link: "/app/dashboard" },
   {
-    title: "Clint",
+    title: "Clients",
     icon: <PiUsersThreeLight />,
     id: "subscribersMenu",
     children: [
-      { title: "All Subscribers", link: "/app/subscribers" },
-      { title: "Add Subscriber", link: "/app/subscribers/add" },
+      { title: "All Clients", link: "/app/subscribers" },
+      { title: "Add Clients", link: "/app/subscribers/add" },
       { title: "Plans & Packages", link: "/app/subscribers/plans" },
       { title: "Usage & Session Logs", link: "/app/subscribers/logs" },
       { title: "IPDR Logs", link: "/app/subscribers/ipdr" },
@@ -38,7 +48,7 @@ const menuItems = [
   },
   {
     title: "Network Management",
-    icon: <FaNetworkWired />,
+    icon: <PiNetworkLight />,
     id: "networkMenu",
     children: [
       { title: "NAS / BNG Status", link: "/app/network/nas" },
@@ -159,6 +169,12 @@ const menuItems = [
   },
 ];
 
+//
+// ------------------- SIDEBAR ITEM COMPONENT -------------------
+// Renders either:
+// - a direct link (leaf item)
+// - a parent menu with expandable submenu
+//
 const SidebarItem = ({
   item,
   isOpen,
@@ -170,11 +186,13 @@ const SidebarItem = ({
   onHoverOut,
 }) => {
   const location = useLocation();
+
+  // Highlight parent menu if any of its children is active
   const isParentActive = item.children?.some(
     (child) => location.pathname === child.link
   );
 
-  // Leaf item
+  // -------- Case 1: Simple link (no children) --------
   if (!item.children) {
     return (
       <NavLink
@@ -185,12 +203,14 @@ const SidebarItem = ({
           }`
         }
         onClick={() => {
-          toggleSidebar();
-          closeAll();
+          toggleSidebar(); // close sidebar on mobile
+          closeAll(); // close open submenus
         }}
+        // For collapsed mode: show flyout submenu on hover
         onMouseEnter={isCollapsed ? (e) => onHoverIn(null, e) : undefined}
         onMouseLeave={isCollapsed ? onHoverOut : undefined}
       >
+        {/* Empty span = spacing for arrow alignment */}
         <span style={{ width: 16 }} className="mt-3 mb-3" />
         {item.icon}
         <span className="ms-2">{item.title}</span>
@@ -198,29 +218,35 @@ const SidebarItem = ({
     );
   }
 
-  // Parent item
+  // -------- Case 2: Parent menu with children --------
   return (
     <div
       className="mb-3"
+      // In collapsed mode, hover triggers flyout submenu
       onMouseEnter={
         isCollapsed ? (e) => onHoverIn(item.id, e, item.title) : undefined
       }
       onMouseLeave={isCollapsed ? onHoverOut : undefined}
     >
+      {/* Parent menu clickable row */}
       <div
         className="sidebar-link d-flex align-items-center cursor-pointer"
+        // Only toggle submenu in expanded mode
         onClick={() => (!isCollapsed ? onToggle(item.id) : undefined)}
       >
-        <FaChevronDown
-          className={`transition-arrow me-2 ${
-            isOpen || isParentActive ? "rotate-down" : "rotate-right"
-          }`}
-        />
+        {/* Arrow for expandable items (hidden when collapsed) */}
+        {!isCollapsed && (
+          <FaChevronDown
+            className={`transition-arrow me-2 ${
+              isOpen || isParentActive ? "rotate-down" : "rotate-right"
+            }`}
+          />
+        )}
         {item.icon}
-        <span className="ms-2">{item.title}</span>
+        {!isCollapsed && <span className="ms-2">{item.title}</span>}
       </div>
 
-      {/* Inline submenu (only when not collapsed) */}
+      {/* Inline submenu (only visible when expanded & item is open/active) */}
       <div
         className={`submenu ps-4 mt-2 ${
           !isCollapsed && (isOpen || isParentActive) ? "d-block" : "d-none"
@@ -236,7 +262,7 @@ const SidebarItem = ({
                 isActive ? "active-link" : ""
               }`}
               onClick={() => {
-                toggleSidebar();
+                toggleSidebar(); // close sidebar on mobile
                 closeAll();
               }}
             >
@@ -249,11 +275,15 @@ const SidebarItem = ({
   );
 };
 
+//
+// ------------------- MAIN SIDEBAR COMPONENT -------------------
+// Handles collapsed/expanded state, flyout menus, and mobile overlay
+//
 const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
-  const [openMenu, setOpenMenu] = React.useState(null);
-  const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const [openMenu, setOpenMenu] = React.useState(null); // currently open menu id
+  const [isCollapsed, setIsCollapsed] = React.useState(false); // collapsed/expanded state
 
-  // Flyout submenu state
+  // Flyout submenu state (for collapsed mode)
   const [flyout, setFlyout] = React.useState({
     id: null,
     title: "",
@@ -261,10 +291,13 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   });
   const hideTimer = React.useRef(null);
 
+  // Toggle submenu open/close
   const handleToggle = (id) => setOpenMenu(openMenu === id ? null : id);
+
+  // Close all submenus
   const closeAll = () => setOpenMenu(null);
 
-  // Hover handlers for collapsed state
+  // -------- Hover handlers for collapsed mode --------
   const handleHoverIn = (id, e, title = "") => {
     if (!isCollapsed) return;
     if (hideTimer.current) clearTimeout(hideTimer.current);
@@ -276,35 +309,39 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
     if (!isCollapsed) return;
     hideTimer.current = setTimeout(() => {
       setFlyout({ id: null, title: "", top: 0 });
-    }, 180); // small delay so user can move to the flyout
+    }, 180); // delay allows moving into flyout without flicker
   };
 
-  const hoveredItem =
-    flyout.id && menuItems.find((m) => m.id === flyout.id);
+  const hoveredItem = flyout.id && menuItems.find((m) => m.id === flyout.id);
 
   return (
     <>
+      {/* Mobile overlay (click to close sidebar) */}
       {isSidebarOpen && (
         <div className="sidebar-overlay d-md-none" onClick={toggleSidebar} />
       )}
 
+      {/* Sidebar container */}
       <div
         className={`sidebar bg-white text-black ${
           isSidebarOpen ? "sidebar-open" : ""
         } ${isCollapsed ? "collapsed" : ""}`}
       >
+        {/* Sidebar Header with logo + collapse button */}
         <div className="sidebar-header p-2 d-flex align-items-center justify-content-between">
           <img src={isplogo} className="mb-2" alt="ISP Logo" />
-          {/* Collapse / Expand button */}
+
+          {/* Collapse button (hidden on phone screens) */}
           <button
-            className="collapse-btn ms-2"
+            className="collapse-btn ms-2 d-none d-md-inline"
             title={isCollapsed ? "Expand" : "Collapse"}
             onClick={() => setIsCollapsed((v) => !v)}
           >
-            {isCollapsed ? "»" : "«"}
+            {isCollapsed ? ">>" : "<<"}
           </button>
         </div>
 
+        {/* Sidebar Menu List */}
         <div className="sidebar-menu p-2" id="sidebarMenu">
           {menuItems.map((item, i) => (
             <SidebarItem
@@ -321,13 +358,16 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
           ))}
         </div>
 
+        {/* Sidebar Footer (Profile link) */}
         <div className="sidebar-footer">
           <Link
             to="/app/profile"
             className="sidebar-link d-flex align-items-center mb-3"
             onClick={toggleSidebar}
           >
-            <FaRegUserCircle className="me-2" /> My Profile
+            <FaRegUserCircle className="me-2" />
+            {/* Hide text when collapsed */}
+            {!isCollapsed && "My Profile"}
           </Link>
         </div>
       </div>
@@ -337,7 +377,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
         <div
           className="flyout-menu"
           style={{ top: Math.max(8, flyout.top), left: 70 }} // 70px = collapsed width
-          onMouseEnter={() => hideTimer.current && clearTimeout(hideTimer.current)}
+          onMouseEnter={() =>
+            hideTimer.current && clearTimeout(hideTimer.current)
+          }
           onMouseLeave={() => setFlyout({ id: null, title: "", top: 0 })}
         >
           <div className="flyout-title">{hoveredItem.title}</div>

@@ -353,7 +353,6 @@ const DISCOUNT_HEADERS = [
   "Type",
   "#",
 ];
-
 function Addsubscriber() {
   const [discountRows, setDiscountRows] = useState([]);
   const formRef = useRef(null); // <-- added

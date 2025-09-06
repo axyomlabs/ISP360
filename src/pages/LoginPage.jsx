@@ -55,7 +55,7 @@
             src={login_pic}
             alt="illustration"
             className="mt-4"
-            style={{ width: "630px", height: "auto" }}
+            style={{ width: "100%", height: "auto" }}
           />
         </div>
 
