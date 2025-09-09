@@ -4,13 +4,18 @@ html, body {
   overflow-x: hidden;
 }
 
+/* Adjust content so it clears the fixed header */
 .container-fluid {
   background-color: white;
   padding: 0 !important;
   margin: 0 !important;
   width: 100% !important;
   max-width: 100% !important;
+
+  /* 👇 Add this */
+  padding-top: 70px; /* match or slightly larger than your header height */
 }
+
 
 .row {
   margin-left: 0 !important;
@@ -95,7 +100,10 @@ html, body {
   border: none;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
 }
-
+.user-stat-card{
+  color: white;
+  
+}
 
 /* ========================================= */
 /* MOBILE-ONLY STYLES (will not affect desktop) */

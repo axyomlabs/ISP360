@@ -40,14 +40,14 @@
     const leadsData = [];
     const nasWiseData = [{ nas: "103.142.162.1", users: 58 }];
     const userStatsData = [
-      { label: "Total", value: 74, color: "#D6A99D" },
-      { label: "Active", value: 64, color: "#FBF3D5" },
-      { label: "Online", value: 59, color: "#D6DAC8" },
-      { label: "Expired", value: 0, color: "#9CAFAA" },
-      { label: "Pend. Actv", value: 0, color: "#9CAFAA" },
-      { label: "Suspended", value: 0, color: "#ECEEDF" },
-      { label: "On Hold", value: 2, color: "#37E4BC" },
-      { label: "Disconnected", value: 8, color: "#CFAB8D" },
+      { label: "Total", value: 74, color: "#3f2ab9ff" },
+      { label: "Active", value: 64, color: "#007f88ff" },
+      { label: "Online", value: 59, color: "#15a702ff" },
+      { label: "Expired", value: 0, color: "#868d6bff" },
+      { label: "Pend. Actv", value: 0, color: "#4d0057ff" },
+      { label: "Suspended", value: 0, color: "#9e0000ff" },
+      { label: "On Hold", value: 2, color: "#ff8928ff" },
+      { label: "Disconnected", value: 8, color: "#e60d0dff" },
     ];
 
     // 👈 New function to handle the card click
@@ -83,7 +83,7 @@
       <div className="container-fluid">
         <AnnouncementBar />
         <div className="row">
-          <div className="col-md-5">
+          <div className="col-md-5  ">
             {/* User Stats */}
             <div className="card mb-3">
               <div className="card-header">

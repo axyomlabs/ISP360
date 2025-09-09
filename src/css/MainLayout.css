@@ -1,39 +1,59 @@
-/* Main content container */
+/* -- Main Layout CSS (MainLayout.css) -- */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevent body scrollbar */
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* full screen */
+}
+
+/* Header fixed height */
+header {
+  height: auto; /* Allow header to size based on content */
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Wrapper below header */
+.content-wrapper {
+  display: flex;
+  flex: 1; /* Take up all remaining height */
+  overflow: hidden; /* Prevent double scrollbar */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  overflow-y: auto; /* sidebar scrolls if content > screen */
+  flex-shrink: 0;
+  transition: width 0.3s ease;
+  z-index: 1000;
+}
+
+/* Main content */
 .main-content-container {
-  height: 100vh;
-  overflow-y: auto;
-  transition: margin-left 0.3s ease; /* smooth animation */
+  flex: 1;
+  overflow-y: auto; /* only one scrollbar here */
+  transition: margin-left 0.3s ease;
 }
 
-/* Desktop behavior */
-@media (min-width: 768px) {
-  /* When sidebar is expanded */
-  .sidebar-open .main-content-container {
-    margin-left: 250px; /* full width sidebar */
-  }
-
-  /* When sidebar is collapsed */
-  .sidebar-collapsed .main-content-container {
-    margin-left: 70px; /* icon-only sidebar */
-  }
+/* Collapsed sidebar (managed by Layout.js adding a class to the container) */
+.sidebar-collapsed .sidebar {
+  width: 70px; /* New collapsed width */
 }
 
-/* Mobile behavior */
-@media (max-width: 767.98px) {
-  .main-content-container {
-    margin-left: 0; /* overlay sidebar on mobile */
-  }
-}
-
-/* Desktop behavior */
-@media (min-width: 768px) {
-  /* When sidebar is expanded */
-  .sidebar-expanded .main-content-container {
-    margin-left: 250px; /* full sidebar */
-  }
-
-  /* When sidebar is collapsed */
-  .sidebar-collapsed .main-content-container {
-    margin-left: 70px; /* icon-only sidebar */
-  }
-}
+/* No change here, sidebar is no longer pushing the content */
+/* .sidebar-collapsed .main-content-container {
+  margin-left: 70px;
+} */

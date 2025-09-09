@@ -5,32 +5,30 @@ import Header from "./Header";
 import "../css/MainLayout.css";
 
 const Layout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);   // mobile toggle
-  const [isCollapsed, setIsCollapsed] = useState(false);       // desktop collapse
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div
-      className={`layout-container ${
-        isSidebarOpen ? "sidebar-open" : ""
-      } ${isCollapsed ? "sidebar-collapsed" : "sidebar-expanded"}`}
-    >
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        onCollapseChange={setIsCollapsed}   // ✅ listen to collapse changes
-      />
-      <div className="flex-grow-1 bg-light main-content-container">
-        <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-        <main className="dashboard-content container-fluid p-3">
+    <div className={`layout-container ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
+      {/* Header is now outside the content-wrapper */}
+      <Header /> 
+      <div className="content-wrapper">
+        <Sidebar 
+          isSidebarOpen={isSidebarOpen} 
+          toggleSidebar={toggleSidebar} 
+          isCollapsed={isSidebarCollapsed} 
+          setIsCollapsed={setIsSidebarCollapsed} 
+        />
+        <div className="main-content-container">
           <Outlet />
-        </main>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Layout;
+export default Layout;  

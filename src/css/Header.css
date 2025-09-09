@@ -1,142 +1,161 @@
-  /* src/css/Header.css */
+/* Main Header Container */
+/* -- Header CSS (Header.css) -- */
+/* -- Header CSS (Header.css) -- */
+.main-header {
+  /* ... existing styles ... */
+  background: #fff;
+  flex-direction: column;
+  padding: 1rem 1rem 0 1rem;
+  
+  /* UPDATED: More intense box shadow */
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 18px rgba(0, 0, 0, 0.15); /* Increased blur and opacity */
+}
 
-  /* Main Header Container */
-  /* Main Header Container (MAKE IT STICKY) */
-  .main-header {
-    position: sticky;          /* was: relative */
-    top: 0;
-    z-index: 1050;             /* above page content */
-    background: #fff;          /* cover content underneath while scrolling */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Top Row within the header */
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Search form */
+.search-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  border: 1px solid #dee2e6;
+  border-radius: 30px;
+  background-color: #f8f9fa;
+  padding: 0 15px 0 40px;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  height: 45px;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Remove default focus outline from the input */
+.search-input:focus {
+  outline: none;
+}
+
+/* Use :focus-within on the search form container */
+.search-form:focus-within {
+  border-color: #007bff; /* Blue border color */
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Light blue glow */
+}
+
+/* Search dropdown */
+.search-dropdown {
+  margin-left: auto;
+}
+
+.search-dropdown .dropdown-toggle {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Custom focus style for the dropdown toggle to match the input */
+.search-dropdown .dropdown-toggle:focus {
+  outline: none;
+  box-shadow: none; /* We remove the shadow here so it doesn't duplicate the parent's shadow */
+}
+
+/* Right (icons) */
+.header-right {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header-icon-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.header-icon {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Breadcrumb Wrapper */
+.breadcrumb-wrapper {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* This is the key change to remove the margin */
+.breadcrumb-wrapper .breadcrumb {
+  background-color: transparent;
+  margin-bottom: 0 !important;
+}
+
+
+
+/* Default caret */
+.search-dropdown-toggle::after {
+  display: inline-block;
+  margin-left: 0.5em;
+  vertical-align: middle;
+  content: "";
+  border-top: 0.4em solid;
+  border-right: 0.4em solid transparent;
+  border-left: 0.4em solid transparent;
+  transition: transform 0.3s ease;
+}
+
+/* Rotate when dropdown is open */
+.search-dropdown-toggle.dropdown-open::after {
+  transform: rotate(180deg);
+  
+}
+
+
+/* Desktop layout */
+@media (min-width: 768px) {
+  .header-top-row {
     flex-wrap: nowrap;
   }
-
-
-  /* Sections */
-  .header-section {
-    display: flex;
-    align-items: center;
-  }
-
-  /* Left (sidebar toggle) */
-  .header-left {
+  
+  .header-top-row > div:first-child {
     flex-shrink: 0;
   }
-
-  /* Center (search) */
-  .header-center {
-    flex: 1;
-    display: flex;
-    align-items: center;
-  }
-
-  /* Search form */
+  
   .search-form {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex: 1; /* take full available width */
-    border: 1px solid #dee2e6;
-    border-radius: 30px;
-    background-color: #f8f9fa;
-    padding: 0 15px 0 40px;
-    min-width: 0; /* important so it shrinks on small screens */
+    max-width: 550px;
     margin-left: 15%;
+    margin-right: 15%;
   }
 
-  .search-icon {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-  }
-
-  .search-input {
-    border: none;
-    background: transparent;
-    width: 100%;
-    height: 45px;
-    padding: 0;
-    flex: 1;
-    min-width: 0;
-  }
-
-  /* Search dropdown */
-  .search-dropdown {
-    margin-left: auto;
-  }
-
-  .search-dropdown .dropdown-toggle {
-    padding: 0.5rem 0.75rem;
-  }
-
-  /* Right (icons) */
   .header-right {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
+    flex-wrap: nowrap;
+    gap: 15px;
   }
 
-  .header-icon-btn {
-    background: none;
-    border: none;
-    padding: 6px;
-    cursor: pointer;
+  .d-md-none {
+    display: none !important;
   }
-
-  .header-icon {
-    font-size: 1.2rem;
-    color: #333;
-  }
-
-  /* Desktop layout */
-  @media (min-width: 768px) {
-    .main-header {
-      flex-direction: row; /* Desktop: all in one row */
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .header-left {
-      order: 1;
-      margin-right: 10px;
-    }
-
-    .header-center {
-      order: 2;
-      justify-content: center;
-    }
-
-    .search-form {
-      max-width: 550px;
-    }
-
-    .header-right {
-      order: 3;
-      margin-top: 0;
-      justify-content: flex-end;
-      flex-wrap: nowrap;
-      gap: 15px;
-    }
-
-    .d-md-none {
-      display: none !important;
-    }
-  }
-  /* Wrapper for sidebar button + search */
-  .header-search-wrapper {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    width: 100%;
-  }
-
-  .header-search-wrapper .search-form {
-    flex: 1; /* search bar expands */
-    min-width: 0; /* allow shrinking */
-  }
+}

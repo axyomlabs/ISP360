@@ -1,7 +1,8 @@
 .announcement-bar-container {
   background-color: #ffffff;
   color: #4b1100;
-  padding: 8px 10px; /* This padding adds space inside the container */
+  /* padding: 8px 10px; This padding adds space inside the container */
+  padding-bottom: 5px;
   overflow: hidden; /* This is the most crucial fix; it hides any overflowing content */
   position: relative;
   width: 100%;

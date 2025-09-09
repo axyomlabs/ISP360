@@ -12,14 +12,22 @@
   .d-flex.flex-column.justify-content-center.align-items-center.bg-light {
     display: none !important;
   }
-  
+
   /* Make the right column full width */
   .col-md-8 {
     width: 100% !important;
   }
-  
+
   /* Make the form container full width on small screens */
   .w-70 {
     width: 90% !important;
   }
+}
+.top-left-img {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 2.5rem;   /* adjust size */
+  height: auto;
+  z-index: 1000; /* keeps it above other content */
 }
