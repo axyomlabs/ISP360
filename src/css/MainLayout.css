@@ -12,40 +12,44 @@ html {
   height: 100vh; /* full screen */
 }
 
-/* Header fixed height */
 header {
-  height: auto; /* Allow header to size based on content */
+  height: auto;
   background: #fff;
-  border-bottom: 1px solid #ddd;
   flex-shrink: 0;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
-/* Wrapper below header */
 .content-wrapper {
   display: flex;
   flex: 1; /* Take up all remaining height */
   overflow: hidden; /* Prevent double scrollbar */
+  /* No direct gap/margin here, let sidebar and main content manage their boundaries */
 }
 
 /* Sidebar */
 .sidebar {
-  width: 250px;
+  width: 250px; /* Default expanded width */
   background: #fff;
   border-right: 1px solid #ddd;
-  overflow-y: auto; /* sidebar scrolls if content > screen */
+  overflow-y: auto;
   flex-shrink: 0;
-  transition: width 0.3s ease;
-  z-index: 1000;
+  transition: width 0.3s ease, transform 0.3s ease;
+  z-index: 1001;
 }
 
 /* Main content */
 .main-content-container {
-  flex: 1;
-  overflow-y: auto; /* only one scrollbar here */
-  transition: margin-left 0.3s ease;
+  flex: 1; /* Take remaining space */
+  overflow-y: auto;
+  /* Remove any explicit margin-left here for default behavior */
+  /* Instead, we'll let the sidebar's width naturally push the content,
+     or we can use 'margin-left' for collapsed state on desktop. */
+  margin-left: 0; /* Ensure no default margin */
+  transition: margin-left 0.3s ease; /* For smooth transition on collapse/expand */
+ /* Add some padding to the content area */
+  background-color: #f8f9fa; /* Example: light background for main content */
 }
 
 /* Collapsed sidebar (managed by Layout.js adding a class to the container) */
@@ -53,7 +57,52 @@ header {
   width: 70px; /* New collapsed width */
 }
 
-/* No change here, sidebar is no longer pushing the content */
-/* .sidebar-collapsed .main-content-container {
-  margin-left: 70px;
-} */
+/* On larger screens (desktop), we want the main content to adjust its margin */
+@media (min-width: 768px) {
+  .main-content-container {
+    /* When sidebar is expanded, its width naturally pushes the content */
+    margin-left: 0; /* No explicit margin needed here */
+  }
+
+  .sidebar-collapsed .main-content-container {
+    /* When sidebar is collapsed, the main content might need to shift if sidebar is position: relative */
+    /* If sidebar is always position: relative/static, its width handles the push */
+    /* However, if your sidebar has position: fixed on desktop for some reason,
+       you'd need margin-left: 70px here.
+       Assuming it's a flexible box model, the sidebar's width change directly
+       affects content. */
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed; /* Fixed position for mobile */
+    left: 0;
+    top: 0;
+    height: 100vh;
+    transform: translateX(-100%); /* Hidden by default */
+    transition: transform 0.3s ease;
+    width: 250px; /* Ensure full width when open on mobile */
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0); /* Visible when open */
+  }
+
+  .main-content-container {
+    margin-left: 0; /* Always 0 on mobile, sidebar floats over */
+    width: 100%; /* Take full width */
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    cursor: pointer;
+  }
+}

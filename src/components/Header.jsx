@@ -16,6 +16,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import isplogo from "../assets/isp360dark.png";
 import "../css/Header.css";
 
+// Accept toggleSidebar and isSidebarOpen as props
 function Header({ toggleSidebar, isSidebarOpen }) {
   const [searchType, setSearchType] = useState("Username");
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,19 +45,18 @@ function Header({ toggleSidebar, isSidebarOpen }) {
         id="header"
       >
         {/* Top Row: Logo, Search Bar, and Icons */}
-        <div className="header-top-row d-flex justify-content-between align-items-center mb-2">
-          {/* Sidebar toggle (mobile) + Logo */}
+        <div className="header-top-row d-flex justify-content-between align-items-center m">
           {/* Sidebar toggle (mobile) + Logo */}
           <div className="d-flex align-items-center">
             <button
               className="btn btn-dark d-md-none me-2"
-              onClick={toggleSidebar}
+              onClick={toggleSidebar} // Use the passed toggleSidebar function
             >
-              {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+              {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />} {/* Change icon based on state */}
             </button>
 
             {/* Logo Image */}
-            <div className="me-3" style={{ height: "45px", width: "200px" }}>
+            <div className="me-3" style={{ height: "auto", width: "200px" }}>
               <img
                 src={isplogo}
                 alt="ISP Logo"
@@ -130,28 +130,29 @@ function Header({ toggleSidebar, isSidebarOpen }) {
         </div>
 
         {/* Bottom Row: Breadcrumb */}
-        <div className="breadcrumb-wrapper">
-          <Breadcrumb className="mb-0">
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/app/dashboard" }}>
-              <AiOutlineHome />
-            </Breadcrumb.Item>
-            {filteredPathnames.map((name, index) => {
-              const routeTo = `/${filteredPathnames
-                .slice(0, index + 1)
-                .join("/")}`;
-              const isLast = index === filteredPathnames.length - 1;
-              return (
-                <Breadcrumb.Item
-                  key={name}
-                  linkProps={{ to: routeTo }}
-                  active={isLast}
-                >
-                  {name.charAt(0).toUpperCase() + name.slice(1)}
-                </Breadcrumb.Item>
-              );
-            })}
-          </Breadcrumb>
-        </div>
+     {/* Bottom Row: Breadcrumb */}
+        <div className="breadcrumb-wrapper d-flex justify-content-center w-100 pb-2">
+          <Breadcrumb className="mb-0">
+            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/app/dashboard" }}>
+              <AiOutlineHome />
+            </Breadcrumb.Item>
+            {filteredPathnames.map((name, index) => {
+              const routeTo = `/${filteredPathnames
+                .slice(0, index + 1)
+                .join("/")}`;
+              const isLast = index === filteredPathnames.length - 1;
+              return (
+                <Breadcrumb.Item
+                  key={name}
+                  linkProps={{ to: routeTo }}
+                  active={isLast}
+                >
+                  {name.charAt(0).toUpperCase() + name.slice(1)}
+                </Breadcrumb.Item>
+              );
+            })}
+          </Breadcrumb>
+        </div>
       </div>
       {showMessage && (
         <div

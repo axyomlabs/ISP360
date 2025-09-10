@@ -2,6 +2,7 @@
 
 html, body {
   overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Adjust content so it clears the fixed header */

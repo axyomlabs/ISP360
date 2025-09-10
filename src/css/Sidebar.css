@@ -1,17 +1,17 @@
-  /* -- Sidebar CSS -- */
-  .sidebar {
-    width: 250px;
-    background-color: #fff !important;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, width 0.3s ease;
-    color: #000;
-    border-right: 1px solid #ddd;
-    overflow-y: auto;
-    z-index: 1000;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-  }
+/* -- Sidebar CSS -- */
+.sidebar {
+  width: 250px;
+  background-color: #fff !important;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, width 0.3s ease;
+  color: #000;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+  z-index: 1000;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
 /* Sidebar Links styling */
 .sidebar-link {
   display: flex;
@@ -31,221 +31,272 @@
   margin-right: 8px; /* Reduced margin */ /* Or use '0px' to remove it */
   color: #555;
 }
-  .sidebar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
+.sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
 
-  /* Sidebar Header (Logo area) */
-  .sidebar-header {
-    flex-shrink: 0;
-    padding: 15px 12px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-  }
+/* Sidebar Header (Logo area) */
+.sidebar-header {
+  flex-shrink: 0;
+  padding: 15px 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
 
-  .sidebar-header img {
-    max-width: 100%;
-    height: 45px;
-    object-fit: contain;
-  }
+.sidebar-header img {
+  max-width: 100%;
+  height: 45px;
+  object-fit: contain;
+}
 
-  /* Menu Items Container */
-  .sidebar-menu {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px 5px;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-  }
+/* Menu Items Container */
+.sidebar-menu {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 5px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
 
-  .sidebar-menu::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
+.sidebar-menu::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
 
-  /* Sidebar Footer (e.g., My Profile) */
-  .sidebar-footer {
-    flex-shrink: 0;
-    padding: 15px 12px;
-    border-top: 1px solid #eee;
-  }
+/* Sidebar Footer (e.g., My Profile) */
+.sidebar-footer {
+  flex-shrink: 0;
+  padding: 15px 12px;
+  border-top: 1px solid #eee;
+}
 
-  /* Links styling */
-  .sidebar-link {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px; /* Consistent padding for all links */
-    border-radius: 6px;
-    text-decoration: none;
-    color: #333;
-    font-size: 0.95rem;
-    transition: background 0.2s ease-in-out;
-    cursor: pointer;
-    margin-bottom: 8px; /* Add bottom margin for spacing between items */
-  }
+/* Links styling */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px; /* Consistent padding for all links */
+  border-radius: 6px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.95rem;
+  transition: background 0.2s ease-in-out;
+  cursor: pointer;
+  margin-bottom: 8px; /* Add bottom margin for spacing between items */
+}
 
-  .sidebar-link:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
+.sidebar-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
 
-  .sidebar-link svg {
-    min-width: 20px;
-    margin-right: 16px; /* Space between icon and text */
-    color: #555;
-  }
+.sidebar-link svg {
+  min-width: 20px;
+  margin-right: 16px; /* Space between icon and text */
+  color: #555;
+}
 
-  .sidebar-link span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.sidebar-link span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  /* Active link styling */
-  .active-link {
-    background-color: #dae3ec !important;
-    color: #000 !important;
-    font-weight: bold;
-  }
+/* Active link styling */
+.active-link {
+  background-color: #dae3ec !important;
+  color: #000 !important;
+  font-weight: bold;
+}
 
-  .active-link svg {
-    color: #000 !important;
-  }
+.active-link svg {
+  color: #000 !important;
+}
 
-  /* Submenu styling */
-  .submenu {
-    padding-left: 55px; /* Indent sublinks to align with main link text */
-    margin-top: 5px;
-    overflow: hidden;
-    border-left: none;
-  }
+/* Submenu styling */
+.submenu {
+  padding-left: 55px; /* Indent sublinks to align with main link text */
+  margin-top: 5px;
+  overflow: hidden;
+  border-left: none;
+}
 
-  /* Submenu styling */
-  .submenu .sidebar-sublink {
-    display: block;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    color: #444 !important;
-    border-radius: 4px;
-    transition: background 0.2s ease-in-out;
-    text-decoration: none; /* Add this line to remove underlines */
-  }
-  .submenu .sidebar-sublink:hover {
-    background-color: rgba(0, 0, 0, 0.08);
-  }
+/* Submenu styling */
+.submenu .sidebar-sublink {
+  display: block;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  color: #444 !important;
+  border-radius: 4px;
+  transition: background 0.2s ease-in-out;
+  text-decoration: none; /* Add this line to remove underlines */
+}
+.submenu .sidebar-sublink:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
 
-  /* Arrow rotation */
-  .transition-arrow {
-    transition: transform 0.3s ease;
-    margin-left: -5px; /* Adjust arrow position for better alignment */
-    font-size: 0.8rem;
-    margin-right: 18px; /* Push the arrow further from the icon */
-  }
-  .rotate-down {
-    transform: rotate(180deg);
-  }
-  .rotate-right {
-    transform: rotate(0deg);
-  }
+/* Arrow rotation */
+.transition-arrow {
+  transition: transform 0.3s ease;
+  margin-left: -5px; /* Adjust arrow position for better alignment */
+  font-size: 0.8rem;
+  margin-right: 18px; /* Push the arrow further from the icon */
+}
+.rotate-down {
+  transform: rotate(180deg);
+}
+.rotate-right {
+  transform: rotate(0deg);
+}
 
-  /* Collapsed Sidebar */
-  .sidebar.collapsed {
-    width: 70px;
-  }
-  /* Remove margins from sidebar icons */
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+  width: 70px;
+}
+/* Remove margins from sidebar icons */
 .sidebar-link svg,
 .sidebar.collapsed .sidebar-link svg {
   margin: 0;
 }
 
+/* Collapse button */
+.collapse-btn {
+  background: transparent;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 6px;
+}
 
-  /* Collapse button */
-  .collapse-btn {
-    background: transparent;
-    border: none;
-    color: #000;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 0 6px;
+.collapse-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Hide content in collapsed state */
+.sidebar.collapsed .sidebar-header img,
+.sidebar.collapsed .sidebar-link span,
+.sidebar.collapsed .sidebar-footer {
+  display: none;
+}
+
+/* Adjust link styling in collapsed state */
+.sidebar.collapsed .sidebar-link {
+  justify-content: flex-start;
+  padding: 14px 20px;
+}
+
+.sidebar.collapsed .sidebar-link svg {
+  margin-right: 12px;
+  font-size: 1.5rem;
+}
+
+/* Ensure the arrow is still visible when collapsed if needed, or hide it */
+.sidebar.collapsed .transition-arrow {
+  display: block; /* Or none if you don't want it to show */
+  margin-left: auto;
+}
+
+/* Flyout menu for collapsed state */
+.flyout-menu {
+  position: fixed;
+  background: #ffffff;
+  color: #0f0f0f;
+  border-radius: 6px;
+  padding: 10px 8px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  z-index: 3000;
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.flyout-menu::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.flyout-title {
+  font-weight: 600;
+  padding: 6px 10px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 6px;
+}
+
+.flyout-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.flyout-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000000;
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 4px;
+}
+
+.flyout-link:hover {
+  background: #dae3ec;
+  color: #080808;
+}
+
+.flyout-link.active {
+  background: #dae3ec;
+  color: #000000;
+}
+
+/* Ensure submenu items are still visible in flyout */
+.flyout-menu .submenu-link {
+  padding-left: 10px !important;
+}
+
+/* NEW CSS FOR MOBILE SIDEBAR OPENING */
+/* This is controlled by Layout.js adding 'sidebar-open' to the sidebar */
+.sidebar.sidebar-open {
+  transform: translateX(0); /* Make visible */
+}
+
+/* On mobile, the main content should not have a margin-left */
+/* This is handled by Layout.js not applying .sidebar-collapsed to the main content */
+
+/* Overlay for the sidebar when it's open on mobile */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999; /* Below the sidebar, but above content */
+  cursor: pointer;
+}
+
+/* Ensure sidebar is hidden by default on mobile and only appears when open */
+@media (max-width: 767px) { /* Adjust breakpoint as needed */
+  .sidebar {
+    position: fixed; /* Position it fixed for mobile */
+    left: 0;
+    top: 0;
+    height: 100vh;
+    transform: translateX(-100%); /* Hidden by default */
+    transition: transform 0.3s ease; /* Smooth transition for opening/closing */
   }
 
-  .collapse-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
+  /* When sidebar is opened via isSidebarOpen state */
+  .sidebar.sidebar-open {
+    transform: translateX(0);
   }
 
-  .sidebar.collapsed .sidebar-header img,
-  .sidebar.collapsed .sidebar-link span,
-  .sidebar.collapsed .sidebar-footer {
-    display: none;
+  /* Adjust main content when sidebar is open on mobile */
+  .main-content-container {
+    width: 100%; /* Take full width when sidebar is not open */
+    margin-left: 0; /* No margin */
   }
 
-  .sidebar.collapsed .sidebar-link {
-    justify-content: flex-start;
-    padding: 14px 20px;
-  }
-
-  .sidebar.collapsed .sidebar-link svg {
-    margin-right: 12px;
-    font-size: 1.5rem;
-  }
-
-  .sidebar.collapsed .transition-arrow {
-    display: block;
-    margin-left: auto;
-  }
-
-  /* Flyout menu for collapsed state */
-  .flyout-menu {
-    position: fixed;
-    background: #ffffff;
-    color: #0f0f0f;
-    border-radius: 6px;
-    padding: 10px 8px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-    z-index: 3000;
-    max-height: calc(100vh - 16px);
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-  }
-
-  .flyout-menu::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-
-  .flyout-title {
-    font-weight: 600;
-    padding: 6px 10px 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    margin-bottom: 6px;
-  }
-
-  .flyout-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .flyout-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #000000;
-    text-decoration: none;
-    padding: 8px 10px;
-    border-radius: 4px;
-  }
-
-  .flyout-link:hover {
-    background: #dae3ec;
-    color: #080808;
-  }
-
-  .flyout-link.active {
-    background: #dae3ec;
-    color: #000000;
-  }
-
-  /* Ensure submenu items are still visible in flyout */
-  .flyout-menu .submenu-link {
-    padding-left: 10px !important;
-  }
+  /* If sidebar is open and collapsed (this state might be less relevant on mobile, but for consistency) */
+  /* .sidebar-collapsed .sidebar {
+      width: 70px; 
+  } */
+}
