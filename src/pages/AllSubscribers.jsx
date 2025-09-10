@@ -12,7 +12,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const AllSubscribers = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [filterStateFromDashboard, setFilterStateFromDashboard] = useState(null);
+  const [filterStateFromDashboard, setFilterStateFromDashboard] =
+    useState(null);
 
   const dummySubscribers = [
     {
@@ -375,18 +376,48 @@ const AllSubscribers = () => {
   }, [location.state]);
 
   const allPossibleColumns = [
-    "accountType", "franchiseName", "branch", "username", "name", "gstin",
-    "packageName", "subPackage", "mobile", "lastLogoff", "expiryDate",
-    "dateAdded", "ipAddress", "city", "node", "pop", "switch",
-    "installationAddress", "lastRenewal", "packagePrice", "customPrice",
-    "currentBalance", "nasPortId", "latitude", "longitude", "MAC", "Email"
+    "accountType",
+    "franchiseName",
+    "branch",
+    "username",
+    "name",
+    "gstin",
+    "packageName",
+    "subPackage",
+    "mobile",
+    "lastLogoff",
+    "expiryDate",
+    "dateAdded",
+    "ipAddress",
+    "city",
+    "node",
+    "pop",
+    "switch",
+    "installationAddress",
+    "lastRenewal",
+    "packagePrice",
+    "customPrice",
+    "currentBalance",
+    "nasPortId",
+    "latitude",
+    "longitude",
+    "MAC",
+    "Email",
   ];
 
   const [visibleColumns, setVisibleColumns] = useState(() => {
     const saved = localStorage.getItem("visibleColumns");
     return saved
       ? JSON.parse(saved)
-      : ["id", "status", "connStatus", "username", "name", "packageName", "mobile"];
+      : [
+          "id",
+          "status",
+          "connStatus",
+          "username",
+          "name",
+          "packageName",
+          "mobile",
+        ];
   });
 
   useEffect(() => {
@@ -496,23 +527,23 @@ const AllSubscribers = () => {
         </Row>
         <Col className="d-flex justify-content-start gap-2">
           <Button
-            variant="outline-primary"
+            variant="outline-info"
             className="d-flex align-items-center"
-            onClick={handleShowFilterModal}
-            style={{ minHeight: "45px" }}
+            onClick={handleShowCustomiseModal}
           >
-            <FaFilter className="p-0" />
+            <FaColumns className="me-1" /> Customise Columns
           </Button>
           <Button variant="outline-dark" className="d-flex align-items-center">
             <FaFileExport className="me-1" /> Export
           </Button>
           <Col className="d-flex justify-content-end gap-2">
             <Button
-              variant="outline-info"
+              variant="outline-primary"
               className="d-flex align-items-center"
-              onClick={handleShowCustomiseModal}
+              onClick={handleShowFilterModal}
+              style={{ minHeight: "45px" }}
             >
-              <FaColumns className="me-1" /> Customise Columns
+              <FaFilter className="p-0" />
             </Button>
             <Button
               variant="outline-success"
@@ -581,7 +612,9 @@ const AllSubscribers = () => {
         show={showCustomiseModal}
         handleClose={handleCloseCustomiseModal}
         initialColumns={{
-          available: allPossibleColumns.filter((col) => !visibleColumns.includes(col)),
+          available: allPossibleColumns.filter(
+            (col) => !visibleColumns.includes(col)
+          ),
           visible: visibleColumns,
         }}
         onSave={handleSaveColumns}
