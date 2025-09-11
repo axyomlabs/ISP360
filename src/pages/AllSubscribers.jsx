@@ -552,7 +552,7 @@ const AllSubscribers = () => {
             <Button
               variant="outline-success"
               className="d-flex align-items-center"
-              onClick={() => navigate("/app/subscribers/add")} // Correct path
+              onClick={() => navigate("/app/clients/add")} // Correct path
             >
               <FaUserPlus className="me-1" /> Add
             </Button>
