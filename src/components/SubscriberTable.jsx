@@ -1,8 +1,6 @@
-// src/components/SubscriberTable.jsx
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { FaSort, FaLink, FaUnlink } from "react-icons/fa";
-import { BsCircleFill } from "react-icons/bs";
 import {
   DragDropContext,
   Droppable,
@@ -11,21 +9,12 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/SubscriberTable.css";
 
-// A key to identify our saved column order in local storage
-const LOCAL_STORAGE_KEY = "subscriberTableColumnOrder";
-
-const SubscriberTable = ({ subscribers, visibleColumns }) => {
-  // Initialize columns from local storage or use the default prop
-  const [columns, setColumns] = useState(() => {
-    const savedColumns = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return savedColumns ? JSON.parse(savedColumns) : visibleColumns;
-  });
+const SubscriberTable = ({
+  subscribers,
+  visibleColumns,
+  onColumnOrderChange,
+}) => {
   const [sortConfig, setSortConfig] = useState(null);
-
-  // Use useEffect to save the column order to local storage whenever it changes
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(columns));
-  }, [columns]);
 
   // Drag-to-scroll refs
   const scrollRef = useRef(null);
@@ -33,7 +22,7 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
   const startX = useRef(0);
   const scrollLeft = useRef(0);
 
-  // Drag-to-scroll logic
+  // Drag-to-scroll logic (unchanged)
   useEffect(() => {
     const slider = scrollRef.current;
     if (!slider) return;
@@ -76,11 +65,11 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
     };
   }, []);
 
-  // Column names mapping
+  // Column names mapping (unchanged)
   const columnMapping = {
     id: "Id",
     status: "Status",
-    connStatus: "Conn. Status",
+    connStatus: "Conn",
     accountType: "Account Type",
     franchiseName: "Franchise's Name",
     branch: "Branch",
@@ -117,7 +106,7 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
     "Wallet Credit": "Wallet Credit",
   };
 
-  // Sorting logic
+  // Sorting logic (unchanged)
   const sortedData = useMemo(() => {
     let sortableItems = [...subscribers];
     if (sortConfig !== null) {
@@ -146,52 +135,70 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
     setSortConfig({ key, direction });
   };
 
-  // Status colors
-  const statusColors = {
-    Active: "text-success",
-    Suspended: "text-secondary",
-    Pending: "text-warning",
-    Terminated: "text-danger",
+  // Status and connStatus logic (unchanged)
+  const renderCellContent = (subscriber, columnKey) => {
+    switch (columnKey) {
+      case "status":
+        const statusColors = {
+          Active: "text-success",
+          Suspended: "text-secondary",
+          Pending: "text-warning",
+          Terminated: "text-danger",
+        };
+        return (
+          <div className="d-flex justify-content-center">
+            <span className={statusColors[subscriber.status]}>
+              {subscriber.status}
+            </span>
+          </div>
+        );
+      case "connStatus":
+        return (
+          <div className="d-flex justify-content-center">
+            <span
+              className={`conn-status-icon ${
+                subscriber.connStatus === "Connected"
+                  ? "text-success"
+                  : "text-danger"
+              }`}
+              title={subscriber.connStatus}
+            >
+              {subscriber.connStatus === "Connected" ? <FaLink /> : <FaUnlink />}
+            </span>
+          </div>
+        );
+      default:
+        return subscriber[columnKey];
+    }
   };
-
-const renderCellContent = (subscriber, columnKey) => {
-  switch (columnKey) {
-    case "status":
-      return (
-        <div className="d-flex justify-content-center">
-          <span className={statusColors[subscriber.status]}>
-            {subscriber.status}
-          </span>
-        </div>
-      );
-    case "connStatus":
-      return (
-        <div className="d-flex justify-content-center">
-          <span
-            className={`conn-status-icon ${
-              subscriber.connStatus === "Connected"
-                ? "text-success"
-                : "text-danger"
-            }`}
-            title={subscriber.connStatus} // Tooltip shows text when hovering
-          >
-            {subscriber.connStatus === "Connected" ? <FaLink /> : <FaUnlink />}
-          </span>
-        </div>
-      );
-    default:
-      return subscriber[columnKey];
-  }
-};
-
 
   // Handle column drag reorder
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
-    const newCols = Array.from(columns);
+    const newCols = Array.from(visibleColumns);
     const [moved] = newCols.splice(result.source.index, 1);
     newCols.splice(result.destination.index, 0, moved);
-    setColumns(newCols);
+    onColumnOrderChange(newCols);
+  };
+
+  // Refined drag style logic to keep it near the cursor
+  const getDragStyle = (style, snapshot) => {
+    if (!snapshot.isDragging) {
+      // If not dragging, return the original styles without modification
+      return style;
+    }
+
+    // When dragging, the library provides positioning via `style` which uses
+    // fixed positioning and offsets. We augment this with visual cues.
+    return {
+      ...style,
+      userSelect: "none", // Prevent text selection while dragging
+      cursor: "grabbing", // Show grabbing cursor
+      opacity: 0.7, // Make the dragged item slightly transparent
+      // Ensure it stays within the scrollable container.
+      // The library usually handles this with its fixed positioning.
+      // If it's still detaching, it might be related to overflow issues.
+    };
   };
 
   return (
@@ -205,20 +212,25 @@ const renderCellContent = (subscriber, columnKey) => {
                 {...provided.droppableProps}
               >
                 <tr className="table-header">
-                  {columns.map((key, index) => (
+                  {visibleColumns.map((key, index) => (
                     <Draggable
                       key={key}
                       draggableId={key}
                       index={index}
                     >
-                      {(provided) => (
+                      {(provided, snapshot) => (
                         <th
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}
+                          {...provided.dragHandleProps} // Crucial for initiating drag
                           onClick={() => requestSort(key)}
                           style={{
+                            // This merge is critical:
+                            // 1. Apply the library's positioning styles first.
+                            // 2. Then apply our custom styles (opacity, cursor).
                             ...provided.draggableProps.style,
+                            ...getDragStyle(provided.draggableProps.style, snapshot),
+                            // Ensure cursor is always 'grab' when draggable
                             cursor: "grab",
                           }}
                         >
@@ -235,7 +247,7 @@ const renderCellContent = (subscriber, columnKey) => {
           <tbody>
             {sortedData.map((subscriber) => (
               <tr key={subscriber.id}>
-                {columns.map((key) => (
+                {visibleColumns.map((key) => (
                   <td key={key}>{renderCellContent(subscriber, key)}</td>
                 ))}
               </tr>

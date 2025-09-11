@@ -434,6 +434,10 @@ const AllSubscribers = () => {
     setVisibleColumns(newVisibleColumns);
     setShowCustomiseModal(false);
   };
+  
+  const handleColumnOrderChange = (newOrder) => {
+    setVisibleColumns(newOrder);
+  };
 
   const handleModalFilter = (newFilters) => {
     setModalFilters(newFilters);
@@ -592,6 +596,7 @@ const AllSubscribers = () => {
           <SubscriberTable
             subscribers={subscribersToShow}
             visibleColumns={visibleColumns}
+            onColumnOrderChange={handleColumnOrderChange}
           />
         </div>
         <div className="mx-2">
