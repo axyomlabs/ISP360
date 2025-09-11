@@ -3,11 +3,29 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { FaSort, FaLink, FaUnlink } from "react-icons/fa";
 import { BsCircleFill } from "react-icons/bs";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+} from "@hello-pangea/dnd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/SubscriberTable.css";
 
+// A key to identify our saved column order in local storage
+const LOCAL_STORAGE_KEY = "subscriberTableColumnOrder";
+
 const SubscriberTable = ({ subscribers, visibleColumns }) => {
+  // Initialize columns from local storage or use the default prop
+  const [columns, setColumns] = useState(() => {
+    const savedColumns = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return savedColumns ? JSON.parse(savedColumns) : visibleColumns;
+  });
   const [sortConfig, setSortConfig] = useState(null);
+
+  // Use useEffect to save the column order to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(columns));
+  }, [columns]);
 
   // Drag-to-scroll refs
   const scrollRef = useRef(null);
@@ -15,6 +33,7 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
   const startX = useRef(0);
   const scrollLeft = useRef(0);
 
+  // Drag-to-scroll logic
   useEffect(() => {
     const slider = scrollRef.current;
     if (!slider) return;
@@ -38,9 +57,9 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
 
     const handleMouseMove = (e) => {
       if (!isDown.current) return;
-      e.preventDefault(); // prevents text selection
+      e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX.current) * 1.5; // drag speed
+      const walk = (x - startX.current) * 1.5;
       slider.scrollLeft = scrollLeft.current - walk;
     };
 
@@ -57,6 +76,7 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
     };
   }, []);
 
+  // Column names mapping
   const columnMapping = {
     id: "Id",
     status: "Status",
@@ -97,6 +117,7 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
     "Wallet Credit": "Wallet Credit",
   };
 
+  // Sorting logic
   const sortedData = useMemo(() => {
     let sortableItems = [...subscribers];
     if (sortConfig !== null) {
@@ -125,6 +146,7 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
     setSortConfig({ key, direction });
   };
 
+  // Status colors
   const statusColors = {
     Active: "text-success",
     Suspended: "text-secondary",
@@ -132,62 +154,96 @@ const SubscriberTable = ({ subscribers, visibleColumns }) => {
     Terminated: "text-danger",
   };
 
-  const renderCellContent = (subscriber, columnKey) => {
-    switch (columnKey) {
-      case "status":
-        return (
-          <div className="d-flex justify-content-center">
-            <span
-              className={statusColors[subscriber.status]}
-              title={subscriber.status}
-            >
-              <BsCircleFill />
-            </span>
-          </div>
-        );
-      case "connStatus":
-        return (
-          <>
-            <span
-              className={`conn-status-icon p-1 ${
-                subscriber.connStatus === "Connected"
-                  ? "text-success"
-                  : "text-danger"
-              }`}
-            >
-              {subscriber.connStatus === "Connected" ? <FaLink /> : <FaUnlink />}
-            </span>
-            {subscriber.connStatus}
-          </>
-        );
-      default:
-        return subscriber[columnKey];
-    }
+const renderCellContent = (subscriber, columnKey) => {
+  switch (columnKey) {
+    case "status":
+      return (
+        <div className="d-flex justify-content-center">
+          <span className={statusColors[subscriber.status]}>
+            {subscriber.status}
+          </span>
+        </div>
+      );
+    case "connStatus":
+      return (
+        <div className="d-flex justify-content-center">
+          <span
+            className={`conn-status-icon ${
+              subscriber.connStatus === "Connected"
+                ? "text-success"
+                : "text-danger"
+            }`}
+            title={subscriber.connStatus} // Tooltip shows text when hovering
+          >
+            {subscriber.connStatus === "Connected" ? <FaLink /> : <FaUnlink />}
+          </span>
+        </div>
+      );
+    default:
+      return subscriber[columnKey];
+  }
+};
+
+
+  // Handle column drag reorder
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const newCols = Array.from(columns);
+    const [moved] = newCols.splice(result.source.index, 1);
+    newCols.splice(result.destination.index, 0, moved);
+    setColumns(newCols);
   };
 
   return (
-    <div ref={scrollRef} className="drag-scroll">
-      <Table hover className="subscriber-datatable">
-        <thead>
-          <tr className="table-header">
-            {visibleColumns.map((key) => (
-              <th key={key} onClick={() => requestSort(key)}>
-                {columnMapping[key] || key} <FaSort />
-              </th>
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <div ref={scrollRef} className="drag-scroll">
+        <Table hover className="subscriber-datatable">
+          <Droppable droppableId="columns" direction="horizontal">
+            {(provided) => (
+              <thead
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <tr className="table-header">
+                  {columns.map((key, index) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <th
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          onClick={() => requestSort(key)}
+                          style={{
+                            ...provided.draggableProps.style,
+                            cursor: "grab",
+                          }}
+                        >
+                          {columnMapping[key] || key} <FaSort />
+                        </th>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </tr>
+              </thead>
+            )}
+          </Droppable>
+          <tbody>
+            {sortedData.map((subscriber) => (
+              <tr key={subscriber.id}>
+                {columns.map((key) => (
+                  <td key={key}>{renderCellContent(subscriber, key)}</td>
+                ))}
+              </tr>
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedData.map((subscriber) => (
-            <tr key={subscriber.id}>
-              {visibleColumns.map((key) => (
-                <td key={key}>{renderCellContent(subscriber, key)}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>
+          </tbody>
+        </Table>
+      </div>
+    </DragDropContext>
   );
 };
 

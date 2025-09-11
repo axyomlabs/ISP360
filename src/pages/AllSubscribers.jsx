@@ -581,7 +581,7 @@ const AllSubscribers = () => {
           </div>
         </div>
       </div>
-      <div className="card m-1" style={{ height: "68vh", overflow: "hidden" }}>
+      <div className="card m-1" style={{ height: "63vh", overflow: "hidden" }}>
         <div
           className="card-body"
           style={{

@@ -353,9 +353,10 @@ const DISCOUNT_HEADERS = [
   "Type",
   "#",
 ];
+
 function Addsubscriber() {
   const [discountRows, setDiscountRows] = useState([]);
-  const formRef = useRef(null); // <-- added
+  const formRef = useRef(null);
 
   const handleAddRow = () => {
     setDiscountRows([
@@ -420,7 +421,12 @@ function Addsubscriber() {
         )}
 
         {f.type === "select" ? (
-          <select id={id} className="form-select" required={f.required}>
+          <select
+            id={id}
+            className="form-select"
+            required={f.required}
+            autoComplete="off"
+          >
             {(f.options || []).map((op, idx) => (
               <option key={idx}>{op}</option>
             ))}
@@ -432,6 +438,7 @@ function Addsubscriber() {
             rows={f.rows || 3}
             placeholder={f.placeholder || ""}
             required={f.required}
+            autoComplete="off"
           />
         ) : (
           <input
@@ -440,6 +447,13 @@ function Addsubscriber() {
             className="form-control"
             placeholder={f.placeholder || (f.label ? `Enter ${f.label}` : "")}
             required={f.required}
+            autoComplete={
+              f.key === "password"
+                ? "new-password"
+                : f.key === "username"
+                ? "off"
+                : "off"
+            }
           />
         )}
       </div>
@@ -447,23 +461,22 @@ function Addsubscriber() {
   };
 
   return (
-    <div className="container-fluid px-3  ">
-      <div className="card  no-hover-move m-2">
+    <div className="container-fluid px-3">
+      <div className="card no-hover-move m-2">
         <div className="card-header">
           <h4 className="mb-0">CAF Registration</h4>
         </div>
 
         <div className="card-body">
-          {/* <-- wrap inputs in a form so reset() works */}
-          <form ref={formRef}>
+          <form ref={formRef} autoComplete="off">
             {SECTIONS.map((section, sIdx) => (
               <div key={sIdx} className="mb-4">
                 <h5 className="mb-3">{section.title}</h5>
                 <div className="row g-3">{section.fields.map(renderField)}</div>
                 {section.title === "Upload Files" && (
-                  <p className="text-muted small mt-2 ">
-                    Note: Allowed Types (jpeg,jpg,png,gif,pdf), Max size of file :
-                    4MB
+                  <p className="text-muted small mt-2">
+                    Note: Allowed Types (jpeg,jpg,png,gif,pdf), Max size of file
+                    : 4MB
                   </p>
                 )}
                 <hr />
@@ -579,16 +592,15 @@ function Addsubscriber() {
             <div className="d-flex gap-2 mt-3">
               <Button
                 variant="warning"
-                onClick={() => formRef.current && formRef.current.reset()} // safe reset
+                onClick={() => formRef.current && formRef.current.reset()}
               >
                 Clear
               </Button>
-              <button type="button" className="btn btn-primary ">
+              <button type="button" className="btn btn-primary">
                 Submit
               </button>
             </div>
           </form>
-          {/* end form */}
         </div>
       </div>
     </div>
