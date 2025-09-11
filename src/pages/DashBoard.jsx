@@ -16,38 +16,102 @@ import "../css/Dashboard.css";
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
 
-// Helper function to generate a random date within the last 15 days
-const getRandomDate = (daysAgo) => {
-  const date = new Date();
-  date.setDate(date.getDate() - daysAgo);
-  return `${date.getDate()}-${date.toLocaleString('default', { month: 'short' }).slice(0, 3)}`;
-};
-
-// Helper function to generate dummy data for the last 15 days
-const generateDummyData = (key, max) => {
-  const data = [];
-  for (let i = 14; i >= 0; i--) {
-    const date = getRandomDate(i);
-    const value = Math.floor(Math.random() * max) + 1;
-    data.push({ date, [key]: value });
-  }
-  return data;
-};
-
-// Data sets for the charts
-const onlinePaymentData = generateDummyData("amount", 5000);
-const registrationData = [
-  ...generateDummyData("registrations", 100),
-  ...generateDummyData("activations", 80).map((item, index) => ({
-    ...item,
-    activations: item.activations > registrationData[index].registrations ? registrationData[index].registrations : item.activations,
-  })),
+// Your existing data
+const onlinePaymentData = [
+  { date: "21-Aug", amount: 1500 },
+  { date: "22-Aug", amount: 2000 },
+  { date: "23-Aug", amount: 1800 },
+  { date: "24-Aug", amount: 2500 },
+  { date: "25-Aug", amount: 2200 },
+  { date: "26-Aug", amount: 3000 },
+  { date: "27-Aug", amount: 2800 },
+  { date: "28-Aug", amount: 3500 },
+  { date: "29-Aug", amount: 3200 },
+  { date: "30-Aug", amount: 4000 },
+  { date: "31-Aug", amount: 3800 },
+  { date: "01-Sep", amount: 4500 },
+  { date: "02-Sep", amount: 4200 },
+  { date: "03-Sep", amount: 5000 },
+  { date: "04-Sep", amount: 4800 },
+  { date: "05-Sep", amount: 5500 },
 ];
-const paymentData = generateDummyData("amount", 7000);
-const complaintData = generateDummyData("complaints", 50);
-const leadsData = generateDummyData("leads", 30);
-const nasWiseData = [{ nas: "103.142.162.1", users: 58 }, { nas: "103.142.162.2", users: 45 }];
 
+const registrationData = [
+  { date: "21-Aug", registrations: 1, activations: 1 },
+  { date: "22-Aug", registrations: 2, activations: 2 },
+];
+
+const paymentData = [
+  { date: "13-Aug", amount: 2700 },
+  { date: "16-Aug", amount: 550 },
+  { date: "17-Aug", amount: 550 },
+  { date: "21-Aug", amount: 5900 },
+  { date: "22-Aug", amount: 575 },
+  { date: "23-Aug", amount: 1200 },
+  { date: "24-Aug", amount: 3000 },
+  { date: "25-Aug", amount: 450 },
+  { date: "26-Aug", amount: 800 },
+  { date: "27-Aug", amount: 1500 },
+  { date: "28-Aug", amount: 900 },
+  { date: "29-Aug", amount: 2100 },
+  { date: "30-Aug", amount: 650 },
+  { date: "31-Aug", amount: 1800 },
+  { date: "01-Sep", amount: 2500 },
+  { date: "02-Sep", amount: 1200 },
+  { date: "03-Sep", amount: 750 },
+  { date: "04-Sep", amount: 1900 },
+  { date: "05-Sep", amount: 2200 },
+  { date: "06-Sep", amount: 1100 },
+  { date: "07-Sep", amount: 1400 },
+  { date: "08-Sep", amount: 950 },
+  { date: "09-Sep", amount: 1700 },
+  { date: "10-Sep", amount: 2000 },
+];
+const complaintData = [
+  { date: "11-Aug", complaints: 1 },
+  { date: "12-Aug", complaints: 2 },
+  { date: "17-Aug", complaints: 3 },
+  { date: "21-Aug", complaints: 4 },
+  { date: "23-Aug", complaints: 5 },
+  { date: "24-Aug", complaints: 6 },
+  { date: "25-Aug", complaints: 7 },
+  { date: "26-Aug", complaints: 8 },
+  { date: "27-Aug", complaints: 9 },
+  { date: "28-Aug", complaints: 10 },
+  { date: "29-Aug", complaints: 11 },
+  { date: "30-Aug", complaints: 12 },
+  { date: "31-Aug", complaints: 13 },
+  { date: "01-Sep", complaints: 14 },
+  { date: "02-Sep", complaints: 15 },
+  { date: "03-Sep", complaints: 16 },
+  { date: "04-Sep", complaints: 17 },
+  { date: "05-Sep", complaints: 18 },
+  { date: "06-Sep", complaints: 19 },
+  { date: "07-Sep", complaints: 20 },
+  { date: "08-Sep", complaints: 21 },
+  { date: "09-Sep", complaints: 22 },
+  { date: "10-Sep", complaints: 23 },
+];
+
+const leadsData = [
+  { date: "21-Aug", leads: 5 },
+  { date: "22-Aug", leads: 8 },
+  { date: "23-Aug", leads: 12 },
+  { date: "24-Aug", leads: 10 },
+  { date: "25-Aug", leads: 7 },
+  { date: "26-Aug", leads: 9 },
+  { date: "27-Aug", leads: 15 },
+  { date: "28-Aug", leads: 11 },
+  { date: "29-Aug", leads: 14 },
+  { date: "30-Aug", leads: 18 },
+  { date: "31-Aug", leads: 16 },
+  { date: "01-Sep", leads: 20 },
+  { date: "02-Sep", leads: 13 },
+  { date: "03-Sep", leads: 17 },
+  { date: "04-Sep", leads: 19 },
+];
+
+const nasWiseData = [{ nas: "103.142.162.1", users: 58 }];
 const userStatsData = [
   { label: "Total", value: 74, color: "#3f2ab9ff" },
   { label: "Active", value: 64, color: "#007f88ff" },
@@ -94,36 +158,7 @@ const onlineAdminUsers = [
   },
 ];
 
-// New dummy data for the sidebar cards
-const sideBarData = {
-  today: {
-    registrations: 5,
-    activations: 4,
-    expiry: 2,
-    renewals: 3,
-    payments: "₹ 5500",
-    onlinePay: "₹ 2100",
-  },
-  yesterday: {
-    registrations: 7,
-    activations: 6,
-    expiry: 1,
-    renewals: 4,
-    payments: "₹ 7200",
-    onlinePay: "₹ 3500",
-  },
-  complaints: {
-    open: 10,
-    inProgress: 5,
-    resolved: 15,
-    closed: 8,
-  },
-  upcomingExpiry: {
-    tomorrow: 3,
-    next7Days: 12,
-  },
-};
-
+// Helper functions to get icon URLs
 const getDeviceIcon = (device) => {
   switch (device) {
     case "Windows 10":
@@ -135,7 +170,7 @@ const getDeviceIcon = (device) => {
     case "Linux":
       return "https://img.icons8.com/color/16/000000/linux.png";
     default:
-      return "https://img.icons8.com/ios/16/000000/device--v1.png";
+      return "https://img.icons8.com/ios/16/000000/device--v1.png"; // Generic icon
   }
 };
 
@@ -150,13 +185,14 @@ const getBrowserIcon = (browser) => {
     case "Brave":
       return "https://img.icons8.com/color/16/000000/brave-web-browser.png";
     default:
-      return "https://img.icons8.com/ios/16/000000/web.png";
+      return "https://img.icons8.com/ios/16/000000/web.png"; // Generic icon
   }
 };
 
 function Dashboard() {
   const navigate = useNavigate();
 
+  // Function to get the default date range (last 15 days)
   const getDefaultDateRange = () => {
     const today = new Date();
     const startDate = new Date();
@@ -167,25 +203,39 @@ function Dashboard() {
     };
   };
 
+  // State to hold the visibility of each filter
   const [showPaymentFilter, setShowPaymentFilter] = useState(false);
   const [showOnlinePaymentFilter, setShowOnlinePaymentFilter] = useState(false);
   const [showRegistrationFilter, setShowRegistrationFilter] = useState(false);
   const [showComplaintFilter, setShowComplaintFilter] = useState(false);
   const [showLeadsFilter, setShowLeadsFilter] = useState(false);
 
-  const [paymentDateRange, setPaymentDateRange] = useState(getDefaultDateRange());
-  const [onlinePaymentDateRange, setOnlinePaymentDateRange] = useState(getDefaultDateRange());
-  const [registrationDateRange, setRegistrationDateRange] = useState(getDefaultDateRange());
-  const [complaintDateRange, setComplaintDateRange] = useState(getDefaultDateRange());
+  // State to hold the currently selected dates in the filter inputs (not yet applied)
+  const [paymentDateRange, setPaymentDateRange] = useState(
+    getDefaultDateRange()
+  );
+  const [onlinePaymentDateRange, setOnlinePaymentDateRange] = useState(
+    getDefaultDateRange()
+  );
+  const [registrationDateRange, setRegistrationDateRange] = useState(
+    getDefaultDateRange()
+  );
+  const [complaintDateRange, setComplaintDateRange] = useState(
+    getDefaultDateRange()
+  );
   const [leadsDateRange, setLeadsDateRange] = useState(getDefaultDateRange());
 
+  // State to hold the filtered data for each chart
   const [filteredPaymentData, setFilteredPaymentData] = useState([]);
-  const [filteredOnlinePaymentData, setFilteredOnlinePaymentData] = useState([]);
+  const [filteredOnlinePaymentData, setFilteredOnlinePaymentData] = useState(
+    []
+  );
   const [filteredRegistrationData, setFilteredRegistrationData] = useState([]);
   const [filteredComplaintData, setFilteredComplaintData] = useState([]);
   const [filteredLeadsData, setFilteredLeadsData] = useState([]);
   const [filteredNasWiseData, setFilteredNasWiseData] = useState(nasWiseData);
 
+  // Helper function to filter data based on a given date range
   const filterData = (data, dateRange) => {
     const fromDate = new Date(dateRange.from);
     const toDate = new Date(dateRange.to);
@@ -204,6 +254,7 @@ function Dashboard() {
     });
   };
 
+  // Handlers for the "Apply" button
   const handleApplyFilter = (chartName) => {
     let dateRangeToApply;
     let originalData;
@@ -213,44 +264,51 @@ function Dashboard() {
         dateRangeToApply = paymentDateRange;
         originalData = paymentData;
         setFilteredPaymentData(filterData(originalData, dateRangeToApply));
-        setShowPaymentFilter(false);
+        setShowPaymentFilter(false); // Hide the filter
         break;
       case "onlinePayment":
         dateRangeToApply = onlinePaymentDateRange;
         originalData = onlinePaymentData;
-        setFilteredOnlinePaymentData(filterData(originalData, dateRangeToApply));
-        setShowOnlinePaymentFilter(false);
+        setFilteredOnlinePaymentData(
+          filterData(originalData, dateRangeToApply)
+        );
+        setShowOnlinePaymentFilter(false); // Hide the filter
         break;
       case "registration":
         dateRangeToApply = registrationDateRange;
         originalData = registrationData;
         setFilteredRegistrationData(filterData(originalData, dateRangeToApply));
-        setShowRegistrationFilter(false);
+        setShowRegistrationFilter(false); // Hide the filter
         break;
       case "complaint":
         dateRangeToApply = complaintDateRange;
         originalData = complaintData;
         setFilteredComplaintData(filterData(originalData, dateRangeToApply));
-        setShowComplaintFilter(false);
+        setShowComplaintFilter(false); // Hide the filter
         break;
       case "leads":
         dateRangeToApply = leadsDateRange;
         originalData = leadsData;
         setFilteredLeadsData(filterData(originalData, dateRangeToApply));
-        setShowLeadsFilter(false);
+        setShowLeadsFilter(false); // Hide the filter
         break;
       default:
         break;
     }
   };
 
+  // Initial filtering for the charts when the component mounts
   useEffect(() => {
     setFilteredPaymentData(filterData(paymentData, getDefaultDateRange()));
-    setFilteredOnlinePaymentData(filterData(onlinePaymentData, getDefaultDateRange()));
-    setFilteredRegistrationData(filterData(registrationData, getDefaultDateRange()));
+    setFilteredOnlinePaymentData(
+      filterData(onlinePaymentData, getDefaultDateRange())
+    );
+    setFilteredRegistrationData(
+      filterData(registrationData, getDefaultDateRange())
+    );
     setFilteredComplaintData(filterData(complaintData, getDefaultDateRange()));
     setFilteredLeadsData(filterData(leadsData, getDefaultDateRange()));
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   const handleStatClick = (label) => {
     navigate(`/user-stats?status=${label}`);
@@ -270,23 +328,76 @@ function Dashboard() {
 
     switch (chartType) {
       case "payment":
-        bars.push(<Bar key="payment" dataKey="amount" fill="#28a745" barSize={40}><LabelList dataKey="amount" position="top" dy={-5} fontSize={13} /></Bar>);
+        bars.push(
+          <Bar key="payment" dataKey="amount" fill="#28a745" barSize={40}>
+            <LabelList dataKey="amount" position="top" dy={-5} fontSize={13} />
+          </Bar>
+        );
         break;
       case "onlinePayment":
-        bars.push(<Bar key="onlinePayment" dataKey="amount" fill="#f39c12" barSize={40}><LabelList dataKey="amount" position="top" dy={-5} fontSize={13} /></Bar>);
+        bars.push(
+          <Bar key="onlinePayment" dataKey="amount" fill="#f39c12" barSize={40}>
+            <LabelList dataKey="amount" position="top" dy={-5} fontSize={13} />
+          </Bar>
+        );
         break;
       case "complaint":
-        bars.push(<Bar key="complaint" dataKey="complaints" fill="#e74c3c" barSize={40}><LabelList dataKey="complaints" position="top" dy={-5} fontSize={13} /></Bar>);
+        bars.push(
+          <Bar key="complaint" dataKey="complaints" fill="#e74c3c" barSize={40}>
+            <LabelList
+              dataKey="complaints"
+              position="top"
+              dy={-5}
+              fontSize={13}
+            />
+          </Bar>
+        );
         break;
       case "registration":
-        bars.push(<Bar key="registrations" dataKey="registrations" fill="#BBDCE5" barSize={40}><LabelList dataKey="registrations" position="top" dy={-5} fontSize={13} /></Bar>);
-        bars.push(<Bar key="activations" dataKey="activations" fill="#9CAFAA" barSize={40}><LabelList dataKey="activations" position="top" dy={-5} fontSize={13} /></Bar>);
+        bars.push(
+          <Bar
+            key="registrations"
+            dataKey="registrations"
+            fill="#BBDCE5"
+            barSize={40}
+          >
+            <LabelList
+              dataKey="registrations"
+              position="top"
+              dy={-5}
+              fontSize={13}
+            />
+          </Bar>
+        );
+        bars.push(
+          <Bar
+            key="activations"
+            dataKey="activations"
+            fill="#9CAFAA"
+            barSize={40}
+          >
+            <LabelList
+              dataKey="activations"
+              position="top"
+              dy={-5}
+              fontSize={13}
+            />
+          </Bar>
+        );
         break;
       case "leads":
-        bars.push(<Bar key="leads" dataKey="leads" fill="#9b59b6" barSize={40}><LabelList dataKey="leads" position="top" dy={-5} fontSize={13} /></Bar>);
+        bars.push(
+          <Bar key="leads" dataKey="leads" fill="#9b59b6" barSize={40}>
+            <LabelList dataKey="leads" position="top" dy={-5} fontSize={13} />
+          </Bar>
+        );
         break;
       case "nasWise":
-        bars.push(<Bar key="nasWise" dataKey="users" fill="#CFAB8D" barSize={60}><LabelList dataKey="users" position="top" dy={-10} fontSize={13} /></Bar>);
+        bars.push(
+          <Bar key="nasWise" dataKey="users" fill="#CFAB8D" barSize={60}>
+            <LabelList dataKey="users" position="top" dy={-10} fontSize={13} />
+          </Bar>
+        );
         break;
       default:
         return null;
@@ -315,10 +426,12 @@ function Dashboard() {
 
       <div className="row">
         <div className="col-md-5">
+          {/* User Stats Card (unchanged) */}
           <div className="card mb-3">
             <UserStatsDashboard />
           </div>
 
+          {/* Payment Stats Card */}
           <div className="card mb-3">
             <div className="card-header d-flex justify-content-between align-items-center">
               <strong>Payment Stats</strong>
@@ -346,6 +459,7 @@ function Dashboard() {
                       }
                     />
                   </div>
+
                   <div className="d-flex align-items-center gap-2 flex-grow-1">
                     <label className="mb-0">To:</label>
                     <input
@@ -360,6 +474,7 @@ function Dashboard() {
                       }
                     />
                   </div>
+
                   <button
                     className="btn btn-sm btn-primary"
                     onClick={() => handleApplyFilter("payment")}
@@ -374,12 +489,15 @@ function Dashboard() {
             </div>
           </div>
 
+          {/* Online Payments Stats Card */}
           <div className="card mb-3">
             <div className="card-header d-flex justify-content-between align-items-center">
               <strong>Online Payments Stats</strong>
               <button
                 className="btn btn-sm btn-outline-secondary"
-                onClick={() => setShowOnlinePaymentFilter(!showOnlinePaymentFilter)}
+                onClick={() =>
+                  setShowOnlinePaymentFilter(!showOnlinePaymentFilter)
+                }
               >
                 <BiFilterAlt className="me-1" /> Filter
               </button>
@@ -429,12 +547,15 @@ function Dashboard() {
             </div>
           </div>
 
+          {/* Registrations & Activations Card */}
           <div className="card mb-3">
             <div className="card-header d-flex justify-content-between align-items-center">
               <strong>Registrations & Activations</strong>
               <button
                 className="btn btn-sm btn-outline-secondary"
-                onClick={() => setShowRegistrationFilter(!showRegistrationFilter)}
+                onClick={() =>
+                  setShowRegistrationFilter(!showRegistrationFilter)
+                }
               >
                 <BiFilterAlt className="me-1" /> Filter
               </button>
@@ -486,6 +607,7 @@ function Dashboard() {
         </div>
 
         <div className="col-md-5">
+          {/* Online Admin Users Card (updated) */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Online Admin Users</strong>
@@ -495,6 +617,7 @@ function Dashboard() {
                 <strong>Total Online Admin / Staff Users Found :</strong>{" "}
                 {onlineAdminUsers.length}
               </p>
+
               <table className="table table-sm mb-0">
                 <tbody>
                   {onlineAdminUsers.map((user, index) => (
@@ -534,6 +657,7 @@ function Dashboard() {
             </div>
           </div>
 
+          {/* Complaints Stats Card */}
           <div className="card mb-3">
             <div className="card-header d-flex justify-content-between align-items-center">
               <strong>Complaints Stats</strong>
@@ -589,6 +713,7 @@ function Dashboard() {
             </div>
           </div>
 
+          {/* Leads Stats Card */}
           <div className="card mb-3">
             <div className="card-header d-flex justify-content-between align-items-center">
               <strong>Leads Stats</strong>
@@ -644,6 +769,7 @@ function Dashboard() {
             </div>
           </div>
 
+          {/* Nas wise Current Online Users Card (no change) */}
           <div className="card mb-3">
             <div className="card-header d-flex justify-content-between align-items-center">
               <strong>Nas wise Current Online Users</strong>
@@ -654,91 +780,52 @@ function Dashboard() {
           </div>
         </div>
 
+        {/* The two small columns on the right (no change) */}
         <div className="col-md-2">
-          {/* Today Card */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Today</strong>
             </div>
             <div className="card-body">
-              <p>
-                <strong>Registrations:</strong> {sideBarData.today.registrations}
-              </p>
-              <p>
-                <strong>Activations:</strong> {sideBarData.today.activations}
-              </p>
-              <p>
-                <strong>Expiry:</strong> {sideBarData.today.expiry}
-              </p>
-              <p>
-                <strong>Renewals:</strong> {sideBarData.today.renewals}
-              </p>
-              <p>
-                <strong>Payments:</strong> {sideBarData.today.payments}
-              </p>
-              <p>
-                <strong>Online Pay:</strong> {sideBarData.today.onlinePay}
-              </p>
+              <p>Registrations</p>
+              <p>Activations</p>
+              <p>Expiry: </p>
+              <p>Renewals</p>
+              <p>Payments </p>
+              <p>Online Pay</p>
             </div>
           </div>
-          {/* Complaints Card */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Complaints</strong>
             </div>
             <div className="card-body">
-              <p>
-                <strong>Open:</strong> {sideBarData.complaints.open}
-              </p>
-              <p>
-                <strong>In Progress:</strong> {sideBarData.complaints.inProgress}
-              </p>
-              <p>
-                <strong>Resolved:</strong> {sideBarData.complaints.resolved}
-              </p>
-              <p>
-                <strong>Closed:</strong> {sideBarData.complaints.closed}
-              </p>
+              <p>Open</p>
+              <p>In Progres</p>
+              <p>Resolved</p>
+              <p>Closed</p>
             </div>
           </div>
-          {/* Yesterday Card */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Yesterday</strong>
             </div>
             <div className="card-body">
-              <p>
-                <strong>Registrations:</strong> {sideBarData.yesterday.registrations}
-              </p>
-              <p>
-                <strong>Activations:</strong> {sideBarData.yesterday.activations}
-              </p>
-              <p>
-                <strong>Expiry:</strong> {sideBarData.yesterday.expiry}
-              </p>
-              <p>
-                <strong>Renewals:</strong> {sideBarData.yesterday.renewals}
-              </p>
-              <p>
-                <strong>Payments:</strong> {sideBarData.yesterday.payments}
-              </p>
-              <p>
-                <strong>Online Pay:</strong> {sideBarData.yesterday.onlinePay}
-              </p>
+              <p>Registrations</p>
+              <p>Activations</p>
+              <p>Expiry</p>
+              <p>Renewals</p>
+              <p>Payments</p>
+              <p>Online Pay</p>
             </div>
           </div>
-          {/* Upcoming Expiry Card */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Upcoming Expiry</strong>
             </div>
             <div className="card-body">
-              <p>
-                <strong>Tomorrow:</strong> {sideBarData.upcomingExpiry.tomorrow}
-              </p>
-              <p>
-                <strong>Next 7 Days:</strong> {sideBarData.upcomingExpiry.next7Days}
-              </p>
+              <p>Tomorrow</p>
+              <p>Next 7 Days</p>
             </div>
           </div>
         </div>
