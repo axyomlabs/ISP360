@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import UserStatsDashboard from "../components/UserStatsDashboard";
 import {
   BarChart,
   Bar,
@@ -324,28 +325,7 @@ function Dashboard() {
         <div className="col-md-5">
           {/* User Stats Card (unchanged) */}
           <div className="card mb-3">
-            <div className="card-header">
-              <strong>User Stats</strong>
-            </div>
-            <div className="card-body">
-              <div className="row g-2">
-                {userStatsData.map((stat, i) => (
-                  <div key={i} className="col-6 col-md-3">
-                    <button
-                      className="user-stat-card card text-center d-flex align-items-center justify-content-center flex-column w-100 h-100 p-2 border-0"
-                      style={{
-                        background: stat.color,
-                        borderRadius: "8px",
-                      }}
-                      onClick={() => handleStatClick(stat.label)}
-                    >
-                      <h4 className="mb-0">{stat.value}</h4>
-                      <small>{stat.label}</small>
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <UserStatsDashboard/>
           </div>
 
           {/* Payment Stats Card */}
