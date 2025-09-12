@@ -17,21 +17,17 @@
   }
 
   /* src/css/SubscriberTable.css */
+/* src/css/SubscriberTable.css */
 
-  .subscriber-datatable th,
-  .subscriber-datatable td {
-    padding: 0.75rem 1rem; /* Adjust these values for your desired spacing */
-    vertical-align: middle;
-    border-bottom: 1px solid #dee2e6;
-    text-align: left; /* Default text alignment for most columns */
-    white-space: nowrap;
-  }
+.subscriber-datatable th,
+.subscriber-datatable td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+  text-align: left; /* This aligns content to the left */
+  white-space: nowrap;
+}
 
-  /* You might have specific overrides for the Status column, ensure they're correct */
-  .subscriber-datatable td:nth-child(2),
-  .subscriber-datatable th:nth-child(2) {
-    text-align: center; /* This centers the Status column */
-  }
 
   /* Ensure the drag-scroll div doesn't add unwanted margin/padding */
   .drag-scroll {
@@ -45,7 +41,7 @@
     cursor: grabbing;
   }
   .subscriber-datatable th {
-    font-weight: 600;
+    /* font-weight: 600; */
     cursor: pointer;
   }
 
@@ -76,10 +72,7 @@
   .conn-status-icon.text-danger { color: #dc3545; }
 
   /* Center align the status column */
-  .subscriber-datatable td:nth-child(2),
-  .subscriber-datatable th:nth-child(2) {
-    text-align: center;
-  }
+
 
   /* Drag scroll wrapper */
   .table-wrapper {
@@ -103,14 +96,6 @@
     min-width: 1200px; /* force horizontal scroll */
   }
 
-  .subscriber-datatable th,
-  .subscriber-datatable td {
-    padding: 15px; /*same padding as before */
-    vertical-align: middle;
-    border-bottom: 1px solid #dee2e6;
-    text-align: left;
-    white-space: nowrap;
-  }
 
   .subscriber-datatable th {
     /* font-weight: 600; */

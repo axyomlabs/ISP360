@@ -46,7 +46,7 @@ const menuItems = [
     ],
   },
   {
-    title: "Network Management",
+    title: "Network Mgmt",
     icon: <PiNetworkLight />,
     id: "networkMenu",
     children: [
@@ -201,7 +201,7 @@ const menuItems = [
     ],
   },
   {
-    title: "Franchise Management",
+    title: "Franchise Mgmt",
     icon: <FaRegBuilding />,
     id: "franchiseMenu",
     children: [

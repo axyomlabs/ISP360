@@ -146,7 +146,7 @@ const SubscriberTable = ({
           Terminated: "text-danger",
         };
         return (
-          <div className="d-flex justify-content-center">
+          <div className="d-flex ">
             <span className={statusColors[subscriber.status]}>
               {subscriber.status}
             </span>
@@ -154,7 +154,7 @@ const SubscriberTable = ({
         );
       case "connStatus":
         return (
-          <div className="d-flex justify-content-center">
+          <div className="d-flex">
             <span
               className={`conn-status-icon ${
                 subscriber.connStatus === "Connected"

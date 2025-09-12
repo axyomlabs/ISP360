@@ -360,7 +360,7 @@ const AllSubscribers = () => {
 
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showCustomiseModal, setShowCustomiseModal] = useState(false);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(50);
   const [filters, setFilters] = useState({});
   const [modalFilters, setModalFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -434,7 +434,7 @@ const AllSubscribers = () => {
     setVisibleColumns(newVisibleColumns);
     setShowCustomiseModal(false);
   };
-  
+
   const handleColumnOrderChange = (newOrder) => {
     setVisibleColumns(newOrder);
   };
@@ -484,7 +484,7 @@ const AllSubscribers = () => {
 
   return (
     <div className="container-fluid">
-      <div className="card mb-4 p-3 mx-2">
+      <div className="card mb-4 mt-1 p-3 mx-2">
         <Row className="align-items-end mb-3 justify-content-center">
           <Col md={3}>
             <Form.Group>
@@ -552,14 +552,17 @@ const AllSubscribers = () => {
             <Button
               variant="outline-success"
               className="d-flex align-items-center"
-              onClick={() => navigate("/app/subscribers/add")} // Correct path
+              onClick={() => navigate("/app/clients/add")} // Correct path
             >
               <FaUserPlus className="me-1" /> Add
             </Button>
           </Col>
         </Col>
       </div>
-      <div className="card-footer d-flex justify-content-between align-items-center mx-2">
+      <div
+        className=" d-flex justify-content-between align-items-center mx-2"
+        style={{ backgroundColor: "#fff" }} // force white background
+      >
         <div className="text-muted me-3">
           Showing {startIndex + 1} to {Math.min(endIndex, totalResults)} of{" "}
           {totalResults} entries
@@ -576,15 +579,15 @@ const AllSubscribers = () => {
                 setCurrentPage(1);
               }}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
               <option value="25">25</option>
               <option value="50">50</option>
+              <option value="100">100</option>
             </Form.Select>
             <span>rows</span>
           </div>
         </div>
       </div>
+
       <div className="card m-1" style={{ height: "63vh", overflow: "hidden" }}>
         <div
           className="card-body"

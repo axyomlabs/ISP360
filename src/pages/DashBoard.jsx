@@ -15,6 +15,7 @@ import {
 import "../css/Dashboard.css";
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
+import { IoIosLogOut } from "react-icons/io";
 
 // Your existing data
 const onlinePaymentData = [
@@ -431,25 +432,26 @@ function Dashboard() {
             <UserStatsDashboard />
           </div>
 
-          {/* Payment Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Payment Stats</strong>
+          {/* Payment Stats Card  */}
+          <div className="card mb-4 border-0 shadow-sm rounded-3">
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">Payment Stats</h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowPaymentFilter(!showPaymentFilter)}
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
+
             {showPaymentFilter && (
-              <div className="card-body">
-                <div className="d-flex flex-wrap gap-2">
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">From:</label>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={paymentDateRange.from}
                       onChange={(e) =>
                         setPaymentDateRange({
@@ -459,12 +461,11 @@ function Dashboard() {
                       }
                     />
                   </div>
-
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">To:</label>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={paymentDateRange.to}
                       onChange={(e) =>
                         setPaymentDateRange({
@@ -474,42 +475,105 @@ function Dashboard() {
                       }
                     />
                   </div>
-
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => handleApplyFilter("payment")}
-                  >
-                    Apply
-                  </button>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("payment")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredPaymentData, "payment")}
+
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredPaymentData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="barGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="5%"
+                        stopColor=" #065f12ff"
+                        stopOpacity={0.9}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor="#028d20ff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 500"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="amount"
+                    fill="url(#barGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="amount"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
           {/* Online Payments Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Online Payments Stats</strong>
+          <div className="card mb-4 border-0 shadow-sm rounded-3">
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">
+                Online Payments Stats
+              </h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() =>
                   setShowOnlinePaymentFilter(!showOnlinePaymentFilter)
                 }
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
+
             {showOnlinePaymentFilter && (
-              <div className="card-body">
-                <div className="d-flex flex-wrap gap-2">
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">From:</label>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={onlinePaymentDateRange.from}
                       onChange={(e) =>
                         setOnlinePaymentDateRange({
@@ -519,11 +583,11 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">To:</label>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={onlinePaymentDateRange.to}
                       onChange={(e) =>
                         setOnlinePaymentDateRange({
@@ -533,41 +597,101 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => handleApplyFilter("onlinePayment")}
-                  >
-                    Apply
-                  </button>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("onlinePayment")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredOnlinePaymentData, "onlinePayment")}
+
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredOnlinePaymentData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="onlinePayGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#e69028ff" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#ffa600ff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 500"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="amount"
+                    fill="url(#onlinePayGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="amount"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Registrations & Activations Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Registrations & Activations</strong>
+          {/* Registrations & Activations Stats */}
+          <div className="card mb-4 border-0 shadow-sm rounded-3">
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">
+                Registrations & Activations
+              </h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() =>
                   setShowRegistrationFilter(!showRegistrationFilter)
                 }
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
+
             {showRegistrationFilter && (
-              <div className="card-body">
-                <div className="d-flex flex-wrap gap-2">
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">From:</label>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={registrationDateRange.from}
                       onChange={(e) =>
                         setRegistrationDateRange({
@@ -577,11 +701,11 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">To:</label>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={registrationDateRange.to}
                       onChange={(e) =>
                         setRegistrationDateRange({
@@ -591,17 +715,74 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => handleApplyFilter("registration")}
-                  >
-                    Apply
-                  </button>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("registration")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredRegistrationData, "registration")}
+
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredRegistrationData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid stroke="#eee" />{" "}
+                  {/* clean grid, no dashed lines */}
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 10"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Legend verticalAlign="top" height={30} iconType="circle" />
+                  <Bar
+                    dataKey="registrations"
+                    fill="#4facfe"
+                    barSize={30}
+                    radius={[6, 6, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="registrations"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                  <Bar
+                    dataKey="activations"
+                    fill="#00c9a7"
+                    barSize={30}
+                    radius={[6, 6, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="activations"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
@@ -614,7 +795,7 @@ function Dashboard() {
             </div>
             <div className="card-body p-2">
               <p className="mb-2">
-                <strong>Total Online Admin / Staff Users Found :</strong>{" "}
+                Total Online Admin / Staff Users Found :{" "}
                 {onlineAdminUsers.length}
               </p>
 
@@ -631,8 +812,8 @@ function Dashboard() {
                         {user.isCurrent ? (
                           <strong>Its You!</strong>
                         ) : (
-                          <button className="btn btn-sm btn-danger p-1">
-                            <i className="fa fa-power-off"></i>
+                          <button className="btn btn-lg ">
+                            <IoIosLogOut style={{ color: "red" }} />
                           </button>
                         )}
                       </td>
@@ -656,26 +837,26 @@ function Dashboard() {
               </table>
             </div>
           </div>
-
-          {/* Complaints Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Complaints Stats</strong>
+          {/* Complaints Stats */}
+          <div className="card mb-4 border-0 shadow-sm rounded-3">
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">⚠️ Complaints Stats</h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowComplaintFilter(!showComplaintFilter)}
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
+
             {showComplaintFilter && (
-              <div className="card-body">
-                <div className="d-flex flex-wrap gap-2">
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">From:</label>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={complaintDateRange.from}
                       onChange={(e) =>
                         setComplaintDateRange({
@@ -685,11 +866,11 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">To:</label>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={complaintDateRange.to}
                       onChange={(e) =>
                         setComplaintDateRange({
@@ -699,39 +880,97 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => handleApplyFilter("complaint")}
-                  >
-                    Apply
-                  </button>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("complaint")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredComplaintData, "complaint")}
+
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredComplaintData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="complaintsGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#e41717ff" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#a50d0dff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 5"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="complaints"
+                    fill="url(#complaintsGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="complaints"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Leads Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Leads Stats</strong>
+          {/* Leads Stats */}
+          <div className="card mb-4 border-0 shadow-sm rounded-3">
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">Leads Stats</h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowLeadsFilter(!showLeadsFilter)}
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
+
             {showLeadsFilter && (
-              <div className="card-body">
-                <div className="d-flex flex-wrap gap-2">
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">From:</label>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={leadsDateRange.from}
                       onChange={(e) =>
                         setLeadsDateRange({
@@ -741,11 +980,11 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">To:</label>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={leadsDateRange.to}
                       onChange={(e) =>
                         setLeadsDateRange({
@@ -755,78 +994,232 @@ function Dashboard() {
                       }
                     />
                   </div>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => handleApplyFilter("leads")}
-                  >
-                    Apply
-                  </button>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("leads")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredLeadsData, "leads")}
+
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredLeadsData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="leadsGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#6f42c1" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#8640a1ff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  {/* Removed CartesianGrid */}
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 5"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="leads"
+                    fill="url(#leadsGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="leads"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Nas wise Current Online Users Card (no change) */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Nas wise Current Online Users</strong>
+         
+          {/* Nas wise Current Online Users Card */}
+          <div className="card mb-4 border-0 shadow-sm rounded-3">
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">
+                NAS Wise Online Users
+              </h6>
             </div>
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredNasWiseData, "nasWise")}
+
+            {/* Chart body */}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredNasWiseData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="nasWiseGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#975620ff" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#8B6F4E"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="nas"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis fontSize={12} tick={{ fill: "#6c757d" }} />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="users"
+                    fill="url(#nasWiseGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="users"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
 
         {/* The two small columns on the right (no change) */}
         <div className="col-md-2">
-          <div className="card mb-3">
+          {/* Today Card */}
+          <div className="card mb-3 ">
             <div className="card-header">
               <strong>Today</strong>
             </div>
-            <div className="card-body">
-              <p>Registrations</p>
-              <p>Activations</p>
-              <p>Expiry: </p>
-              <p>Renewals</p>
-              <p>Payments </p>
-              <p>Online Pay</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Registrations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Activations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Expiry</span> <a href="#">1</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Renewals</span> <a href="#">0 / ₹ 0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Payments</span> <a href="#">0 / ₹ 0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
+              </li>
+            </ul>
           </div>
+
+          {/* Complaints Card */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Complaints</strong>
             </div>
-            <div className="card-body">
-              <p>Open</p>
-              <p>In Progres</p>
-              <p>Resolved</p>
-              <p>Closed</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Open</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>In Progress</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Resolved</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Closed</span> <a href="#">0</a>
+              </li>
+            </ul>
           </div>
+
+          {/* Yesterday Card */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Yesterday</strong>
             </div>
-            <div className="card-body">
-              <p>Registrations</p>
-              <p>Activations</p>
-              <p>Expiry</p>
-              <p>Renewals</p>
-              <p>Payments</p>
-              <p>Online Pay</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Registrations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Activations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Expiry</span> <a href="#">1</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Renewals</span> <a href="#">1 / ₹ 625</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Payments</span> <a href="#">0 / ₹ 0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
+              </li>
+            </ul>
           </div>
+
+          {/* Upcoming Expiry Card */}
           <div className="card mb-3">
             <div className="card-header">
-              <strong>Upcoming Expiry</strong>
+              <strong>Upcoming User Expiry</strong>
             </div>
-            <div className="card-body">
-              <p>Tomorrow</p>
-              <p>Next 7 Days</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Tomorrow</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Next 7 Days</span> <a href="#">3</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
