@@ -761,7 +761,7 @@ function Dashboard() {
           {/* Complaints Stats */}
           <div className="card mb-4 border-0 shadow-sm rounded-3">
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold text-dark mb-0">⚠️ Complaints Stats</h6>
+              <h6 className="fw-bold text-dark mb-0">Complaints Stats</h6>
               <button
                 className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowComplaintFilter(!showComplaintFilter)}
