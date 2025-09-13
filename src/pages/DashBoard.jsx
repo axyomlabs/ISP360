@@ -16,8 +16,11 @@ import "../css/Dashboard.css";
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
 import { IoIosLogOut } from "react-icons/io";
+import { FiSettings } from "react-icons/fi";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import Modal from "react-modal";
 
-// Your existing data
+// --- Data ---
 const onlinePaymentData = [
   { date: "21-Aug", amount: 1500 },
   { date: "22-Aug", amount: 2000 },
@@ -36,12 +39,10 @@ const onlinePaymentData = [
   { date: "04-Sep", amount: 4800 },
   { date: "05-Sep", amount: 5500 },
 ];
-
 const registrationData = [
   { date: "21-Aug", registrations: 1, activations: 1 },
   { date: "22-Aug", registrations: 2, activations: 2 },
 ];
-
 const paymentData = [
   { date: "13-Aug", amount: 2700 },
   { date: "16-Aug", amount: 550 },
@@ -93,7 +94,6 @@ const complaintData = [
   { date: "09-Sep", complaints: 22 },
   { date: "10-Sep", complaints: 23 },
 ];
-
 const leadsData = [
   { date: "21-Aug", leads: 5 },
   { date: "22-Aug", leads: 8 },
@@ -111,19 +111,7 @@ const leadsData = [
   { date: "03-Sep", leads: 17 },
   { date: "04-Sep", leads: 19 },
 ];
-
 const nasWiseData = [{ nas: "103.142.162.1", users: 58 }];
-const userStatsData = [
-  { label: "Total", value: 74, color: "#3f2ab9ff" },
-  { label: "Active", value: 64, color: "#007f88ff" },
-  { label: "Online", value: 59, color: "#15a702ff" },
-  { label: "Expired", value: 0, color: "#868d6bff" },
-  { label: "Pend. Actv", value: 0, color: "#4d0057ff" },
-  { label: "Suspended", value: 0, color: "#9e0000ff" },
-  { label: "On Hold", value: 2, color: "#ff8928ff" },
-  { label: "Disconnected", value: 8, color: "#e60d0dff" },
-];
-
 const onlineAdminUsers = [
   {
     user: "Its You!",
@@ -159,7 +147,6 @@ const onlineAdminUsers = [
   },
 ];
 
-// Helper functions to get icon URLs
 const getDeviceIcon = (device) => {
   switch (device) {
     case "Windows 10":
@@ -171,10 +158,9 @@ const getDeviceIcon = (device) => {
     case "Linux":
       return "https://img.icons8.com/color/16/000000/linux.png";
     default:
-      return "https://img.icons8.com/ios/16/000000/device--v1.png"; // Generic icon
+      return "https://img.icons8.com/ios/16/000000/device--v1.png";
   }
 };
-
 const getBrowserIcon = (browser) => {
   switch (browser) {
     case "Chrome":
@@ -186,14 +172,34 @@ const getBrowserIcon = (browser) => {
     case "Brave":
       return "https://img.icons8.com/color/16/000000/brave-web-browser.png";
     default:
-      return "https://img.icons8.com/ios/16/000000/web.png"; // Generic icon
+      return "https://img.icons8.com/ios/16/000000/web.png";
   }
 };
+
+Modal.setAppElement("#root");
 
 function Dashboard() {
   const navigate = useNavigate();
 
-  // Function to get the default date range (last 15 days)
+  // --- Drag & Drop Layout State ---
+  const defaultOrder = [
+    "userStats",
+    "paymentStats",
+    "onlinePaymentStats",
+    "registrationStats",
+  ];
+  const [cardOrder, setCardOrder] = useState(() => {
+    const saved = localStorage.getItem("dashboardCardOrder");
+    return saved ? JSON.parse(saved) : defaultOrder;
+  });
+  const [showManageModal, setShowManageModal] = useState(false);
+  const [dragEnabled, setDragEnabled] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("dashboardCardOrder", JSON.stringify(cardOrder));
+  }, [cardOrder]);
+
+  // --- Existing State ---
   const getDefaultDateRange = () => {
     const today = new Date();
     const startDate = new Date();
@@ -204,39 +210,25 @@ function Dashboard() {
     };
   };
 
-  // State to hold the visibility of each filter
   const [showPaymentFilter, setShowPaymentFilter] = useState(false);
   const [showOnlinePaymentFilter, setShowOnlinePaymentFilter] = useState(false);
   const [showRegistrationFilter, setShowRegistrationFilter] = useState(false);
   const [showComplaintFilter, setShowComplaintFilter] = useState(false);
   const [showLeadsFilter, setShowLeadsFilter] = useState(false);
 
-  // State to hold the currently selected dates in the filter inputs (not yet applied)
-  const [paymentDateRange, setPaymentDateRange] = useState(
-    getDefaultDateRange()
-  );
-  const [onlinePaymentDateRange, setOnlinePaymentDateRange] = useState(
-    getDefaultDateRange()
-  );
-  const [registrationDateRange, setRegistrationDateRange] = useState(
-    getDefaultDateRange()
-  );
-  const [complaintDateRange, setComplaintDateRange] = useState(
-    getDefaultDateRange()
-  );
+  const [paymentDateRange, setPaymentDateRange] = useState(getDefaultDateRange());
+  const [onlinePaymentDateRange, setOnlinePaymentDateRange] = useState(getDefaultDateRange());
+  const [registrationDateRange, setRegistrationDateRange] = useState(getDefaultDateRange());
+  const [complaintDateRange, setComplaintDateRange] = useState(getDefaultDateRange());
   const [leadsDateRange, setLeadsDateRange] = useState(getDefaultDateRange());
 
-  // State to hold the filtered data for each chart
   const [filteredPaymentData, setFilteredPaymentData] = useState([]);
-  const [filteredOnlinePaymentData, setFilteredOnlinePaymentData] = useState(
-    []
-  );
+  const [filteredOnlinePaymentData, setFilteredOnlinePaymentData] = useState([]);
   const [filteredRegistrationData, setFilteredRegistrationData] = useState([]);
   const [filteredComplaintData, setFilteredComplaintData] = useState([]);
   const [filteredLeadsData, setFilteredLeadsData] = useState([]);
   const [filteredNasWiseData, setFilteredNasWiseData] = useState(nasWiseData);
 
-  // Helper function to filter data based on a given date range
   const filterData = (data, dateRange) => {
     const fromDate = new Date(dateRange.from);
     const toDate = new Date(dateRange.to);
@@ -255,7 +247,6 @@ function Dashboard() {
     });
   };
 
-  // Handlers for the "Apply" button
   const handleApplyFilter = (chartName) => {
     let dateRangeToApply;
     let originalData;
@@ -265,175 +256,70 @@ function Dashboard() {
         dateRangeToApply = paymentDateRange;
         originalData = paymentData;
         setFilteredPaymentData(filterData(originalData, dateRangeToApply));
-        setShowPaymentFilter(false); // Hide the filter
+        setShowPaymentFilter(false);
         break;
       case "onlinePayment":
         dateRangeToApply = onlinePaymentDateRange;
         originalData = onlinePaymentData;
-        setFilteredOnlinePaymentData(
-          filterData(originalData, dateRangeToApply)
-        );
-        setShowOnlinePaymentFilter(false); // Hide the filter
+        setFilteredOnlinePaymentData(filterData(originalData, dateRangeToApply));
+        setShowOnlinePaymentFilter(false);
         break;
       case "registration":
         dateRangeToApply = registrationDateRange;
         originalData = registrationData;
         setFilteredRegistrationData(filterData(originalData, dateRangeToApply));
-        setShowRegistrationFilter(false); // Hide the filter
+        setShowRegistrationFilter(false);
         break;
       case "complaint":
         dateRangeToApply = complaintDateRange;
         originalData = complaintData;
         setFilteredComplaintData(filterData(originalData, dateRangeToApply));
-        setShowComplaintFilter(false); // Hide the filter
+        setShowComplaintFilter(false);
         break;
       case "leads":
         dateRangeToApply = leadsDateRange;
         originalData = leadsData;
         setFilteredLeadsData(filterData(originalData, dateRangeToApply));
-        setShowLeadsFilter(false); // Hide the filter
+        setShowLeadsFilter(false);
         break;
       default:
         break;
     }
   };
 
-  // Initial filtering for the charts when the component mounts
   useEffect(() => {
     setFilteredPaymentData(filterData(paymentData, getDefaultDateRange()));
-    setFilteredOnlinePaymentData(
-      filterData(onlinePaymentData, getDefaultDateRange())
-    );
-    setFilteredRegistrationData(
-      filterData(registrationData, getDefaultDateRange())
-    );
+    setFilteredOnlinePaymentData(filterData(onlinePaymentData, getDefaultDateRange()));
+    setFilteredRegistrationData(filterData(registrationData, getDefaultDateRange()));
     setFilteredComplaintData(filterData(complaintData, getDefaultDateRange()));
     setFilteredLeadsData(filterData(leadsData, getDefaultDateRange()));
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   const handleStatClick = (label) => {
     navigate(`/user-stats?status=${label}`);
   };
 
-  const renderChart = (data, chartType) => {
-    if (!data || data.length === 0) {
-      return (
-        <div className="d-flex align-items-center justify-content-center h-100 text-muted">
-          No data to display.
-        </div>
-      );
-    }
-
-    let bars = [];
-    let xKey = chartType === "nasWise" ? "nas" : "date";
-
-    switch (chartType) {
-      case "payment":
-        bars.push(
-          <Bar key="payment" dataKey="amount" fill="#28a745" barSize={40}>
-            <LabelList dataKey="amount" position="top" dy={-5} fontSize={13} />
-          </Bar>
-        );
-        break;
-      case "onlinePayment":
-        bars.push(
-          <Bar key="onlinePayment" dataKey="amount" fill="#f39c12" barSize={40}>
-            <LabelList dataKey="amount" position="top" dy={-5} fontSize={13} />
-          </Bar>
-        );
-        break;
-      case "complaint":
-        bars.push(
-          <Bar key="complaint" dataKey="complaints" fill="#e74c3c" barSize={40}>
-            <LabelList
-              dataKey="complaints"
-              position="top"
-              dy={-5}
-              fontSize={13}
-            />
-          </Bar>
-        );
-        break;
-      case "registration":
-        bars.push(
-          <Bar
-            key="registrations"
-            dataKey="registrations"
-            fill="#BBDCE5"
-            barSize={40}
-          >
-            <LabelList
-              dataKey="registrations"
-              position="top"
-              dy={-5}
-              fontSize={13}
-            />
-          </Bar>
-        );
-        bars.push(
-          <Bar
-            key="activations"
-            dataKey="activations"
-            fill="#9CAFAA"
-            barSize={40}
-          >
-            <LabelList
-              dataKey="activations"
-              position="top"
-              dy={-5}
-              fontSize={13}
-            />
-          </Bar>
-        );
-        break;
-      case "leads":
-        bars.push(
-          <Bar key="leads" dataKey="leads" fill="#9b59b6" barSize={40}>
-            <LabelList dataKey="leads" position="top" dy={-5} fontSize={13} />
-          </Bar>
-        );
-        break;
-      case "nasWise":
-        bars.push(
-          <Bar key="nasWise" dataKey="users" fill="#CFAB8D" barSize={60}>
-            <LabelList dataKey="users" position="top" dy={-10} fontSize={13} />
-          </Bar>
-        );
-        break;
-      default:
-        return null;
-    }
-
-    return (
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          margin={{ top: 30, right: 20, left: 0, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xKey} fontSize={10} />
-          <YAxis domain={[0, "dataMax + 20"]} fontSize={10} />
-          <Tooltip />
-          <Legend wrapperStyle={{ fontSize: 12 }} />
-          {bars}
-        </BarChart>
-      </ResponsiveContainer>
-    );
+  // --- Drag & Drop Handlers ---
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    const newOrder = Array.from(cardOrder);
+    const [removed] = newOrder.splice(result.source.index, 1);
+    newOrder.splice(result.destination.index, 0, removed);
+    setCardOrder(newOrder);
   };
 
-  return (
-    <div className="container-fluid">
-      <AnnouncementBar />
-
-      <div className="row">
-        <div className="col-md-5">
-          {/* User Stats Card (unchanged) */}
-          <div className="card mb-3">
+  // --- Render Card By Key ---
+  const renderCardByKey = (key) => {
+    switch (key) {
+      case "userStats":
+        return (
+          <div className="card mb-3" key={key}>
             <UserStatsDashboard />
           </div>
-
-          {/* Payment Stats Card  */}
-          <div className="card mb-4 border-0 shadow-sm rounded-3">
+        );
+      case "paymentStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold text-dark mb-0">Payment Stats</h6>
               <button
@@ -443,7 +329,6 @@ function Dashboard() {
                 <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
-
             {showPaymentFilter && (
               <div className="px-3 pb-3">
                 <div className="d-flex flex-wrap gap-2 align-items-end">
@@ -486,7 +371,6 @@ function Dashboard() {
                 </div>
               </div>
             )}
-
             <div className="card-body" style={{ height: "280px" }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -513,7 +397,6 @@ function Dashboard() {
                       />
                     </linearGradient>
                   </defs>
-
                   <XAxis
                     dataKey="date"
                     fontSize={12}
@@ -549,9 +432,10 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-
-          {/* Online Payments Stats Card */}
-          <div className="card mb-4 border-0 shadow-sm rounded-3">
+        );
+      case "onlinePaymentStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold text-dark mb-0">
                 Online Payments Stats
@@ -565,7 +449,6 @@ function Dashboard() {
                 <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
-
             {showOnlinePaymentFilter && (
               <div className="px-3 pb-3">
                 <div className="d-flex flex-wrap gap-2 align-items-end">
@@ -608,7 +491,6 @@ function Dashboard() {
                 </div>
               </div>
             )}
-
             <div className="card-body" style={{ height: "280px" }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -631,7 +513,6 @@ function Dashboard() {
                       />
                     </linearGradient>
                   </defs>
-
                   <XAxis
                     dataKey="date"
                     fontSize={12}
@@ -667,9 +548,10 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-
-          {/* Registrations & Activations Stats */}
-          <div className="card mb-4 border-0 shadow-sm rounded-3">
+        );
+      case "registrationStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold text-dark mb-0">
                 Registrations & Activations
@@ -683,7 +565,6 @@ function Dashboard() {
                 <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
-
             {showRegistrationFilter && (
               <div className="px-3 pb-3">
                 <div className="d-flex flex-wrap gap-2 align-items-end">
@@ -726,15 +607,13 @@ function Dashboard() {
                 </div>
               </div>
             )}
-
             <div className="card-body" style={{ height: "280px" }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={filteredRegistrationData}
                   margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
                 >
-                  <CartesianGrid stroke="#eee" />{" "}
-                  {/* clean grid, no dashed lines */}
+                  <CartesianGrid stroke="#eee" />
                   <XAxis
                     dataKey="date"
                     fontSize={12}
@@ -785,28 +664,70 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // --- Main Render ---
+  return (
+    <div className="container-fluid">
+      <AnnouncementBar />
+
+      <div className="row">
+        <div className="col-md-5">
+          {/* Drag & Drop context for main cards */}
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="dashboardCards" isDropDisabled={!dragEnabled}>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {cardOrder.map((key, idx) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={idx}
+                      isDragDisabled={!dragEnabled}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity: dragEnabled && snapshot.isDragging ? 0.7 : 1,
+                            cursor: dragEnabled ? "grab" : "default",
+                          }}
+                        >
+                          {renderCardByKey(key)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
 
         <div className="col-md-5">
-          {/* Online Admin Users Card (updated) */}
+          {/* Online Admin Users Card */}
           <div className="card mb-3">
             <div className="card-header">
               <strong>Online Admin Users</strong>
             </div>
             <div className="card-body p-2">
               <p className="mb-2">
-                Total Online Admin / Staff Users Found :{" "}
-                {onlineAdminUsers.length}
+                Total Online Admin / Staff Users Found : {onlineAdminUsers.length}
               </p>
-
               <table className="table table-sm mb-0">
                 <tbody>
                   {onlineAdminUsers.map((user, index) => (
                     <tr
                       key={index}
-                      className={`align-middle ${
-                        user.isCurrent ? "text-success" : ""
-                      }`}
+                      className={`align-middle ${user.isCurrent ? "text-success" : ""}`}
                     >
                       <td>
                         {user.isCurrent ? (
@@ -848,7 +769,6 @@ function Dashboard() {
                 <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
-
             {showComplaintFilter && (
               <div className="px-3 pb-3">
                 <div className="d-flex flex-wrap gap-2 align-items-end">
@@ -891,7 +811,6 @@ function Dashboard() {
                 </div>
               </div>
             )}
-
             <div className="card-body" style={{ height: "280px" }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -914,7 +833,6 @@ function Dashboard() {
                       />
                     </linearGradient>
                   </defs>
-
                   <XAxis
                     dataKey="date"
                     fontSize={12}
@@ -950,7 +868,6 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-
           {/* Leads Stats */}
           <div className="card mb-4 border-0 shadow-sm rounded-3">
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
@@ -962,7 +879,6 @@ function Dashboard() {
                 <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
-
             {showLeadsFilter && (
               <div className="px-3 pb-3">
                 <div className="d-flex flex-wrap gap-2 align-items-end">
@@ -1005,7 +921,6 @@ function Dashboard() {
                 </div>
               </div>
             )}
-
             <div className="card-body" style={{ height: "280px" }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -1028,7 +943,6 @@ function Dashboard() {
                       />
                     </linearGradient>
                   </defs>
-                  {/* Removed CartesianGrid */}
                   <XAxis
                     dataKey="date"
                     fontSize={12}
@@ -1064,8 +978,6 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-
-         
           {/* Nas wise Current Online Users Card */}
           <div className="card mb-4 border-0 shadow-sm rounded-3">
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
@@ -1073,8 +985,6 @@ function Dashboard() {
                 NAS Wise Online Users
               </h6>
             </div>
-
-            {/* Chart body */}
             <div className="card-body" style={{ height: "280px" }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -1130,8 +1040,19 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* The two small columns on the right (no change) */}
+        {/* The two small columns on the right */}
         <div className="col-md-2">
+          {/* --- Manage Layout Icon Button --- */}
+          <div className="d-flex justify-content-end align-items-center mb-2" style={{ minHeight: 40 }}>
+            <button
+              className="btn btn-outline-primary btn-sm"
+              style={{ borderRadius: "50%" }}
+              onClick={() => setShowManageModal(true)}
+              title="Manage Layout"
+            >
+              <FiSettings size={20} />
+            </button>
+          </div>
           {/* Today Card */}
           <div className="card mb-3 ">
             <div className="card-header">
@@ -1158,7 +1079,6 @@ function Dashboard() {
               </li>
             </ul>
           </div>
-
           {/* Complaints Card */}
           <div className="card mb-3">
             <div className="card-header">
@@ -1179,7 +1099,6 @@ function Dashboard() {
               </li>
             </ul>
           </div>
-
           {/* Yesterday Card */}
           <div className="card mb-3">
             <div className="card-header">
@@ -1206,7 +1125,6 @@ function Dashboard() {
               </li>
             </ul>
           </div>
-
           {/* Upcoming Expiry Card */}
           <div className="card mb-3">
             <div className="card-header">
@@ -1223,6 +1141,53 @@ function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Modal for layout management */}
+      <Modal
+        isOpen={showManageModal}
+        onRequestClose={() => setShowManageModal(false)}
+        ariaHideApp={false}
+        shouldCloseOnOverlayClick={true}
+        style={{
+          overlay: {
+            zIndex: 2000,
+            backgroundColor: "rgba(0,0,0,0.3)",
+          },
+          content: {
+            maxWidth: 350,
+            margin: "auto",
+            padding: 24,
+            borderRadius: 12,
+            textAlign: "center",
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            zIndex: 2100,
+          },
+        }}
+      >
+        <h5>Manage Dashboard Layout</h5>
+        <div className="form-check form-switch my-3">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            checked={dragEnabled}
+            onChange={() => setDragEnabled((v) => !v)}
+            id="dragToggle"
+          />
+          <label className="form-check-label" htmlFor="dragToggle">
+            Enable Drag & Drop
+          </label>
+        </div>
+        <button
+          className="btn btn-secondary"
+          onClick={() => setShowManageModal(false)}
+        >
+          Close
+        </button>
+      </Modal>
     </div>
   );
 }
