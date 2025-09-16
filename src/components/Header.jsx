@@ -34,6 +34,8 @@ function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled }) {
   const filteredPathnames = pathnames.filter(
     (name) => name.toLowerCase() !== "app"
   );
+  
+  const isDashboardPage = location.pathname === "/dashboard" || location.pathname === "/";
 
   const handleSearch = (e) => {
     e.preventDefault();

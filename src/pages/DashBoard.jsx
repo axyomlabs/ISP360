@@ -16,7 +16,9 @@ import "../css/Dashboard.css";
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
 import { IoIosLogOut } from "react-icons/io";
+import { FiSettings } from "react-icons/fi";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import Modal from "react-modal";
 
 // --- Data ---
 const onlinePaymentData = [
@@ -178,14 +180,25 @@ function Dashboard() {
   const navigate = useNavigate();
   const { dragEnabled } = useOutletContext();
 
-  // --- Drag & Drop Layout State (Split into two columns) ---
+  // --- Drag & Drop Layout State (Split into three columns) ---
   const defaultOrder = {
     column1: ["userStats", "paymentStats", "onlinePaymentStats", "registrationStats"],
     column2: ["onlineAdminUsers", "complaintStats", "leadsStats", "nasWise"],
+    column3: ["today", "complaints", "yesterday", "upcomingExpiry"]
   };
   const [cardOrder, setCardOrder] = useState(() => {
     const saved = localStorage.getItem("dashboardCardOrder");
-    return saved ? JSON.parse(saved) : defaultOrder;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.column1 && parsed.column2 && parsed.column3 && Array.isArray(parsed.column1) && Array.isArray(parsed.column2) && Array.isArray(parsed.column3)) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse dashboard card order from localStorage", e);
+      }
+    }
+    return defaultOrder;
   });
 
   useEffect(() => {
@@ -318,6 +331,11 @@ function Dashboard() {
         [destination.droppableId]: newEndColumnOrder,
       });
     }
+  };
+
+  const handleResetLayout = () => {
+    setCardOrder(defaultOrder);
+    localStorage.removeItem("dashboardCardOrder");
   };
 
   // --- Render Card By Key ---
@@ -1010,6 +1028,100 @@ function Dashboard() {
             </div>
           </div>
         );
+      case "today":
+        return (
+          <div className="card mb-3" key={key}>
+            <div className="card-header">
+              <strong>Today</strong>
+            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Registrations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Activations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Expiry</span> <a href="#">1</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Renewals</span> <a href="#">0 / ₹ 0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Payments</span> <a href="#">0 / ₹ 0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
+              </li>
+            </ul>
+          </div>
+        );
+      case "complaints":
+        return (
+          <div className="card mb-3" key={key}>
+            <div className="card-header">
+              <strong>Complaints</strong>
+            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Open</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>In Progress</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Resolved</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Closed</span> <a href="#">0</a>
+              </li>
+            </ul>
+          </div>
+        );
+      case "yesterday":
+        return (
+          <div className="card mb-3" key={key}>
+            <div className="card-header">
+              <strong>Yesterday</strong>
+            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Registrations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Activations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Expiry</span> <a href="#">1</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Renewals</span> <a href="#">1 / ₹ 625</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Payments</span> <a href="#">0 / ₹ 0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
+              </li>
+            </ul>
+          </div>
+        );
+      case "upcomingExpiry":
+        return (
+          <div className="card mb-3" key={key}>
+            <div className="card-header">
+              <strong>Upcoming User Expiry</strong>
+            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Tomorrow</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex justify-content-between">
+                <span>Next 7 Days</span> <a href="#">3</a>
+              </li>
+            </ul>
+          </div>
+        );
       default:
         return null;
     }
@@ -1018,7 +1130,15 @@ function Dashboard() {
   // --- Main Render ---
   return (
     <div className="container-fluid">
-      <AnnouncementBar />
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <AnnouncementBar />
+        <button
+          className="btn btn-sm btn-outline-secondary"
+          onClick={handleResetLayout}
+        >
+          Reset Layout
+        </button>
+      </div>
 
       <div className="row">
         <DragDropContext onDragEnd={onDragEnd}>
@@ -1088,97 +1208,40 @@ function Dashboard() {
               )}
             </Droppable>
           </div>
+          <div className="col-md-2">
+            <Droppable droppableId="column3" isDropDisabled={!dragEnabled}>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {cardOrder.column3.map((key, idx) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={idx}
+                      isDragDisabled={!dragEnabled}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity:
+                              dragEnabled && snapshot.isDragging ? 0.7 : 1,
+                            cursor: dragEnabled ? "grab" : "default",
+                          }}
+                        >
+                          {renderCardByKey(key)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
         </DragDropContext>
-
-        {/* The two small columns on the right (static) */}
-        <div className="col-md-2">
-          {/* Today Card */}
-          <div className="card mb-3">
-            <div className="card-header">
-              <strong>Today</strong>
-            </div>
-            <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Registrations</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Activations</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Expiry</span> <a href="#">1</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Renewals</span> <a href="#">0 / ₹ 0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Payments</span> <a href="#">0 / ₹ 0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
-              </li>
-            </ul>
-          </div>
-          {/* Complaints Card */}
-          <div className="card mb-3">
-            <div className="card-header">
-              <strong>Complaints</strong>
-            </div>
-            <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Open</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>In Progress</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Resolved</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Closed</span> <a href="#">0</a>
-              </li>
-            </ul>
-          </div>
-          {/* Yesterday Card */}
-          <div className="card mb-3">
-            <div className="card-header">
-              <strong>Yesterday</strong>
-            </div>
-            <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Registrations</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Activations</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Expiry</span> <a href="#">1</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Renewals</span> <a href="#">1 / ₹ 625</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Payments</span> <a href="#">0 / ₹ 0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
-              </li>
-            </ul>
-          </div>
-          {/* Upcoming Expiry Card */}
-          <div className="card mb-3">
-            <div className="card-header">
-              <strong>Upcoming User Expiry</strong>
-            </div>
-            <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Tomorrow</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Next 7 Days</span> <a href="#">3</a>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   );
