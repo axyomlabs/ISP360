@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import UserStatsDashboard from "../components/user_stats_card";
 import {
   BarChart,
@@ -16,9 +16,7 @@ import "../css/Dashboard.css";
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
 import { IoIosLogOut } from "react-icons/io";
-import { FiSettings } from "react-icons/fi";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import Modal from "react-modal";
 
 // --- Data ---
 const onlinePaymentData = [
@@ -176,24 +174,19 @@ const getBrowserIcon = (browser) => {
   }
 };
 
-Modal.setAppElement("#root");
-
 function Dashboard() {
   const navigate = useNavigate();
+  const { dragEnabled } = useOutletContext();
 
-  // --- Drag & Drop Layout State ---
-  const defaultOrder = [
-    "userStats",
-    "paymentStats",
-    "onlinePaymentStats",
-    "registrationStats",
-  ];
+  // --- Drag & Drop Layout State (Split into two columns) ---
+  const defaultOrder = {
+    column1: ["userStats", "paymentStats", "onlinePaymentStats", "registrationStats"],
+    column2: ["onlineAdminUsers", "complaintStats", "leadsStats", "nasWise"],
+  };
   const [cardOrder, setCardOrder] = useState(() => {
     const saved = localStorage.getItem("dashboardCardOrder");
     return saved ? JSON.parse(saved) : defaultOrder;
   });
-  const [showManageModal, setShowManageModal] = useState(false);
-  const [dragEnabled, setDragEnabled] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("dashboardCardOrder", JSON.stringify(cardOrder));
@@ -299,13 +292,32 @@ function Dashboard() {
     navigate(`/user-stats?status=${label}`);
   };
 
-  // --- Drag & Drop Handlers ---
+  // --- Drag & Drop Handlers for multiple lists ---
   const onDragEnd = (result) => {
-    if (!result.destination) return;
-    const newOrder = Array.from(cardOrder);
-    const [removed] = newOrder.splice(result.source.index, 1);
-    newOrder.splice(result.destination.index, 0, removed);
-    setCardOrder(newOrder);
+    const { source, destination } = result;
+    if (!destination) return;
+    if (source.droppableId === destination.droppableId) {
+      const columnId = source.droppableId;
+      const newColumnOrder = Array.from(cardOrder[columnId]);
+      const [removed] = newColumnOrder.splice(source.index, 1);
+      newColumnOrder.splice(destination.index, 0, removed);
+      setCardOrder({
+        ...cardOrder,
+        [columnId]: newColumnOrder,
+      });
+    } else {
+      const startColumn = cardOrder[source.droppableId];
+      const endColumn = cardOrder[destination.droppableId];
+      const newStartColumnOrder = Array.from(startColumn);
+      const [removed] = newStartColumnOrder.splice(source.index, 1);
+      const newEndColumnOrder = Array.from(endColumn);
+      newEndColumnOrder.splice(destination.index, 0, removed);
+      setCardOrder({
+        ...cardOrder,
+        [source.droppableId]: newStartColumnOrder,
+        [destination.droppableId]: newEndColumnOrder,
+      });
+    }
   };
 
   // --- Render Card By Key ---
@@ -665,56 +677,9 @@ function Dashboard() {
             </div>
           </div>
         );
-      default:
-        return null;
-    }
-  };
-
-  // --- Main Render ---
-  return (
-    <div className="container-fluid">
-      <AnnouncementBar />
-
-      <div className="row">
-        <div className="col-md-5">
-          {/* Drag & Drop context for main cards */}
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="dashboardCards" isDropDisabled={!dragEnabled}>
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps}>
-                  {cardOrder.map((key, idx) => (
-                    <Draggable
-                      key={key}
-                      draggableId={key}
-                      index={idx}
-                      isDragDisabled={!dragEnabled}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            ...provided.draggableProps.style,
-                            opacity: dragEnabled && snapshot.isDragging ? 0.7 : 1,
-                            cursor: dragEnabled ? "grab" : "default",
-                          }}
-                        >
-                          {renderCardByKey(key)}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
-
-        <div className="col-md-5">
-          {/* Online Admin Users Card */}
-          <div className="card mb-3">
+      case "onlineAdminUsers":
+        return (
+          <div className="card mb-3" key={key}>
             <div className="card-header">
               <strong>Online Admin Users</strong>
             </div>
@@ -758,8 +723,10 @@ function Dashboard() {
               </table>
             </div>
           </div>
-          {/* Complaints Stats */}
-          <div className="card mb-4 border-0 shadow-sm rounded-3">
+        );
+      case "complaintStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold text-dark mb-0">Complaints Stats</h6>
               <button
@@ -868,8 +835,10 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-          {/* Leads Stats */}
-          <div className="card mb-4 border-0 shadow-sm rounded-3">
+        );
+      case "leadsStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold text-dark mb-0">Leads Stats</h6>
               <button
@@ -978,8 +947,10 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-          {/* Nas wise Current Online Users Card */}
-          <div className="card mb-4 border-0 shadow-sm rounded-3">
+        );
+      case "nasWise":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold text-dark mb-0">
                 NAS Wise Online Users
@@ -1038,23 +1009,91 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-        </div>
+        );
+      default:
+        return null;
+    }
+  };
 
-        {/* The two small columns on the right */}
-        <div className="col-md-2">
-          {/* --- Manage Layout Icon Button --- */}
-          <div className="d-flex justify-content-end align-items-center mb-2" style={{ minHeight: 40 }}>
-            <button
-              className="btn btn-outline-primary btn-sm"
-              style={{ borderRadius: "50%" }}
-              onClick={() => setShowManageModal(true)}
-              title="Manage Layout"
-            >
-              <FiSettings size={20} />
-            </button>
+  // --- Main Render ---
+  return (
+    <div className="container-fluid">
+      <AnnouncementBar />
+
+      <div className="row">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="col-md-5">
+            <Droppable droppableId="column1" isDropDisabled={!dragEnabled}>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {cardOrder.column1.map((key, idx) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={idx}
+                      isDragDisabled={!dragEnabled}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity:
+                              dragEnabled && snapshot.isDragging ? 0.7 : 1,
+                            cursor: dragEnabled ? "grab" : "default",
+                          }}
+                        >
+                          {renderCardByKey(key)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </div>
+          <div className="col-md-5">
+            <Droppable droppableId="column2" isDropDisabled={!dragEnabled}>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {cardOrder.column2.map((key, idx) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={idx}
+                      isDragDisabled={!dragEnabled}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity:
+                              dragEnabled && snapshot.isDragging ? 0.7 : 1,
+                            cursor: dragEnabled ? "grab" : "default",
+                          }}
+                        >
+                          {renderCardByKey(key)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+        </DragDropContext>
+
+        {/* The two small columns on the right (static) */}
+        <div className="col-md-2">
           {/* Today Card */}
-          <div className="card mb-3 ">
+          <div className="card mb-3">
             <div className="card-header">
               <strong>Today</strong>
             </div>
@@ -1141,53 +1180,6 @@ function Dashboard() {
           </div>
         </div>
       </div>
-
-      {/* Modal for layout management */}
-      <Modal
-        isOpen={showManageModal}
-        onRequestClose={() => setShowManageModal(false)}
-        ariaHideApp={false}
-        shouldCloseOnOverlayClick={true}
-        style={{
-          overlay: {
-            zIndex: 2000,
-            backgroundColor: "rgba(0,0,0,0.3)",
-          },
-          content: {
-            maxWidth: 350,
-            margin: "auto",
-            padding: 24,
-            borderRadius: 12,
-            textAlign: "center",
-            top: "50%",
-            left: "50%",
-            right: "auto",
-            bottom: "auto",
-            transform: "translate(-50%, -50%)",
-            zIndex: 2100,
-          },
-        }}
-      >
-        <h5>Manage Dashboard Layout</h5>
-        <div className="form-check form-switch my-3">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            checked={dragEnabled}
-            onChange={() => setDragEnabled((v) => !v)}
-            id="dragToggle"
-          />
-          <label className="form-check-label" htmlFor="dragToggle">
-            Enable Drag & Drop
-          </label>
-        </div>
-        <button
-          className="btn btn-secondary"
-          onClick={() => setShowManageModal(false)}
-        >
-          Close
-        </button>
-      </Modal>
     </div>
   );
 }

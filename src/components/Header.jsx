@@ -11,16 +11,18 @@ import {
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { PiLinkSimple } from "react-icons/pi";
 import { TbBrandTelegram } from "react-icons/tb";
+import { FiSettings } from "react-icons/fi";
 import { Dropdown, Breadcrumb } from "react-bootstrap";
 import { AiOutlineHome } from "react-icons/ai";
 import { FaUserPlus, FaUsers, FaTools, FaLaptopCode, FaRegFileAlt } from 'react-icons/fa';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { FaChartLine, FaExclamationCircle } from 'react-icons/fa';
+import { IoIosLogOut } from "react-icons/io";
 import isplogo from "../assets/isp360dark.png";
 import "../css/Header.css";
 
-// Accept toggleSidebar and isSidebarOpen as props
-function Header({ toggleSidebar, isSidebarOpen }) {
+// Accept toggleSidebar, isSidebarOpen, and the new props for layout management
+function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled }) {
   const [searchType, setSearchType] = useState("Username");
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -57,7 +59,7 @@ function Header({ toggleSidebar, isSidebarOpen }) {
             >
               {isSidebarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
             </button>
-            <div className="me-3" style={{ height: "auto", width: "200px" }}>
+            <div className="me-3" style={{ height: "auto", width: "150px" }}>
               <img
                 src={isplogo}
                 alt="ISP Logo"
@@ -194,54 +196,47 @@ function Header({ toggleSidebar, isSidebarOpen }) {
             <button className="btn header-icon-btn" title="Notifications">
               <FaRegBell className="header-icon" />
             </button>
-            <button className="btn header-icon-btn" title="Profile">
-              <FaRegUserCircle className="header-icon" />
-            </button>
+
+            {/* User Profile Dropdown with Drag & Drop toggle */}
+            <Dropdown align="end">
+              <Dropdown.Toggle as="div" bsPrefix="p-0">
+                <button className="btn header-icon-btn" title="Profile">
+                  <FaRegUserCircle className="header-icon" />
+                </button>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item href="#/profile">
+                  <FaRegUserCircle className="me-2" />
+                  My Profile
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item as="div">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <label className="form-check-label small" htmlFor="dragToggle">
+                      <FiSettings className="me-2" />
+                      Layout
+                    </label>
+                    <div className="form-check form-switch p-0 m-0">
+                      <input
+                        className="form-check-input ms-3"
+                        type="checkbox"
+                        id="dragToggle"
+                        checked={dragEnabled}
+                        onChange={() => setDragEnabled(!dragEnabled)}
+                      />
+                    </div>
+                  </div>
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item href="#/logout">
+                  <IoIosLogOut className="me-2" />
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </div>
-
-        {/* Bottom Row: Breadcrumb */}
-        <div className="breadcrumb-wrapper d-flex justify-content-center w-100">
-          <Breadcrumb className="mb-0">
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/app/dashboard" }}>
-              <AiOutlineHome />
-            </Breadcrumb.Item>
-            {filteredPathnames.map((name, index) => {
-              const routeTo = `/${filteredPathnames
-                .slice(0, index + 1)
-                .join("/")}`;
-              const isLast = index === filteredPathnames.length - 1;
-              return (
-                <Breadcrumb.Item
-                  key={name}
-                  linkProps={{ to: routeTo }}
-                  active={isLast}
-                >
-                  {name.charAt(0).toUpperCase() + name.slice(1)}
-                </Breadcrumb.Item>
-              );
-            })}
-          </Breadcrumb>
-        </div>
       </div>
-      {showMessage && (
-        <div
-          style={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "rgba(0,0,0,0.8)",
-            color: "white",
-            padding: "1rem",
-            borderRadius: "0.5rem",
-            zIndex: 1000,
-            textAlign: "center",
-          }}
-        >
-          Searching "{searchQuery}" by {searchType}
-        </div>
-      )}
     </>
   );
 }

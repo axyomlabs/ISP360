@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,13 +13,16 @@ import AllSubscribers from './pages/AllSubscribers';
 import Addsubscriber from './pages/Addsubscriber';
 
 export default function App() {
+  const [dragEnabled, setDragEnabled] = useState(false);
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
 
-        <Route path="/app" element={<Layout />}>
+        {/* Pass dragEnabled state and setter to Layout */}
+        <Route path="/app" element={<Layout dragEnabled={dragEnabled} setDragEnabled={setDragEnabled} />}>
           <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           

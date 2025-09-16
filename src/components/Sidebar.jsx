@@ -24,6 +24,7 @@ import { TbFileInvoice } from "react-icons/tb";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdOutlineAccessTime, MdOutlineAccountTree } from "react-icons/md";
 import { LuFileClock } from "react-icons/lu";
+import { GoSidebarExpand, GoSidebarCollapse } from "react-icons/go";
 
 import isplogo from "../assets/logo.png";
 import "../css/Sidebar.css";
@@ -53,10 +54,16 @@ const menuItems = [
       { title: "Plans & Packages", link: "/app/network/plans-packages" },
       { title: "NAS / BNG", link: "/app/network/nas-bng" },
       { title: "OLT(Device) Management", link: "/app/network/olt-management" },
-      { title: "ONU / ONT Management", link: "/app/network/onu-ont-management" },
+      {
+        title: "ONU / ONT Management",
+        link: "/app/network/onu-ont-management",
+      },
       { title: "Wireless Towers", link: "/app/network/wireless-towers" },
       { title: "Wireless CPEs", link: "/app/network/wireless-cpes" },
-      { title: "Config Backup & Restore", link: "/app/network/config-backup-restore" },
+      {
+        title: "Config Backup & Restore",
+        link: "/app/network/config-backup-restore",
+      },
       { title: "TR069", link: "/app/network/tr069" },
       { title: "Network Map", link: "/app/network/network-map" },
       { title: "IP Address Mgmt", link: "/app/network/ip-address-mgmt" },
@@ -68,12 +75,24 @@ const menuItems = [
     icon: <PiHeartbeat />,
     id: "monitorMenu",
     children: [
-      { title: "Network Monitoring", link: "/app/monitoring/network-monitoring" },
+      {
+        title: "Network Monitoring",
+        link: "/app/monitoring/network-monitoring",
+      },
       { title: "Traffic Report", link: "/app/monitoring/traffic-report" },
       { title: "QoE Monitoring", link: "/app/monitoring/qoe-monitoring" },
-      { title: "Alerts & Notifications", link: "/app/monitoring/alerts-notifications" },
-      { title: "Server and License Information", link: "/app/monitoring/server-license" },
-      { title: "Service Uptime / Downtime Monitor", link: "/app/monitoring/service-uptime" },
+      {
+        title: "Alerts & Notifications",
+        link: "/app/monitoring/alerts-notifications",
+      },
+      {
+        title: "Server and License Information",
+        link: "/app/monitoring/server-license",
+      },
+      {
+        title: "Service Uptime / Downtime Monitor",
+        link: "/app/monitoring/service-uptime",
+      },
     ],
   },
   {
@@ -84,12 +103,6 @@ const menuItems = [
       {
         title: "Complaint Tickets (List)",
         link: "/app/crm/complaint-tickets",
-        subChildren: [
-          { title: "New", link: "/app/crm/complaint-tickets/new" },
-          { title: "Assigned", link: "/app/crm/complaint-tickets/assigned" },
-          { title: "Resolved", link: "/app/crm/complaint-tickets/resolved" },
-          { title: "Closed", link: "/app/crm/complaint-tickets/closed" },
-        ]
       },
       { title: "SLA Dashboard", link: "/app/crm/sla-dashboard" },
       { title: "Escalation Matrix", link: "/app/crm/escalation-matrix" },
@@ -111,7 +124,10 @@ const menuItems = [
       { title: "User Specials", link: "/app/billing/user-specials" },
       { title: "Refunds & Credits", link: "/app/billing/refunds-credits" },
       { title: "Debit Notes", link: "/app/billing/debit-notes" },
-      { title: "Payment Reconciliation", link: "/app/billing/payment-reconciliation" },
+      {
+        title: "Payment Reconciliation",
+        link: "/app/billing/payment-reconciliation",
+      },
       { title: "GST & AGR", link: "/app/billing/gst-agr" },
     ],
   },
@@ -123,18 +139,21 @@ const menuItems = [
       {
         title: "Operations",
         link: "/app/inventory/operations",
-        subChildren: [
-          { title: "Sales", link: "/app/inventory/operations/sales" },
-          { title: "Purchase", link: "/app/inventory/operations/purchase" },
-          { title: "Returns", link: "/app/inventory/operations/returns" },
-          { title: "Repairs", link: "/app/inventory/operations/repairs" },
-        ]
       },
-      { title: "Product (ONU, Routers, Spares)", link: "/app/inventory/product" },
+      {
+        title: "Product (ONU, Routers, Spares)",
+        link: "/app/inventory/product",
+      },
       { title: "Vendors", link: "/app/inventory/vendors" },
       { title: "Assign to Customer", link: "/app/inventory/assign-customer" },
-      { title: "Stock Tracking (with QR/Barcode)", link: "/app/inventory/stock-tracking" },
-      { title: "POP Infra (UPS, Batteries, Racks)", link: "/app/inventory/pop-infra" },
+      {
+        title: "Stock Tracking (with QR/Barcode)",
+        link: "/app/inventory/stock-tracking",
+      },
+      {
+        title: "POP Infra (UPS, Batteries, Racks)",
+        link: "/app/inventory/pop-infra",
+      },
       { title: "AMC & Warranty Alerts", link: "/app/inventory/amc-warranty" },
     ],
   },
@@ -146,7 +165,10 @@ const menuItems = [
       { title: "Revenue Reports", link: "/app/analytics/revenue" },
       { title: "Inventory Report", link: "/app/analytics/inventory" },
       { title: "Customer Churn Analysis", link: "/app/analytics/churn" },
-      { title: "Area-Wise Subscriber Report", link: "/app/analytics/area-subscribers" },
+      {
+        title: "Area-Wise Subscriber Report",
+        link: "/app/analytics/area-subscribers",
+      },
       { title: "Usage/Top Consumers Report", link: "/app/analytics/usage" },
       { title: "Franchise Wise Report", link: "/app/analytics/franchise" },
       { title: "SLA Compliance Report", link: "/app/analytics/sla-compliance" },
@@ -162,7 +184,10 @@ const menuItems = [
       { title: "IVR or Calls", link: "/app/communications/ivr-calls" },
       { title: "SMS", link: "/app/communications/sms" },
       { title: "Email", link: "/app/communications/email" },
-      { title: "Marketing Campaigns", link: "/app/communications/marketing-campaigns" },
+      {
+        title: "Marketing Campaigns",
+        link: "/app/communications/marketing-campaigns",
+      },
       { title: "Notifications", link: "/app/communications/notifications" },
       { title: "Promotions", link: "/app/communications/promotions" },
       { title: "Templates", link: "/app/communications/templates" },
@@ -192,10 +217,16 @@ const menuItems = [
       { title: "Attendance", link: "/app/hr/attendance" },
       { title: "Salary & Payroll", link: "/app/hr/salary-payroll" },
       { title: "Expense Claims", link: "/app/hr/expense-claims" },
-      { title: "Field Workforce App Integration", link: "/app/hr/field-workforce-app" },
+      {
+        title: "Field Workforce App Integration",
+        link: "/app/hr/field-workforce-app",
+      },
       { title: "Tracking", link: "/app/hr/tracking" },
       { title: "Leave & Shift Management", link: "/app/hr/leave-shift" },
-      { title: "Incentives / Commission", link: "/app/hr/incentives-commission" },
+      {
+        title: "Incentives / Commission",
+        link: "/app/hr/incentives-commission",
+      },
       { title: "Performance Report", link: "/app/hr/performance-report" },
       { title: "Settings", link: "/app/hr/settings" },
     ],
@@ -208,10 +239,19 @@ const menuItems = [
       { title: "All Franchises", link: "/app/franchise/all" },
       { title: "Add Franchise", link: "/app/franchise/add" },
       { title: "Franchise Setup", link: "/app/franchise/setup" },
-      { title: "Revenue-Sharing Setup", link: "/app/franchise/revenue-sharing" },
-      { title: "Franchise Ledger & Wallet", link: "/app/franchise/ledger-wallet" },
+      {
+        title: "Revenue-Sharing Setup",
+        link: "/app/franchise/revenue-sharing",
+      },
+      {
+        title: "Franchise Ledger & Wallet",
+        link: "/app/franchise/ledger-wallet",
+      },
       { title: "Custom Pricing", link: "/app/franchise/custom-pricing" },
-      { title: "Commission & Settlement Reports", link: "/app/franchise/commission-reports" },
+      {
+        title: "Commission & Settlement Reports",
+        link: "/app/franchise/commission-reports",
+      },
       { title: "Franchise Setting", link: "/app/franchise/settings" },
     ],
   },
@@ -223,23 +263,20 @@ const menuItems = [
       { title: "Company", link: "/app/settings/company" },
       { title: "General", link: "/app/settings/general" },
       { title: "Branch", link: "/app/settings/branch" },
-      { title: "Location Management", link: "/app/settings/location-management" },
+      {
+        title: "Location Management",
+        link: "/app/settings/location-management",
+      },
       { title: "Billing", link: "/app/settings/billing" },
       { title: "Integrations", link: "/app/settings/integrations" },
       { title: "Notification Setting", link: "/app/settings/notification" },
       { title: "User Portal", link: "/app/settings/user-portal" },
       { title: "Rules", link: "/app/settings/rules" },
       { title: "Documentation & TnCs", link: "/app/settings/documentation" },
-      { title: "System Backup & Restore", link: "/app/settings/system-backup-restore" },
-    ],
-  },
-  {
-    title: "Profile",
-    icon: <FaRegUserCircle />,
-    id: "profileMenu",
-    children: [
-      { title: "Profile Info", link: "/app/profile/info" },
-      { title: "Settings", link: "/app/profile/settings" },
+      {
+        title: "System Backup & Restore",
+        link: "/app/settings/system-backup-restore",
+      },
     ],
   },
 ];
@@ -356,6 +393,7 @@ const Sidebar = ({
     id: null, // ID of the menu item currently being hovered over
     title: "", // Title of the hovered menu item
     top: 0, // Vertical position for the flyout menu
+    alignTop: false, // NEW: whether to align upwards
   });
   const hideTimer = useRef(null); // Ref to manage the delay for hiding the flyout menu
 
@@ -366,10 +404,29 @@ const Sidebar = ({
 
   // Handler for when the mouse enters a collapsed menu item
   const handleHoverIn = (id, e, title = "") => {
-    if (!isCollapsed) return; // Only active when sidebar is collapsed
-    if (hideTimer.current) clearTimeout(hideTimer.current); // Clear any existing hide timer
-    const rect = e.currentTarget.getBoundingClientRect(); // Get position of the element
-    setFlyout({ id, title, top: rect.top }); // Set flyout state
+    if (!isCollapsed) return;
+    if (hideTimer.current) clearTimeout(hideTimer.current);
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    // Find the hovered item to get its children
+    const hoveredItem = id && menuItems.find((m) => m.id === id);
+    // Estimate flyout height based on number of children and a small margin
+    const flyoutHeight = (hoveredItem?.children?.length || 0) * 40 + 16; // 40px per item + padding
+    const viewportHeight = window.innerHeight;
+
+    // Check if the flyout will go outside the bottom of the viewport
+    const willOverflow = rect.top + flyoutHeight > viewportHeight;
+
+    setFlyout({
+      id,
+      title,
+      // If it overflows, calculate the top position from the bottom of the screen
+      // Otherwise, use the original top position. Ensure a minimum of 8px from top.
+      top: willOverflow
+        ? viewportHeight - flyoutHeight - 8
+        : Math.max(8, rect.top),
+      alignTop: willOverflow,
+    });
   };
 
   // Handler for when the mouse leaves a collapsed menu item
@@ -377,7 +434,7 @@ const Sidebar = ({
     if (!isCollapsed) return; // Only active when sidebar is collapsed
     // Set a timer to hide the flyout menu after a short delay
     hideTimer.current = setTimeout(() => {
-      setFlyout({ id: null, title: "", top: 0 });
+      setFlyout({ id: null, title: "", top: 0, alignTop: false });
     }, 180);
   };
 
@@ -396,7 +453,7 @@ const Sidebar = ({
           isSidebarOpen ? "sidebar-open" : "" // Class for mobile sidebar open state
         } ${isCollapsed ? "collapsed" : ""}`} // Class for collapsed state
       >
-        <div className="sidebar-header p-2 d-flex align-items-center justify-content-between">
+        <div className="sidebar-header d-flex align-items-center justify-content-between">
           <img
             src={isplogo}
             className="mb-2"
@@ -411,21 +468,25 @@ const Sidebar = ({
           />
 
           <button
-            className="collapse-btn ms-2 d-none d-md-inline" // Button visible on larger screens
+            className="collapse-btn ms-2 d-none d-md-inline"
             title={isCollapsed ? "Expand" : "Collapse"}
             onClick={() => {
-              setIsCollapsed((v) => !v); // Toggle the collapsed state
-              // If sidebar is open on mobile, close it when collapsing to desktop view
+              setIsCollapsed((v) => !v);
               if (isSidebarOpen) {
                 toggleSidebar();
               }
             }}
           >
-            {isCollapsed ? ">>" : "<<"}
+            {isCollapsed ? (
+              <GoSidebarCollapse className="thicker-icon" />
+            ) : (
+              <GoSidebarExpand className="thicker-icon" />
+            )}
+            {/* Use appropriate icon based on collapsed state */}
           </button>
         </div>
 
-        <div className="sidebar-menu p-2" id="sidebarMenu">
+        <div className="sidebar-menu p-1" id="sidebarMenu">
           {menuItems.map((item, i) => (
             <SidebarItem
               key={i}
@@ -444,7 +505,7 @@ const Sidebar = ({
         <div className="sidebar-footer">
           <Link
             to="/app/profile"
-            className="sidebar-link d-flex align-items-center mb-3"
+            className="sidebar-link d-flex align-items-center"
             onClick={toggleSidebar} // Close sidebar on mobile when profile link is clicked
           >
             <FaRegUserCircle className="me-2" />
@@ -457,14 +518,20 @@ const Sidebar = ({
       {/* Flyout menu for collapsed sidebar */}
       {isCollapsed && flyout.id && hoveredItem && (
         <div
-          className="flyout-menu"
-          style={{ top: Math.max(8, flyout.top), left: 70 }} // Position the flyout menu
+          className={`flyout-menu ${flyout.alignTop ? "align-up" : ""}`} // Added class for potential styling
+          style={{
+            // Conditionally set 'top' or 'bottom' based on the new state
+            top: flyout.alignTop ? "auto" : flyout.top, // Use calculated top if not aligning up
+            bottom: flyout.alignTop ? 8 : "auto", // Set bottom if aligning up
+            left: 70, // Fixed position to the right of the collapsed sidebar
+          }}
           onMouseEnter={() =>
-            hideTimer.current && clearTimeout(hideTimer.current) // Keep flyout open if mouse enters it
+            hideTimer.current && clearTimeout(hideTimer.current)
           }
-          onMouseLeave={() => setFlyout({ id: null, title: "", top: 0 })} // Hide flyout when mouse leaves
+          onMouseLeave={() =>
+            setFlyout({ id: null, title: "", top: 0, alignTop: false })
+          }
         >
-          <div className="flyout-title">{hoveredItem.title}</div>
           <div className="flyout-list">
             {hoveredItem.children.map((child, idx) => (
               <NavLink
@@ -473,7 +540,9 @@ const Sidebar = ({
                 className={({ isActive }) =>
                   `flyout-link ${isActive ? "active" : ""}`
                 }
-                onClick={() => setFlyout({ id: null, title: "", top: 0 })} // Close flyout on link click
+                onClick={() =>
+                  setFlyout({ id: null, title: "", top: 0, alignTop: false })
+                }
               >
                 {child.title}
               </NavLink>

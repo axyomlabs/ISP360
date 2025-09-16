@@ -7,25 +7,27 @@
   transition: transform 0.3s ease, width 0.3s ease;
   color: #000;
   border-right: 1px solid #ddd;
-  overflow-y: auto;
+  overflow-y: auto; /* Allows scrolling if content exceeds height */
   z-index: 1000;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
+
 /* Sidebar Links styling */
 .sidebar-link {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
   border-radius: 6px;
   text-decoration: none;
   color: #333;
   font-size: 0.95rem;
   transition: background 0.2s ease-in-out;
   cursor: pointer;
-  margin-bottom: 8px;
 }
-
+.thicker-icon {
+  stroke-width: 1.5; /* You can experiment with values like 1.2, 1.5, 2, etc. */
+  background: transparent;
+}
 .sidebar-link svg {
   min-width: 20px;
   margin-right: 8px; /* Reduced margin */ /* Or use '0px' to remove it */
@@ -65,7 +67,7 @@
 /* Sidebar Footer (e.g., My Profile) */
 .sidebar-footer {
   flex-shrink: 0;
-  padding: 15px 12px;
+  /* padding: 15px 12px; */
   border-top: 1px solid #eee;
 }
 
@@ -73,14 +75,14 @@
 .sidebar-link {
   display: flex;
   align-items: center;
-  padding: 12px 16px; /* Consistent padding for all links */
+  padding: 3%; /* Consistent padding for all links */
   border-radius: 6px;
   text-decoration: none;
   color: #333;
   font-size: 0.95rem;
   transition: background 0.2s ease-in-out;
   cursor: pointer;
-  margin-bottom: 8px; /* Add bottom margin for spacing between items */
+  margin-bottom: 0px; /* Add bottom margin for spacing between items */
 }
 
 .sidebar-link:hover {
@@ -167,9 +169,6 @@
   padding: 0 6px;
 }
 
-.collapse-btn:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
 
 /* Hide content in collapsed state */
 .sidebar.collapsed .sidebar-header img,
@@ -181,7 +180,7 @@
 /* Adjust link styling in collapsed state */
 .sidebar.collapsed .sidebar-link {
   justify-content: flex-start;
-  padding: 14px 20px;
+  padding: 5px 20px;
 }
 
 .sidebar.collapsed .sidebar-link svg {
@@ -195,23 +194,30 @@
   margin-left: auto;
 }
 
-/* Flyout menu for collapsed state */
+/* --- Flyout menu for collapsed state --- */
 .flyout-menu {
-  position: fixed;
+  position: fixed; /* Use fixed positioning to stay in place relative to the viewport */
   background: #ffffff;
   color: #0f0f0f;
   border-radius: 6px;
   padding: 10px 8px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   z-index: 3000;
-  max-height: calc(100vh - 16px);
+  /* Make sure flyout menu can scroll if content is too long */
+  max-height: calc(100vh - 16px); /* Max height minus some padding */
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
+  transform-origin: 0 0; /* Default origin for potential animations */
 }
 
 .flyout-menu::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+/* You can optionally add this class if you want to animate the flyout upwards */
+.flyout-menu.align-up {
+  transform-origin: 0 100%; /* Adjust origin for upward animation */
 }
 
 .flyout-title {
@@ -235,6 +241,7 @@
   text-decoration: none;
   padding: 8px 10px;
   border-radius: 4px;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .flyout-link:hover {
@@ -294,9 +301,4 @@
     width: 100%; /* Take full width when sidebar is not open */
     margin-left: 0; /* No margin */
   }
-
-  /* If sidebar is open and collapsed (this state might be less relevant on mobile, but for consistency) */
-  /* .sidebar-collapsed .sidebar {
-      width: 70px; 
-  } */
 }
