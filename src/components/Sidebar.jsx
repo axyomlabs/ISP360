@@ -25,6 +25,7 @@ import { BsBoxSeam } from "react-icons/bs";
 import { MdOutlineAccessTime, MdOutlineAccountTree } from "react-icons/md";
 import { LuFileClock } from "react-icons/lu";
 import { GoSidebarExpand, GoSidebarCollapse } from "react-icons/go";
+import { BiArrowFromLeft, BiArrowFromRight } from "react-icons/bi";
 
 import isplogo from "../assets/logo.png";
 import "../css/Sidebar.css";
@@ -478,9 +479,10 @@ const Sidebar = ({
             }}
           >
             {isCollapsed ? (
-              <GoSidebarCollapse className="thicker-icon" />
+              <BiArrowFromLeft className="thicker-icon" />
             ) : (
-              <GoSidebarExpand className="thicker-icon" />
+             
+              <BiArrowFromRight className="thicker-icon" />
             )}
             {/* Use appropriate icon based on collapsed state */}
           </button>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
   FaSearch,
   FaRegBell,
@@ -7,6 +7,7 @@ import {
   FaBars,
   FaTimes,
   FaWhatsapp,
+  FaRedo,
 } from "react-icons/fa";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { PiLinkSimple } from "react-icons/pi";
@@ -20,15 +21,16 @@ import { FaChartLine, FaExclamationCircle } from 'react-icons/fa';
 import { IoIosLogOut } from "react-icons/io";
 import isplogo from "../assets/isp360dark.png";
 import "../css/Header.css";
+import { BiReset } from 'react-icons/bi';
 
-// Accept toggleSidebar, isSidebarOpen, and the new props for layout management
-function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled }) {
+function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled, onResetLayout }) {
   const [searchType, setSearchType] = useState("Username");
   const [searchQuery, setSearchQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
-  // Breadcrumb logic
+  const navigate = useNavigate();
+
   const location = useLocation();
   const pathnames = location.pathname.split("/").filter((x) => x);
   const filteredPathnames = pathnames.filter(
@@ -45,15 +47,24 @@ function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled }) {
     }, 3000);
   };
 
+  const handleLogout = () => {
+    // 1. Reset the layout toggle state to 'false'
+    setDragEnabled(false);
+
+    // 2. Add your actual logout logic here (e.g., clearing a token)
+    console.log("User logged out. Redirecting to login page.");
+
+    // 3. Navigate to the login page
+    navigate("/login");
+  };
+
   return (
     <>
       <div
         className="main-header p-3 bg-white d-flex flex-column"
         id="header"
       >
-        {/* Top Row: Logo, Search Bar, and Icons */}
         <div className="header-top-row d-flex justify-content-between align-items-center">
-          {/* Sidebar toggle (mobile) + Logo */}
           <div className="d-flex align-items-center">
             <button
               className="btn btn-dark d-md-none me-2"
@@ -70,7 +81,6 @@ function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled }) {
             </div>
           </div>
 
-          {/* Search Form */}
           <form
             onSubmit={handleSearch}
             className="search-form d-flex align-items-center flex-grow-1 mx-3"
@@ -145,64 +155,56 @@ function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled }) {
             </Dropdown>
           </form>
 
-          {/* Right Section: Icons */}
           <div className="header-right d-flex justify-content-end align-items-center">
             <button className="btn header-icon-btn" title="Franchise">
               <HiOutlineBuildingOffice2 className="header-icon" />
             </button>
-            {/* Quick Links Dropdown */}
             <Dropdown align="end" className="header-icon-btn">
               <Dropdown.Toggle as="div" bsPrefix="p-0">
-                <button className="btn header-icon-btn" title="Quick Links">
+                <button className="btn header-icon-btn">
                   <PiLinkSimple className="header-icon" />
                 </button>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item href="#/live-logs">
-                  <FaChartLine className="me-2" />
-                  Live Logs
-                </Dropdown.Item>
-                <Dropdown.Item href="/app/clients/add">
+                <Dropdown.Item as={Link} to="clients/all" className="quick-link">
                   <FaUserPlus className="me-2" />
                   Add User
                 </Dropdown.Item>
-                <Dropdown.Item href="#/add-complaint">
-                  <FaExclamationCircle className="me-2" />
-                  Add Complaint
-                </Dropdown.Item>
-                <Dropdown.Item href="#/add-lead">
-                  <FaRegFileAlt className="me-2" />
-                  Add Lead
-                </Dropdown.Item>
-                <Dropdown.Item href="/app/clients/all">
+                <Dropdown.Item as={Link} to="clients/add" className="quick-link">
                   <FaUsers className="me-2" />
-                  List Users
+                  All Users
                 </Dropdown.Item>
-                <Dropdown.Item href="#/online-users">
+                <Dropdown.Item as={Link} to="/nas-details" className="quick-link">
                   <FaLaptopCode className="me-2" />
-                  Online Users
+                  NAS
                 </Dropdown.Item>
-                <Dropdown.Item href="#/olt-signal-details">
-                  <BiDotsVerticalRounded className="me-2" />
-                  OLT Signal Details
+                <Dropdown.Item as={Link} to="/reports" className="quick-link">
+                  <FaRegFileAlt className="me-2" />
+                  Reports
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to="/tools" className="quick-link">
+                  <FaTools className="me-2" />
+                  Tools
+                </Dropdown.Item>
+                <Dropdown.Item as={Link} to="/complaints" className="quick-link">
+                  <FaExclamationCircle className="me-2" />
+                  Complaints
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-
-            <button className="btn header-icon-btn" title="WhatsApp">
-              <FaWhatsapp className="header-icon" />
-            </button>
             <button className="btn header-icon-btn" title="Telegram">
               <TbBrandTelegram className="header-icon" />
+            </button>
+            <button className="btn header-icon-btn" title="WhatsApp">
+              <FaWhatsapp className="header-icon" />
             </button>
             <button className="btn header-icon-btn" title="Notifications">
               <FaRegBell className="header-icon" />
             </button>
 
-            {/* User Profile Dropdown with Drag & Drop toggle */}
-            <Dropdown align="end">
+            <Dropdown align="end" className="header-icon-btn">
               <Dropdown.Toggle as="div" bsPrefix="p-0">
-                <button className="btn header-icon-btn" title="Profile">
+                <button className="btn header-icon-btn">
                   <FaRegUserCircle className="header-icon" />
                 </button>
               </Dropdown.Toggle>
@@ -230,7 +232,12 @@ function Header({ toggleSidebar, isSidebarOpen, dragEnabled, setDragEnabled }) {
                   </div>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item href="#/logout">
+                <Dropdown.Item as="button" onClick={onResetLayout}>
+                  <BiReset className="me-2" />
+                  Reset Layout
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={handleLogout}>
                   <IoIosLogOut className="me-2" />
                   Logout
                 </Dropdown.Item>

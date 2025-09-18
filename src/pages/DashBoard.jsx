@@ -178,32 +178,8 @@ const getBrowserIcon = (browser) => {
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { dragEnabled } = useOutletContext();
-
-  // --- Drag & Drop Layout State (Split into three columns) ---
-  const defaultOrder = {
-    column1: ["userStats", "paymentStats", "onlinePaymentStats", "registrationStats"],
-    column2: ["onlineAdminUsers", "complaintStats", "leadsStats", "nasWise"],
-    column3: ["today", "complaints", "yesterday", "upcomingExpiry"]
-  };
-  const [cardOrder, setCardOrder] = useState(() => {
-    const saved = localStorage.getItem("dashboardCardOrder");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.column1 && parsed.column2 && parsed.column3 && Array.isArray(parsed.column1) && Array.isArray(parsed.column2) && Array.isArray(parsed.column3)) {
-          return parsed;
-        }
-      } catch (e) {
-        console.error("Failed to parse dashboard card order from localStorage", e);
-      }
-    }
-    return defaultOrder;
-  });
-
-  useEffect(() => {
-    localStorage.setItem("dashboardCardOrder", JSON.stringify(cardOrder));
-  }, [cardOrder]);
+  // Use the state and setter from the outlet context
+  const { dragEnabled, cardOrder, setCardOrder } = useOutletContext();
 
   // --- Existing State ---
   const getDefaultDateRange = () => {
@@ -331,11 +307,6 @@ function Dashboard() {
         [destination.droppableId]: newEndColumnOrder,
       });
     }
-  };
-
-  const handleResetLayout = () => {
-    setCardOrder(defaultOrder);
-    localStorage.removeItem("dashboardCardOrder");
   };
 
   // --- Render Card By Key ---
@@ -1035,23 +1006,23 @@ function Dashboard() {
               <strong>Today</strong>
             </div>
             <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Registrations</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Registrations</span> <a href="#">55550</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Activations</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Activations</span> <a href="#">336350</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Expiry</span> <a href="#">1</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Expiry</span> <a href="#">1</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Renewals</span> <a href="#">0 / ₹ 0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Renewals</span> <a href="#">0 / ₹ 568950</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Payments</span> <a href="#">0 / ₹ 0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Payments</span> <a href="#">0 / ₹ 569835630</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Online Pay</span> <a href="#">01120 / ₹ 456930</a>
               </li>
             </ul>
           </div>
@@ -1063,17 +1034,17 @@ function Dashboard() {
               <strong>Complaints</strong>
             </div>
             <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Open</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Open</span> <a href="#">0</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>In Progress</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">In Progress</span> <a href="#">0</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Resolved</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Resolved</span> <a href="#">0</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Closed</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Closed</span> <a href="#">0</a>
               </li>
             </ul>
           </div>
@@ -1085,23 +1056,23 @@ function Dashboard() {
               <strong>Yesterday</strong>
             </div>
             <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Registrations</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Registrations</span> <a href="#">0</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Activations</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Activations</span> <a href="#">0</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Expiry</span> <a href="#">1</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Expiry</span> <a href="#">10000</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Renewals</span> <a href="#">1 / ₹ 625</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Renewals</span> <a href="#">1 / ₹ 155625</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Payments</span> <a href="#">0 / ₹ 0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Payments</span> <a href="#">0 / ₹ 550000</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Online Pay</span> <a href="#">0 / ₹ 0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Online Pay</span> <a href="#">0 / ₹ 50000</a>
               </li>
             </ul>
           </div>
@@ -1113,11 +1084,11 @@ function Dashboard() {
               <strong>Upcoming User Expiry</strong>
             </div>
             <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Tomorrow</span> <a href="#">0</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Tomorrow</span> <a href="#">20000</a>
               </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>Next 7 Days</span> <a href="#">3</a>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Next 7 Days</span> <a href="#">30000</a>
               </li>
             </ul>
           </div>
@@ -1132,12 +1103,6 @@ function Dashboard() {
     <div className="container-fluid">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <AnnouncementBar />
-        <button
-          className="btn btn-sm btn-outline-secondary"
-          onClick={handleResetLayout}
-        >
-          Reset Layout
-        </button>
       </div>
 
       <div className="row">
@@ -1223,7 +1188,7 @@ function Dashboard() {
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          {...provided.dragHandleProps}
+                          {...provided.dragHandleProps}   
                           style={{
                             ...provided.draggableProps.style,
                             opacity:

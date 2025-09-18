@@ -1,18 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import "../css/MainLayout.css";
 
-// The Layout component now accepts dragEnabled and setDragEnabled as props
+const defaultOrder = {
+  column1: ["userStats", "paymentStats", "onlinePaymentStats", "registrationStats"],
+  column2: ["onlineAdminUsers", "complaintStats", "leadsStats", "nasWise"],
+  column3: ["today", "complaints", "yesterday", "upcomingExpiry"],
+};
+
 const Layout = ({ dragEnabled, setDragEnabled }) => {
-  // State to control the mobile sidebar visibility (overlay, and sidebar itself on mobile)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // State to control the collapsed/expanded state of the sidebar (for desktop)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
+  const [cardOrder, setCardOrder] = useState(() => {
+    const saved = localStorage.getItem("dashboardCardOrder");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (
+          parsed &&
+          parsed.column1 &&
+          parsed.column2 &&
+          parsed.column3 &&
+          Array.isArray(parsed.column1) &&
+          Array.isArray(parsed.column2) &&
+          Array.isArray(parsed.column3)
+        ) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse dashboard card order from localStorage", e);
+      }
+    }
+    return defaultOrder;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("dashboardCardOrder", JSON.stringify(cardOrder));
+  }, [cardOrder]);
+
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Toggle the mobile visibility state
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const toggleCollapse = () => {
@@ -22,14 +52,19 @@ const Layout = ({ dragEnabled, setDragEnabled }) => {
     }
   };
 
+  const handleResetLayout = () => {
+    setCardOrder(defaultOrder);
+    localStorage.removeItem("dashboardCardOrder");
+  };
+
   return (
     <div className={`layout-container ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
-      {/* Pass the drag state and setter to Header */}
-      <Header 
-        toggleSidebar={toggleSidebar} 
-        isSidebarOpen={isSidebarOpen} 
-        dragEnabled={dragEnabled} 
-        setDragEnabled={setDragEnabled} 
+      <Header
+        toggleSidebar={toggleSidebar}
+        isSidebarOpen={isSidebarOpen}
+        dragEnabled={dragEnabled}
+        setDragEnabled={setDragEnabled}
+        onResetLayout={handleResetLayout}
       />
       <div className="content-wrapper">
         <Sidebar
@@ -39,8 +74,7 @@ const Layout = ({ dragEnabled, setDragEnabled }) => {
           setIsCollapsed={setIsSidebarCollapsed}
         />
         <div className="main-content-container">
-          {/* Use the Outlet component to render child routes and pass the drag state via context */}
-          <Outlet context={{ dragEnabled }} />
+          <Outlet context={{ dragEnabled, cardOrder, setCardOrder }} />
         </div>
       </div>
     </div>
