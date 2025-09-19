@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import UserStatsDashboard from "../components/user_stats_card";
-import "../css/font.css";
 import {
   BarChart,
   Bar,
@@ -322,7 +321,7 @@ function Dashboard() {
       case "paymentStats":
         return (
           <div className=" card mb-4 border-0 shadow-sm rounded-3" key={key}>
-            <div className="header-font card-header bg-white border-0 d-flex justify-content-between align-items-center">
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold card-header text-dark mb-0">Payment Stats</h6>
               <button
                 className="btn btn-sm btn-light rounded-circle shadow-sm"
@@ -437,7 +436,7 @@ function Dashboard() {
         );
       case "onlinePaymentStats":
         return (
-          <div className="header-font card mb-4 border-0 shadow-sm rounded-3" key={key}>
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold card-header text-dark mb-0">
                 Online Payments Stats
