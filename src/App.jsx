@@ -11,6 +11,7 @@ import Dashboard from './pages/DashBoard';
 import LoginPage from './pages/LoginPage';
 import AllSubscribers from './pages/AllSubscribers';
 import Addsubscriber from './pages/Addsubscriber';
+import OnlineUsers from './components/clints/OnlineUsers';
 
 export default function App() {
   const [dragEnabled, setDragEnabled] = useState(false);
@@ -29,7 +30,7 @@ export default function App() {
           {/* Clients Routes */}
           <Route path="clients/all" element={<AllSubscribers/>} />
           <Route path="clients/add" element={<Addsubscriber/>} />
-          <Route path="clients/online" element={<div>Online Clients Page</div>} />
+          <Route path="clients/online" element={<OnlineUsers/>} />
           <Route path="clients/bulk" element={<div>Bulk Operation Page</div>} />
           <Route path="clients/session-history" element={<div>Session History Page</div>} />
           <Route path="clients/traffic-history" element={<div>Traffic History Page</div>} />

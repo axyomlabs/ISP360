@@ -1,0 +1,6 @@
+/* --- Card Header Font --- */
+.header-font {
+  font-family: var(--primary-font);
+  font-weight: bold;
+  font-size: 1rem;
+}

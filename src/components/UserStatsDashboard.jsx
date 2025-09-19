@@ -1,15 +1,14 @@
-import React from 'react';
+import React from "react";
 
 const UserStatsDashboard = () => {
-
-    return (
-        <div className="user-stats-dashboard">
-            <style>
-                {`
+  return (
+    <div className="user-stats-dashboard">
+      <style>
+        {`
                 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
                 .user-stats-dashboard {
-                    font-family: 'Inter', sans-serif;
+                    font-family: 'Roboto', sans-serif;
                     // padding: 1.5rem;
                 }
                 
@@ -119,6 +118,10 @@ const UserStatsDashboard = () => {
                     justify-content: space-between;
                 }
 
+                .user-stats-dashboard .info-label {
+                    margin-right: 0.5rem;
+                }
+
                 .user-stats-dashboard .info-number {
                     font-size: 1.5rem;
                     font-weight: 700;
@@ -140,8 +143,8 @@ const UserStatsDashboard = () => {
                 }
 
                 .user-stats-dashboard .on-hold-tile {
-                    border-color: #2dd4bf;
-                    background-color: #5eead4;
+                    border-color: #348b7eff;
+                    background-color: #348b7eff;
                 }
 
                 .user-stats-dashboard .offline-tile {
@@ -153,55 +156,100 @@ const UserStatsDashboard = () => {
                     border-color: #4b5563;
                     background-color: #6b7280;
                 }
+
+                /* ========================================= */
+                /* LAPTOP STYLES */
+                /* ========================================= */
+                @media (min-width: 992px) and (max-width: 1366px) {
+                    .user-stats-dashboard .title {
+                        font-size: 1.25rem;
+                    }
+
+                    .user-stats-dashboard .card {
+                        padding: 1rem;
+                    }
+                
+                    .user-stats-dashboard .metrics-grid {
+                        gap: 1rem;
+                    }
+                    
+                    .user-stats-dashboard .metric-tile {
+                        padding: 1rem;
+                    }
+
+                    .user-stats-dashboard .metric-label {
+                        font-size: 0.75rem;
+                    }
+
+                    .user-stats-dashboard .metric-number {
+                        font-size: 2rem;
+                    }
+
+                    .user-stats-dashboard .info-grid {
+                        gap: 0.75rem;
+                    }
+
+                    .user-stats-dashboard .info-tile {
+                        padding: 0.75rem;
+                    }
+                    
+                   .user-stats-dashboard .info-label {
+                         font-size: 10px;
+                    }
+                
+                    .user-stats-dashboard .info-number {
+                        font-size: 1.25rem;
+                    }
+                }
                 `}
-            </style>
-            <div className="card">
-                <h2 className="title">User Stats</h2>
+      </style>
+      <div className="card">
+        <h2 className="title">User Stats</h2>
 
-                <div className="metrics-grid">
-                    <div className="metric-tile total-tile">
-                        <p className="metric-label">Total</p>
-                        <p className="metric-number">74</p>
-                    </div>
-                    <div className="metric-tile active-tile">
-                        <p className="metric-label">Active</p>
-                        <p className="metric-number">64</p>
-                    </div>
-                    <div className="metric-tile online-tile">
-                        <p className="metric-label">Online</p>
-                        <p className="metric-number">59</p>
-                    </div>
-                </div>
-
-                <div className="info-grid">
-                    <div className="info-tile expired-tile">
-                        <span>Expired</span>
-                        <span className="info-number">0</span>
-                    </div>
-                    <div className="info-tile pending-tile">
-                        <span>Pending</span>
-                        <span className="info-number">0</span>
-                    </div>
-                    <div className="info-tile suspended-tile">
-                        <span>Suspended</span>
-                        <span className="info-number">0</span>
-                    </div>
-                    <div className="info-tile on-hold-tile">
-                        <span>On Hold</span>
-                        <span className="info-number">2</span>
-                    </div>
-                    <div className="info-tile offline-tile">
-                        <span>Offline</span>
-                        <span className="info-number">15</span>
-                    </div>
-                    <div className="info-tile disconnected-tile">
-                        <span>Disconnected</span>
-                        <span className="info-number">8</span>
-                    </div>
-                </div>
-            </div>
+        <div className="metrics-grid">
+          <div className="metric-tile total-tile">
+            <p className="metric-label">Total</p>
+            <p className="metric-number">74</p>
+          </div>
+          <div className="metric-tile active-tile">
+            <p className="metric-label">Active</p>
+            <p className="metric-number">64</p>
+          </div>
+          <div className="metric-tile online-tile">
+            <p className="metric-label">Online</p>
+            <p className="metric-number">59</p>
+          </div>
         </div>
-    );
+
+        <div className="info-grid">
+          <div className="info-tile expired-tile">
+            <span className="info-label">Expired</span>
+            <span className="info-number">0</span>
+          </div>
+          <div className="info-tile pending-tile">
+            <span className="info-label">Pending</span>
+            <span className="info-number">0</span>
+          </div>
+          <div className="info-tile suspended-tile">
+            <span className="info-label">Suspended</span>
+            <span className="info-number">0</span>
+          </div>
+          <div className="info-tile on-hold-tile">
+            <span className="info-label">On Hold</span>
+            <span className="info-number">2</span>
+          </div>
+          <div className="info-tile offline-tile">
+            <span className="info-label">Offline</span>
+            <span className="info-number">15</span>
+          </div>
+          <div className="info-tile disconnected-tile">
+            <span className="info-label">Disconnected</span>
+            <span className="info-number">8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default UserStatsDashboard;

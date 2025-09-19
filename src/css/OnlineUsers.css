@@ -1,0 +1,144 @@
+.container {
+  padding: 20px;
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.card-header {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.settings-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.card-footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 15px 20px;
+  text-align: right;
+}
+
+.button-green {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.button-blue {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.table-header {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+  color: #555;
+}
+
+.td {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 15px;
+  font-size: 14px;
+}
+
+.tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table-footer {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-btn {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.page-number {
+  font-weight: bold;
+}

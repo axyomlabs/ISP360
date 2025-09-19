@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import UserStatsDashboard from "../components/user_stats_card";
+import "../css/font.css";
 import {
   BarChart,
   Bar,
@@ -320,9 +321,9 @@ function Dashboard() {
         );
       case "paymentStats":
         return (
-          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
-            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold text-dark mb-0">Payment Stats</h6>
+          <div className=" card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            <div className="header-font card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold card-header text-dark mb-0">Payment Stats</h6>
               <button
                 className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowPaymentFilter(!showPaymentFilter)}
@@ -436,9 +437,9 @@ function Dashboard() {
         );
       case "onlinePaymentStats":
         return (
-          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+          <div className="header-font card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold text-dark mb-0">
+              <h6 className="fw-bold card-header text-dark mb-0">
                 Online Payments Stats
               </h6>
               <button
@@ -553,8 +554,8 @@ function Dashboard() {
       case "registrationStats":
         return (
           <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
-            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold text-dark mb-0">
+            <div className="bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold card-header mb-0">
                 Registrations & Activations
               </h6>
               <button
@@ -669,11 +670,11 @@ function Dashboard() {
       case "onlineAdminUsers":
         return (
           <div className="card mb-3" key={key}>
-            <div className="card-header">
-              <strong>Online Admin Users</strong>
+            <div className="fw-bold card-header card-header">
+              Online Admin Users
             </div>
             <div className="card-body p-2">
-              <p className="mb-2">
+              <p className=" mb-2">
                 Total Online Admin / Staff Users Found : {onlineAdminUsers.length}
               </p>
               <table className="table table-sm mb-0">
@@ -717,7 +718,7 @@ function Dashboard() {
         return (
           <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold text-dark mb-0">Complaints Stats</h6>
+              <h6 className="fw-bold card-header  text-dark mb-0">Complaints Stats</h6>
               <button
                 className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowComplaintFilter(!showComplaintFilter)}
@@ -828,8 +829,8 @@ function Dashboard() {
       case "leadsStats":
         return (
           <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
-            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold text-dark mb-0">Leads Stats</h6>
+            <div className="card-header bg-white border-0 d-flex  ">
+              <h6 className="fw-bold card-header text-dark mb-0">Leads Stats</h6>
               <button
                 className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowLeadsFilter(!showLeadsFilter)}
@@ -940,8 +941,8 @@ function Dashboard() {
       case "nasWise":
         return (
           <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
-            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold text-dark mb-0">
+            <div className=" bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold card-header text-dark mb-0">
                 NAS Wise Online Users
               </h6>
             </div>
@@ -1002,8 +1003,8 @@ function Dashboard() {
       case "today":
         return (
           <div className="card mb-3" key={key}>
-            <div className="card-header">
-              <strong>Today</strong>
+            <div className="fw-bold card-header">
+              Today
             </div>
             <ul className="list-group list-group-flush small">
               <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
@@ -1030,8 +1031,8 @@ function Dashboard() {
       case "complaints":
         return (
           <div className="card mb-3" key={key}>
-            <div className="card-header">
-              <strong>Complaints</strong>
+            <div className="fw-bold card-header">
+              Complaints
             </div>
             <ul className="list-group list-group-flush small">
               <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
@@ -1052,8 +1053,8 @@ function Dashboard() {
       case "yesterday":
         return (
           <div className="card mb-3" key={key}>
-            <div className="card-header">
-              <strong>Yesterday</strong>
+            <div className="fw-bold card-header">
+              Yesterday
             </div>
             <ul className="list-group list-group-flush small">
               <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
@@ -1080,8 +1081,8 @@ function Dashboard() {
       case "upcomingExpiry":
         return (
           <div className="card mb-3" key={key}>
-            <div className="card-header">
-              <strong>Upcoming User Expiry</strong>
+            <div className="fw-bold card-header">
+              Upcoming User Expiry
             </div>
             <ul className="list-group list-group-flush small">
               <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
