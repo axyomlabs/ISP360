@@ -35,7 +35,7 @@ const LoginPage = () => {
   return (
     <div className="container-fluid vh-100 d-flex">
       {/* 🔹 Top-left image */}
-      <img src={Xlogo} alt="Top Left Logo" className="top-left-img"/>
+      {/* <img src={Xlogo} alt="Top Left Logo" className="top-left-img"/> */}
 
       {/* Left Side */}
       <div className="col-md-4 d-flex flex-column justify-content-center align-items-center bg-light">

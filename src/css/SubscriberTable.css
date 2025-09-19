@@ -1,110 +1,114 @@
+  /* src/css/SubscriberTable.css */
+
+  .subscriber-datatable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+    min-width: 1200px; /* ensure scroll */
+  }
+
+  .subscriber-datatable thead tr {
+    background-color: #f8f9fa;
+    color: #495057;
+  }
+
+  /* src/css/SubscriberTable.css */
 /* src/css/SubscriberTable.css */
 
-.subscriber-datatable {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 0;
-  min-width: 1200px; /* ensure scroll */
-}
-
-.subscriber-datatable thead tr {
-  background-color: #f8f9fa;
-  color: #495057;
-}
-
 .subscriber-datatable th,
 .subscriber-datatable td {
-  padding: 10px 15px; /* balanced padding */
+  padding: 0.75rem 1rem;
   vertical-align: middle;
   border-bottom: 1px solid #dee2e6;
-  text-align: left;
+  text-align: left; /* This aligns content to the left */
   white-space: nowrap;
 }
 
-.subscriber-datatable th {
-  font-weight: 600;
-  cursor: pointer;
-}
 
-.subscriber-datatable th svg {
-  margin-left: 5px;
-  font-size: 0.8em;
-  color: #6c757d;
-}
+  /* Ensure the drag-scroll div doesn't add unwanted margin/padding */
+  .drag-scroll {
+    width: 100%;
+    overflow-x: auto;
+    cursor: grab;
+    user-select: none;
+  }
 
-.subscriber-datatable tbody tr:hover {
-  background-color: #f1f3f5;
-}
+  .drag-scroll.active-drag {
+    cursor: grabbing;
+  }
+  .subscriber-datatable th {
+    /* font-weight: 600; */
+    cursor: pointer;
+  }
 
-.status-icon,
-.conn-status-icon {
-  font-size: 1em;
-  display: inline-block;
-}
+  .subscriber-datatable th svg {
+    
+    font-size: 0.8em;
+    color: #6c757d;
+  }
 
-/* Status icon colors */
-.status-icon.text-success { color: #28a745; }
-.status-icon.text-secondary { color: #6c757d; }
-.status-icon.text-warning { color: #ffc107; }
-.status-icon.text-danger { color: #dc3545; }
+  .subscriber-datatable tbody tr:hover {
+    background-color: #f1f3f5;
+  }
 
-/* Connection status icon colors */
-.conn-status-icon.text-success { color: #28a745; }
-.conn-status-icon.text-danger { color: #dc3545; }
+  .status-icon,
+  .conn-status-icon {
+    font-size: 1em;
+    display: inline-block;
+  }
 
-/* Center align the status column */
-.subscriber-datatable td:nth-child(2),
-.subscriber-datatable th:nth-child(2) {
-  text-align: center;
-}
+  /* Status icon colors */
+  .status-icon.text-success { color: #28a745; }
+  .status-icon.text-secondary { color: #6c757d; }
+  .status-icon.text-warning { color: #ffc107; }
+  .status-icon.text-danger { color: #dc3545; }
 
-/* Drag scroll wrapper */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  cursor: grab;
-  user-select: none; /* no text selection */
-}
+  /* Connection status icon colors */
+  .conn-status-icon.text-success { color: #28a745; }
+  .conn-status-icon.text-danger { color: #dc3545; }
 
-.table-wrapper.active-drag {
-  cursor: grabbing;
-}
-.subscriber-datatable {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 0;
-  min-width: 1200px; /* force horizontal scroll */
-}
+  /* Center align the status column */
 
-.subscriber-datatable th,
-.subscriber-datatable td {
-  padding: 15px; /* same padding as before */
-  vertical-align: middle;
-  border-bottom: 1px solid #dee2e6;
-  text-align: left;
-  white-space: nowrap;
-}
 
-.subscriber-datatable th {
-  font-weight: 600;
-  cursor: pointer;
-}
+  /* Drag scroll wrapper */
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    cursor: grab;
+    user-select: none; /* no text selection */
+  }
+
+  .table-wrapper.active-drag {
+    cursor: grabbing;
+  }
+  .subscriber-datatable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
+    min-width: 1200px; /* force horizontal scroll */
+  }
+
+
+  .subscriber-datatable th {
+    /* font-weight: 600; */
+    cursor: pointer;
+  }
 
 .drag-scroll {
   width: 100%;
-  overflow-x: auto;
-  cursor: grab;
-  user-select: none; /* disable text selection while dragging */
+  overflow-x: auto; /* Essential for horizontal scrolling */
+  cursor: grab; /* Default cursor for the scrollable area */
+  user-select: none;
 }
 
 .drag-scroll.active-drag {
-  cursor: grabbing;
+  cursor: grabbing; /* Cursor when actively dragging */
 }

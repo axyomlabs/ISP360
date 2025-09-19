@@ -1,42 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import "../css/MainLayout.css";
 
-const Layout = () => {
-  // State to control the mobile sidebar visibility (overlay, and sidebar itself on mobile)
+const defaultOrder = {
+  column1: ["userStats", "paymentStats", "onlinePaymentStats", "registrationStats"],
+  column2: ["onlineAdminUsers", "complaintStats", "leadsStats", "nasWise"],
+  column3: ["today", "complaints", "yesterday", "upcomingExpiry"],
+};
+
+const Layout = ({ dragEnabled, setDragEnabled }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // State to control the collapsed/expanded state of the sidebar (for desktop)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
+  const [cardOrder, setCardOrder] = useState(() => {
+    const saved = localStorage.getItem("dashboardCardOrder");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (
+          parsed &&
+          parsed.column1 &&
+          parsed.column2 &&
+          parsed.column3 &&
+          Array.isArray(parsed.column1) &&
+          Array.isArray(parsed.column2) &&
+          Array.isArray(parsed.column3)
+        ) {
+          return parsed;
+        }
+      } catch (e) {
+        console.error("Failed to parse dashboard card order from localStorage", e);
+      }
+    }
+    return defaultOrder;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("dashboardCardOrder", JSON.stringify(cardOrder));
+  }, [cardOrder]);
+
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen); // Toggle the mobile visibility state
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // When collapsing/expanding for desktop, we want to ensure the mobile view is closed.
   const toggleCollapse = () => {
     setIsSidebarCollapsed((prevCollapsed) => !prevCollapsed);
-    // If collapsing or expanding on desktop, ensure the mobile sidebar is closed.
-    // This prevents having both a collapsed sidebar and an open mobile sidebar.
     if (isSidebarOpen) {
       setIsSidebarOpen(false);
     }
   };
 
+  const handleResetLayout = () => {
+    setCardOrder(defaultOrder);
+    localStorage.removeItem("dashboardCardOrder");
+  };
+
   return (
     <div className={`layout-container ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
-      {/* Pass toggleSidebar and isSidebarOpen to Header */}
-      <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+      <Header
+        toggleSidebar={toggleSidebar}
+        isSidebarOpen={isSidebarOpen}
+        dragEnabled={dragEnabled}
+        setDragEnabled={setDragEnabled}
+        onResetLayout={handleResetLayout}
+      />
       <div className="content-wrapper">
         <Sidebar
-          isSidebarOpen={isSidebarOpen} // Pass the state to Sidebar for its overlay logic
-          toggleSidebar={toggleSidebar} // Pass the toggle function to close sidebar via overlay/esc key
-          isCollapsed={isSidebarCollapsed} // Pass collapsed state for styling
-          setIsCollapsed={setIsSidebarCollapsed} // Pass the setter for the collapse button
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          isCollapsed={isSidebarCollapsed}
+          setIsCollapsed={setIsSidebarCollapsed}
         />
         <div className="main-content-container">
-          <Outlet />
+          <Outlet context={{ dragEnabled, cardOrder, setCardOrder }} />
         </div>
       </div>
     </div>

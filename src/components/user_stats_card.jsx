@@ -1,7 +1,6 @@
 import React from 'react';
 
 const UserStatsDashboard = () => {
-
     return (
         <div className="user-stats-dashboard">
             <style>
@@ -10,42 +9,31 @@ const UserStatsDashboard = () => {
 
                 .user-stats-dashboard {
                     font-family: 'Inter', sans-serif;
-                    // padding: 1.5rem;
                 }
                 
-                @media (min-width: 768px) {
-                    .user-stats-dashboard {
-                        // padding: 2rem;
-                    }
-                }
-
-                .user-stats-dashboard .card {
-                    max-width: 96rem;
-                    margin: 0;
-                    background-color: white;
-                    padding: 1.5rem;
-                    border-radius: 1rem;
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                }
-                
-                @media (min-width: 768px) {
-                    .user-stats-dashboard .card {
-                        padding: 2rem;
-                    }
-                }
-
                 .user-stats-dashboard .title {
-                    font-size: 1.5rem;
+                    font-size: 1.25rem; /* Smaller font size */
                     font-weight: 700;
                     color: #1e293b;
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 1rem; /* Reduced margin */
+                    padding-left: 1rem; /* Smaller padding */
+                    padding-top: 1rem; /* Smaller padding */
+                }
+                
+                @media (min-width: 768px) {
+                    .user-stats-dashboard .title {
+                        padding-left: 1.5rem; /* Smaller padding for larger screens */
+                        padding-top: 1.5rem; /* Smaller padding for larger screens */
+                    }
                 }
 
                 .user-stats-dashboard .metrics-grid {
                     display: grid;
                     grid-template-columns: 1fr;
-                    gap: 1.5rem;
-                    margin-bottom: 1rem;
+                    gap: 1rem; /* Reduced gap */
+                    margin-bottom: 0.75rem; /* Reduced margin */
+                    padding-left: 1rem; /* Smaller padding */
+                    padding-right: 1rem; /* Smaller padding */
                 }
 
                 @media (min-width: 640px) {
@@ -53,17 +41,25 @@ const UserStatsDashboard = () => {
                         grid-template-columns: repeat(3, 1fr);
                     }
                 }
+                
+                @media (min-width: 768px) {
+                    .user-stats-dashboard .metrics-grid {
+                        padding-left: 1.5rem;
+                        padding-right: 1.5rem;
+                    }
+                }
 
                 .user-stats-dashboard .metric-tile {
-                    padding: 1.5rem;
-                    border-radius: 0.75rem;
+                    padding: 1rem; /* Reduced padding */
+                    border-radius: 0.5rem; /* Smaller border radius */
                     color: white;
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                    transition: transform 0.2s ease-in-out;
+                    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06); /* Smaller shadow */
+                    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
                 }
 
                 .user-stats-dashboard .metric-tile:hover {
-                    transform: translateY(-0.25rem);
+                    transform: translateY(-0.1rem); /* Reduced hover effect */
+                    box-shadow: 0 5px 8px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
                 }
 
                 .user-stats-dashboard .total-tile {
@@ -79,21 +75,24 @@ const UserStatsDashboard = () => {
                 }
 
                 .user-stats-dashboard .metric-label {
-                    font-size: 0.875rem;
+                    font-size: 0.75rem; /* Smaller font size */
                     font-weight: 500;
                     opacity: 0.8;
                 }
 
                 .user-stats-dashboard .metric-number {
-                    font-size: 3rem;
+                    font-size: 2.25rem; /* Smaller font size */
                     font-weight: 700;
-                    margin-top: 0.5rem;
+                    margin-top: 0.25rem; /* Reduced margin */
                 }
 
                 .user-stats-dashboard .info-grid {
                     display: grid;
                     grid-template-columns: 1fr;
-                    gap: 1rem;
+                    gap: 0.75rem; /* Reduced gap */
+                    padding-left: 1rem; /* Smaller padding */
+                    padding-right: 1rem; /* Smaller padding */
+                    padding-bottom: 1rem; /* Smaller padding */
                 }
 
                 @media (min-width: 640px) {
@@ -105,13 +104,16 @@ const UserStatsDashboard = () => {
                 @media (min-width: 768px) {
                     .user-stats-dashboard .info-grid {
                         grid-template-columns: repeat(3, 1fr);
+                        padding-left: 1.5rem;
+                        padding-right: 1.5rem;
+                        padding-bottom: 1.5rem;
                     }
                 }
 
                 .user-stats-dashboard .info-tile {
-                    padding: 1rem;
-                    border-width: 2px;
-                    border-radius: 0.5rem;
+                    padding: 0.75rem; /* Reduced padding */
+                    border-width: 1px; /* Thinner border */
+                    border-radius: 0.4rem; /* Smaller border radius */
                     color: white;
                     font-weight: 500;
                     display: flex;
@@ -120,7 +122,7 @@ const UserStatsDashboard = () => {
                 }
 
                 .user-stats-dashboard .info-number {
-                    font-size: 1.5rem;
+                    font-size: 1.25rem; /* Smaller font size */
                     font-weight: 700;
                 }
 
@@ -155,49 +157,47 @@ const UserStatsDashboard = () => {
                 }
                 `}
             </style>
-            <div className="card">
-                <h2 className="title">User Stats</h2>
+            <h2 className="title">User Stats</h2>
 
-                <div className="metrics-grid">
-                    <div className="metric-tile total-tile">
-                        <p className="metric-label">Total</p>
-                        <p className="metric-number">74</p>
-                    </div>
-                    <div className="metric-tile active-tile">
-                        <p className="metric-label">Active</p>
-                        <p className="metric-number">64</p>
-                    </div>
-                    <div className="metric-tile online-tile">
-                        <p className="metric-label">Online</p>
-                        <p className="metric-number">59</p>
-                    </div>
+            <div className="metrics-grid">
+                <div className="metric-tile total-tile">
+                    <p className="metric-label">Total</p>
+                    <p className="metric-number">74</p>
                 </div>
+                <div className="metric-tile active-tile">
+                    <p className="metric-label">Active</p>
+                    <p className="metric-number">64</p>
+                </div>
+                <div className="metric-tile online-tile">
+                    <p className="metric-label">Online</p>
+                    <p className="metric-number">59</p>
+                </div>
+            </div>
 
-                <div className="info-grid">
-                    <div className="info-tile expired-tile">
-                        <span>Expired</span>
-                        <span className="info-number">0</span>
-                    </div>
-                    <div className="info-tile pending-tile">
-                        <span>Pending</span>
-                        <span className="info-number">0</span>
-                    </div>
-                    <div className="info-tile suspended-tile">
-                        <span>Suspended</span>
-                        <span className="info-number">0</span>
-                    </div>
-                    <div className="info-tile on-hold-tile">
-                        <span>On Hold</span>
-                        <span className="info-number">2</span>
-                    </div>
-                    <div className="info-tile offline-tile">
-                        <span>Offline</span>
-                        <span className="info-number">15</span>
-                    </div>
-                    <div className="info-tile disconnected-tile">
-                        <span>Disconnected</span>
-                        <span className="info-number">8</span>
-                    </div>
+            <div className="info-grid">
+                <div className="info-tile expired-tile">
+                    <span>Expired</span>
+                    <span className="info-number">0</span>
+                </div>
+                <div className="info-tile pending-tile">
+                    <span>Pending</span>
+                    <span className="info-number">0</span>
+                </div>
+                <div className="info-tile suspended-tile">
+                    <span>Suspended</span>
+                    <span className="info-number">0</span>
+                </div>
+                <div className="info-tile on-hold-tile">
+                    <span>On Hold</span>
+                    <span className="info-number">2</span>
+                </div>
+                <div className="info-tile offline-tile">
+                    <span>Offline</span>
+                    <span className="info-number">15</span>
+                </div>
+                <div className="info-tile disconnected-tile">
+                    <span>Disconnected</span>
+                    <span className="info-number">8</span>
                 </div>
             </div>
         </div>

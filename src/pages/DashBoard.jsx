@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import UserStatsDashboard from "../components/user_stats_card";
 import {
   BarChart,
@@ -15,9 +15,30 @@ import {
 import "../css/Dashboard.css";
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
+import { IoIosLogOut } from "react-icons/io";
+import { FiSettings } from "react-icons/fi";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import Modal from "react-modal";
 
-// Your existing data
-const onlinePaymentData = [];
+// --- Data ---
+const onlinePaymentData = [
+  { date: "21-Aug", amount: 1500 },
+  { date: "22-Aug", amount: 2000 },
+  { date: "23-Aug", amount: 1800 },
+  { date: "24-Aug", amount: 2500 },
+  { date: "25-Aug", amount: 2200 },
+  { date: "26-Aug", amount: 3000 },
+  { date: "27-Aug", amount: 2800 },
+  { date: "28-Aug", amount: 3500 },
+  { date: "29-Aug", amount: 3200 },
+  { date: "30-Aug", amount: 4000 },
+  { date: "31-Aug", amount: 3800 },
+  { date: "01-Sep", amount: 4500 },
+  { date: "02-Sep", amount: 4200 },
+  { date: "03-Sep", amount: 5000 },
+  { date: "04-Sep", amount: 4800 },
+  { date: "05-Sep", amount: 5500 },
+];
 const registrationData = [
   { date: "21-Aug", registrations: 1, activations: 1 },
   { date: "22-Aug", registrations: 2, activations: 2 },
@@ -73,23 +94,94 @@ const complaintData = [
   { date: "09-Sep", complaints: 22 },
   { date: "10-Sep", complaints: 23 },
 ];
-const leadsData = [];
-const nasWiseData = [{ nas: "103.142.162.1", users: 58 }];
-const userStatsData = [
-  { label: "Total", value: 74, color: "#3f2ab9ff" },
-  { label: "Active", value: 64, color: "#007f88ff" },
-  { label: "Online", value: 59, color: "#15a702ff" },
-  { label: "Expired", value: 0, color: "#868d6bff" },
-  { label: "Pend. Actv", value: 0, color: "#4d0057ff" },
-  { label: "Suspended", value: 0, color: "#9e0000ff" },
-  { label: "On Hold", value: 2, color: "#ff8928ff" },
-  { label: "Disconnected", value: 8, color: "#e60d0dff" },
+const leadsData = [
+  { date: "21-Aug", leads: 5 },
+  { date: "22-Aug", leads: 8 },
+  { date: "23-Aug", leads: 12 },
+  { date: "24-Aug", leads: 10 },
+  { date: "25-Aug", leads: 7 },
+  { date: "26-Aug", leads: 9 },
+  { date: "27-Aug", leads: 15 },
+  { date: "28-Aug", leads: 11 },
+  { date: "29-Aug", leads: 14 },
+  { date: "30-Aug", leads: 18 },
+  { date: "31-Aug", leads: 16 },
+  { date: "01-Sep", leads: 20 },
+  { date: "02-Sep", leads: 13 },
+  { date: "03-Sep", leads: 17 },
+  { date: "04-Sep", leads: 19 },
 ];
+const nasWiseData = [{ nas: "103.142.162.1", users: 58 }];
+const onlineAdminUsers = [
+  {
+    user: "Its You!",
+    device: "Windows 10",
+    browser: "Chrome",
+    duration: "1 s",
+    ip: "103.142.163.180",
+    isCurrent: true,
+  },
+  {
+    user: "desk",
+    device: "Android",
+    browser: "Firefox",
+    duration: "2 h 26 m 56 s",
+    ip: "103.142.162.68",
+    isCurrent: false,
+  },
+  {
+    user: "support",
+    device: "iOS",
+    browser: "Safari",
+    duration: "1 h 15 m 30 s",
+    ip: "103.142.162.99",
+    isCurrent: false,
+  },
+  {
+    user: "field_agent",
+    device: "Linux",
+    browser: "Brave",
+    duration: "30 m 10 s",
+    ip: "103.142.162.150",
+    isCurrent: false,
+  },
+];
+
+const getDeviceIcon = (device) => {
+  switch (device) {
+    case "Windows 10":
+      return "https://img.icons8.com/color/16/000000/windows-10.png";
+    case "Android":
+      return "https://img.icons8.com/color/16/000000/android-os.png";
+    case "iOS":
+      return "https://img.icons8.com/color/16/000000/ios-logo.png";
+    case "Linux":
+      return "https://img.icons8.com/color/16/000000/linux.png";
+    default:
+      return "https://img.icons8.com/ios/16/000000/device--v1.png";
+  }
+};
+const getBrowserIcon = (browser) => {
+  switch (browser) {
+    case "Chrome":
+      return "https://img.icons8.com/color/16/000000/chrome--v1.png";
+    case "Firefox":
+      return "https://img.icons8.com/color/16/000000/firefox.png";
+    case "Safari":
+      return "https://img.icons8.com/color/16/000000/safari--v1.png";
+    case "Brave":
+      return "https://img.icons8.com/color/16/000000/brave-web-browser.png";
+    default:
+      return "https://img.icons8.com/ios/16/000000/web.png";
+  }
+};
 
 function Dashboard() {
   const navigate = useNavigate();
+  // Use the state and setter from the outlet context
+  const { dragEnabled, cardOrder, setCardOrder } = useOutletContext();
 
-  // Function to get the default date range (last 15 days)
+  // --- Existing State ---
   const getDefaultDateRange = () => {
     const today = new Date();
     const startDate = new Date();
@@ -100,39 +192,25 @@ function Dashboard() {
     };
   };
 
-  // State to hold the visibility of each filter
   const [showPaymentFilter, setShowPaymentFilter] = useState(false);
   const [showOnlinePaymentFilter, setShowOnlinePaymentFilter] = useState(false);
   const [showRegistrationFilter, setShowRegistrationFilter] = useState(false);
   const [showComplaintFilter, setShowComplaintFilter] = useState(false);
   const [showLeadsFilter, setShowLeadsFilter] = useState(false);
 
-  // State to hold the currently selected dates in the filter inputs (not yet applied)
-  const [paymentDateRange, setPaymentDateRange] = useState(
-    getDefaultDateRange()
-  );
-  const [onlinePaymentDateRange, setOnlinePaymentDateRange] = useState(
-    getDefaultDateRange()
-  );
-  const [registrationDateRange, setRegistrationDateRange] = useState(
-    getDefaultDateRange()
-  );
-  const [complaintDateRange, setComplaintDateRange] = useState(
-    getDefaultDateRange()
-  );
+  const [paymentDateRange, setPaymentDateRange] = useState(getDefaultDateRange());
+  const [onlinePaymentDateRange, setOnlinePaymentDateRange] = useState(getDefaultDateRange());
+  const [registrationDateRange, setRegistrationDateRange] = useState(getDefaultDateRange());
+  const [complaintDateRange, setComplaintDateRange] = useState(getDefaultDateRange());
   const [leadsDateRange, setLeadsDateRange] = useState(getDefaultDateRange());
 
-  // State to hold the filtered data for each chart
   const [filteredPaymentData, setFilteredPaymentData] = useState([]);
-  const [filteredOnlinePaymentData, setFilteredOnlinePaymentData] = useState(
-    []
-  );
+  const [filteredOnlinePaymentData, setFilteredOnlinePaymentData] = useState([]);
   const [filteredRegistrationData, setFilteredRegistrationData] = useState([]);
   const [filteredComplaintData, setFilteredComplaintData] = useState([]);
   const [filteredLeadsData, setFilteredLeadsData] = useState([]);
   const [filteredNasWiseData, setFilteredNasWiseData] = useState(nasWiseData);
 
-  // Helper function to filter data based on a given date range
   const filterData = (data, dateRange) => {
     const fromDate = new Date(dateRange.from);
     const toDate = new Date(dateRange.to);
@@ -151,7 +229,6 @@ function Dashboard() {
     });
   };
 
-  // Handlers for the "Apply" button
   const handleApplyFilter = (chartName) => {
     let dateRangeToApply;
     let originalData;
@@ -161,192 +238,106 @@ function Dashboard() {
         dateRangeToApply = paymentDateRange;
         originalData = paymentData;
         setFilteredPaymentData(filterData(originalData, dateRangeToApply));
-        setShowPaymentFilter(false); // Hide the filter
+        setShowPaymentFilter(false);
         break;
       case "onlinePayment":
         dateRangeToApply = onlinePaymentDateRange;
         originalData = onlinePaymentData;
-        setFilteredOnlinePaymentData(
-          filterData(originalData, dateRangeToApply)
-        );
-        setShowOnlinePaymentFilter(false); // Hide the filter
+        setFilteredOnlinePaymentData(filterData(originalData, dateRangeToApply));
+        setShowOnlinePaymentFilter(false);
         break;
       case "registration":
         dateRangeToApply = registrationDateRange;
         originalData = registrationData;
         setFilteredRegistrationData(filterData(originalData, dateRangeToApply));
-        setShowRegistrationFilter(false); // Hide the filter
+        setShowRegistrationFilter(false);
         break;
       case "complaint":
         dateRangeToApply = complaintDateRange;
         originalData = complaintData;
         setFilteredComplaintData(filterData(originalData, dateRangeToApply));
-        setShowComplaintFilter(false); // Hide the filter
+        setShowComplaintFilter(false);
         break;
       case "leads":
         dateRangeToApply = leadsDateRange;
         originalData = leadsData;
         setFilteredLeadsData(filterData(originalData, dateRangeToApply));
-        setShowLeadsFilter(false); // Hide the filter
+        setShowLeadsFilter(false);
         break;
       default:
         break;
     }
   };
 
-  // Initial filtering for the charts when the component mounts
   useEffect(() => {
     setFilteredPaymentData(filterData(paymentData, getDefaultDateRange()));
-    setFilteredOnlinePaymentData(
-      filterData(onlinePaymentData, getDefaultDateRange())
-    );
-    setFilteredRegistrationData(
-      filterData(registrationData, getDefaultDateRange())
-    );
+    setFilteredOnlinePaymentData(filterData(onlinePaymentData, getDefaultDateRange()));
+    setFilteredRegistrationData(filterData(registrationData, getDefaultDateRange()));
     setFilteredComplaintData(filterData(complaintData, getDefaultDateRange()));
     setFilteredLeadsData(filterData(leadsData, getDefaultDateRange()));
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   const handleStatClick = (label) => {
     navigate(`/user-stats?status=${label}`);
   };
 
-  const renderChart = (data, chartType) => {
-    if (!data || data.length === 0) {
-      return (
-        <div className="d-flex align-items-center justify-content-center h-100 text-muted">
-          No data to display.
-        </div>
-      );
+  // --- Drag & Drop Handlers for multiple lists ---
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+    if (!destination) return;
+    if (source.droppableId === destination.droppableId) {
+      const columnId = source.droppableId;
+      const newColumnOrder = Array.from(cardOrder[columnId]);
+      const [removed] = newColumnOrder.splice(source.index, 1);
+      newColumnOrder.splice(destination.index, 0, removed);
+      setCardOrder({
+        ...cardOrder,
+        [columnId]: newColumnOrder,
+      });
+    } else {
+      const startColumn = cardOrder[source.droppableId];
+      const endColumn = cardOrder[destination.droppableId];
+      const newStartColumnOrder = Array.from(startColumn);
+      const [removed] = newStartColumnOrder.splice(source.index, 1);
+      const newEndColumnOrder = Array.from(endColumn);
+      newEndColumnOrder.splice(destination.index, 0, removed);
+      setCardOrder({
+        ...cardOrder,
+        [source.droppableId]: newStartColumnOrder,
+        [destination.droppableId]: newEndColumnOrder,
+      });
     }
-
-    let bars = [];
-    let xKey = chartType === "nasWise" ? "nas" : "date";
-
-    switch (chartType) {
-      case "payment":
-        bars.push(
-          <Bar key="payment" dataKey="amount" fill="#28a745" barSize={40}>
-            <LabelList dataKey="amount" position="top" dy={-5} fontSize={13} />
-          </Bar>
-        );
-        break;
-      case "onlinePayment":
-        bars.push(
-          <Bar key="onlinePayment" dataKey="amount" fill="#f39c12" barSize={40}>
-            <LabelList dataKey="amount" position="top" dy={-5} fontSize={13} />
-          </Bar>
-        );
-        break;
-      case "complaint":
-        bars.push(
-          <Bar key="complaint" dataKey="complaints" fill="#e74c3c" barSize={40}>
-            <LabelList
-              dataKey="complaints"
-              position="top"
-              dy={-5}
-              fontSize={13}
-            />
-          </Bar>
-        );
-        break;
-      case "registration":
-        bars.push(
-          <Bar
-            key="registrations"
-            dataKey="registrations"
-            fill="#BBDCE5"
-            barSize={40}
-          >
-            <LabelList
-              dataKey="registrations"
-              position="top"
-              dy={-5}
-              fontSize={13}
-            />
-          </Bar>
-        );
-        bars.push(
-          <Bar
-            key="activations"
-            dataKey="activations"
-            fill="#9CAFAA"
-            barSize={40}
-          >
-            <LabelList
-              dataKey="activations"
-              position="top"
-              dy={-5}
-              fontSize={13}
-            />
-          </Bar>
-        );
-        break;
-      case "leads":
-        bars.push(
-          <Bar key="leads" dataKey="leads" fill="#9b59b6" barSize={40}>
-            <LabelList dataKey="leads" position="top" dy={-5} fontSize={13} />
-          </Bar>
-        );
-        break;
-      case "nasWise":
-        bars.push(
-          <Bar key="nasWise" dataKey="users" fill="#CFAB8D" barSize={60}>
-            <LabelList dataKey="users" position="top" dy={-10} fontSize={13} />
-          </Bar>
-        );
-        break;
-      default:
-        return null;
-    }
-
-    return (
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          margin={{ top: 30, right: 20, left: 0, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xKey} fontSize={10} />
-          <YAxis domain={[0, "dataMax + 20"]} fontSize={10} />
-          <Tooltip />
-          <Legend wrapperStyle={{ fontSize: 12 }} />
-          {bars}
-        </BarChart>
-      </ResponsiveContainer>
-    );
   };
 
-  return (
-    <div className="container-fluid">
-      <AnnouncementBar />
-
-      <div className="row">
-        <div className="col-md-5">
-          {/* User Stats Card (unchanged) */}
-          <div className="card mb-3">
-            <UserStatsDashboard/>
+  // --- Render Card By Key ---
+  const renderCardByKey = (key) => {
+    switch (key) {
+      case "userStats":
+        return (
+          <div className="card mb-3" key={key}>
+            <UserStatsDashboard />
           </div>
-
-          {/* Payment Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Payment Stats</strong>
+        );
+      case "paymentStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">Payment Stats</h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowPaymentFilter(!showPaymentFilter)}
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
             {showPaymentFilter && (
-              <div className="card-body">
-                <div className="d-flex flex-wrap gap-2">
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">From:</label>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={paymentDateRange.from}
                       onChange={(e) =>
                         setPaymentDateRange({
@@ -356,12 +347,11 @@ function Dashboard() {
                       }
                     />
                   </div>
-
-                  <div className="d-flex align-items-center gap-2 flex-grow-1">
-                    <label className="mb-0">To:</label>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
                     <input
                       type="date"
-                      className="form-control form-control-sm"
+                      className="form-control form-control-sm shadow-sm w-100"
                       value={paymentDateRange.to}
                       onChange={(e) =>
                         setPaymentDateRange({
@@ -371,305 +361,852 @@ function Dashboard() {
                       }
                     />
                   </div>
-
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => handleApplyFilter("payment")}
-                  >
-                    Apply
-                  </button>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("payment")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredPaymentData, "payment")}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredPaymentData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="barGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="5%"
+                        stopColor=" #065f12ff"
+                        stopOpacity={0.9}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor="#028d20ff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 500"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="amount"
+                    fill="url(#barGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="amount"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
-
-          {/* Online Payments Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Online Payments Stats</strong>
+        );
+      case "onlinePaymentStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">
+                Online Payments Stats
+              </h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() =>
                   setShowOnlinePaymentFilter(!showOnlinePaymentFilter)
                 }
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
             {showOnlinePaymentFilter && (
-              <div className="card-body">
-                <div className="d-flex align-items-center flex-wrap">
-                  <label className="me-2 mb-0">From:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm me-2 mb-2 mb-sm-0"
-                    value={onlinePaymentDateRange.from}
-                    onChange={(e) =>
-                      setOnlinePaymentDateRange({
-                        ...onlinePaymentDateRange,
-                        from: e.target.value,
-                      })
-                    }
-                  />
-                  <label className="me-2 mb-0">To:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm mb-2 mb-sm-0"
-                    value={onlinePaymentDateRange.to}
-                    onChange={(e) =>
-                      setOnlinePaymentDateRange({
-                        ...onlinePaymentDateRange,
-                        to: e.target.value,
-                      })
-                    }
-                  />
-                  <button
-                    className="btn btn-sm btn-primary ms-2"
-                    onClick={() => handleApplyFilter("onlinePayment")}
-                  >
-                    Apply
-                  </button>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={onlinePaymentDateRange.from}
+                      onChange={(e) =>
+                        setOnlinePaymentDateRange({
+                          ...onlinePaymentDateRange,
+                          from: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={onlinePaymentDateRange.to}
+                      onChange={(e) =>
+                        setOnlinePaymentDateRange({
+                          ...onlinePaymentDateRange,
+                          to: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("onlinePayment")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredOnlinePaymentData, "onlinePayment")}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredOnlinePaymentData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="onlinePayGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#e69028ff" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#ffa600ff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 500"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="amount"
+                    fill="url(#onlinePayGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="amount"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
-
-          {/* Registrations & Activations Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Registrations & Activations</strong>
+        );
+      case "registrationStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">
+                Registrations & Activations
+              </h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() =>
                   setShowRegistrationFilter(!showRegistrationFilter)
                 }
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
             {showRegistrationFilter && (
-              <div className="card-body">
-                <div className="d-flex align-items-center flex-wrap">
-                  <label className="me-2 mb-0">From:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm me-2 mb-2 mb-sm-0"
-                    value={registrationDateRange.from}
-                    onChange={(e) =>
-                      setRegistrationDateRange({
-                        ...registrationDateRange,
-                        from: e.target.value,
-                      })
-                    }
-                  />
-                  <label className="me-2 mb-0">To:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm mb-2 mb-sm-0"
-                    value={registrationDateRange.to}
-                    onChange={(e) =>
-                      setRegistrationDateRange({
-                        ...registrationDateRange,
-                        to: e.target.value,
-                      })
-                    }
-                  />
-                  <button
-                    className="btn btn-sm btn-primary ms-2"
-                    onClick={() => handleApplyFilter("registration")}
-                  >
-                    Apply
-                  </button>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={registrationDateRange.from}
+                      onChange={(e) =>
+                        setRegistrationDateRange({
+                          ...registrationDateRange,
+                          from: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={registrationDateRange.to}
+                      onChange={(e) =>
+                        setRegistrationDateRange({
+                          ...registrationDateRange,
+                          to: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("registration")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredRegistrationData, "registration")}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredRegistrationData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid stroke="#eee" />
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 10"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Legend verticalAlign="top" height={30} iconType="circle" />
+                  <Bar
+                    dataKey="registrations"
+                    fill="#4facfe"
+                    barSize={30}
+                    radius={[6, 6, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="registrations"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                  <Bar
+                    dataKey="activations"
+                    fill="#00c9a7"
+                    barSize={30}
+                    radius={[6, 6, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="activations"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
-        </div>
-
-        <div className="col-md-5">
-          {/* Online Admin Users Card (no change) */}
-          <div className="card mb-3">
+        );
+      case "onlineAdminUsers":
+        return (
+          <div className="card mb-3" key={key}>
             <div className="card-header">
               <strong>Online Admin Users</strong>
             </div>
-            <div className="card-body">
-              <p>No Admins Found</p>
+            <div className="card-body p-2">
+              <p className="mb-2">
+                Total Online Admin / Staff Users Found : {onlineAdminUsers.length}
+              </p>
+              <table className="table table-sm mb-0">
+                <tbody>
+                  {onlineAdminUsers.map((user, index) => (
+                    <tr
+                      key={index}
+                      className={`align-middle ${user.isCurrent ? "text-success" : ""}`}
+                    >
+                      <td>
+                        {user.isCurrent ? (
+                          <strong>Its You!</strong>
+                        ) : (
+                          <button className="btn btn-lg ">
+                            <IoIosLogOut style={{ color: "red" }} />
+                          </button>
+                        )}
+                      </td>
+                      <td>
+                        <img
+                          src={getDeviceIcon(user.device)}
+                          alt={user.device}
+                          className="me-1"
+                        />
+                        <img
+                          src={getBrowserIcon(user.browser)}
+                          alt={user.browser}
+                        />
+                      </td>
+                      <td>{user.user}</td>
+                      <td>{user.duration}</td>
+                      <td>{user.ip}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-
-          {/* Complaints Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Complaints Stats</strong>
+        );
+      case "complaintStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">Complaints Stats</h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowComplaintFilter(!showComplaintFilter)}
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
             {showComplaintFilter && (
-              <div className="card-body">
-                <div className="d-flex align-items-center flex-wrap">
-                  <label className="me-2 mb-0">From:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm me-2 mb-2 mb-sm-0"
-                    value={complaintDateRange.from}
-                    onChange={(e) =>
-                      setComplaintDateRange({
-                        ...complaintDateRange,
-                        from: e.target.value,
-                      })
-                    }
-                  />
-                  <label className="me-2 mb-0">To:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm mb-2 mb-sm-0"
-                    value={complaintDateRange.to}
-                    onChange={(e) =>
-                      setComplaintDateRange({
-                        ...complaintDateRange,
-                        to: e.target.value,
-                      })
-                    }
-                  />
-                  <button
-                    className="btn btn-sm btn-primary ms-2"
-                    onClick={() => handleApplyFilter("complaint")}
-                  >
-                    Apply
-                  </button>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={complaintDateRange.from}
+                      onChange={(e) =>
+                        setComplaintDateRange({
+                          ...complaintDateRange,
+                          from: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={complaintDateRange.to}
+                      onChange={(e) =>
+                        setComplaintDateRange({
+                          ...complaintDateRange,
+                          to: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("complaint")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredComplaintData, "complaint")}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredComplaintData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="complaintsGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#e41717ff" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#a50d0dff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 5"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="complaints"
+                    fill="url(#complaintsGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="complaints"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
-
-          {/* Leads Stats Card */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Leads Stats</strong>
+        );
+      case "leadsStats":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">Leads Stats</h6>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowLeadsFilter(!showLeadsFilter)}
               >
-                <BiFilterAlt className="me-1" /> Filter
+                <BiFilterAlt size={18} className="text-secondary" />
               </button>
             </div>
             {showLeadsFilter && (
-              <div className="card-body">
-                <div className="d-flex align-items-center flex-wrap">
-                  <label className="me-2 mb-0">From:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm me-2 mb-2 mb-sm-0"
-                    value={leadsDateRange.from}
-                    onChange={(e) =>
-                      setLeadsDateRange({
-                        ...leadsDateRange,
-                        from: e.target.value,
-                      })
-                    }
-                  />
-                  <label className="me-2 mb-0">To:</label>
-                  <input
-                    type="date"
-                    className="form-control form-control-sm mb-2 mb-sm-0"
-                    value={leadsDateRange.to}
-                    onChange={(e) =>
-                      setLeadsDateRange({
-                        ...leadsDateRange,
-                        to: e.target.value,
-                      })
-                    }
-                  />
-                  <button
-                    className="btn btn-sm btn-primary ms-2"
-                    onClick={() => handleApplyFilter("leads")}
-                  >
-                    Apply
-                  </button>
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={leadsDateRange.from}
+                      onChange={(e) =>
+                        setLeadsDateRange({
+                          ...leadsDateRange,
+                          from: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={leadsDateRange.to}
+                      onChange={(e) =>
+                        setLeadsDateRange({
+                          ...leadsDateRange,
+                          to: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("leads")}
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredLeadsData, "leads")}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredLeadsData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="leadsGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#6f42c1" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#8640a1ff"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 5"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="leads"
+                    fill="url(#leadsGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="leads"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
-
-          {/* Nas wise Current Online Users Card (no change) */}
-          <div className="card mb-3">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <strong>Nas wise Current Online Users</strong>
+        );
+      case "nasWise":
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold text-dark mb-0">
+                NAS Wise Online Users
+              </h6>
             </div>
-            <div className="card-body" style={{ height: "250px" }}>
-              {renderChart(filteredNasWiseData, "nasWise")}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredNasWiseData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="nasWiseGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#975620ff" stopOpacity={0.9} />
+                      <stop
+                        offset="95%"
+                        stopColor="#8B6F4E"
+                        stopOpacity={0.9}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <XAxis
+                    dataKey="nas"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis fontSize={12} tick={{ fill: "#6c757d" }} />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Bar
+                    dataKey="users"
+                    fill="url(#nasWiseGradient)"
+                    barSize={35}
+                    radius={[8, 8, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="users"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
-        </div>
-
-        {/* The two small columns on the right (no change) */}
-        <div className="col-md-2">
-          <div className="card mb-3">
+        );
+      case "today":
+        return (
+          <div className="card mb-3" key={key}>
             <div className="card-header">
               <strong>Today</strong>
             </div>
-            <div className="card-body">
-              <p>Registrations</p>
-              <p>Activations</p>
-              <p>Expiry: </p>
-              <p>Renewals</p>
-              <p>Payments </p>
-              <p>Online Pay</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Registrations</span> <a href="#">55550</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Activations</span> <a href="#">336350</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Expiry</span> <a href="#">1</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Renewals</span> <a href="#">0 / ₹ 568950</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Payments</span> <a href="#">0 / ₹ 569835630</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Online Pay</span> <a href="#">01120 / ₹ 456930</a>
+              </li>
+            </ul>
           </div>
-          <div className="card mb-3">
+        );
+      case "complaints":
+        return (
+          <div className="card mb-3" key={key}>
             <div className="card-header">
               <strong>Complaints</strong>
             </div>
-            <div className="card-body">
-              <p>Open</p>
-              <p>In Progres</p>
-              <p>Resolved</p>
-              <p>Closed</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Open</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">In Progress</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Resolved</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Closed</span> <a href="#">0</a>
+              </li>
+            </ul>
           </div>
-          <div className="card mb-3">
+        );
+      case "yesterday":
+        return (
+          <div className="card mb-3" key={key}>
             <div className="card-header">
               <strong>Yesterday</strong>
             </div>
-            <div className="card-body">
-              <p>Registrations</p>
-              <p>Activations</p>
-              <p>Expiry</p>
-              <p>Renewals</p>
-              <p>Payments</p>
-              <p>Online Pay</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Registrations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Activations</span> <a href="#">0</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Expiry</span> <a href="#">10000</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Renewals</span> <a href="#">1 / ₹ 155625</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Payments</span> <a href="#">0 / ₹ 550000</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Online Pay</span> <a href="#">0 / ₹ 50000</a>
+              </li>
+            </ul>
           </div>
-          <div className="card mb-3">
+        );
+      case "upcomingExpiry":
+        return (
+          <div className="card mb-3" key={key}>
             <div className="card-header">
-              <strong>Upcoming Expiry</strong>
+              <strong>Upcoming User Expiry</strong>
             </div>
-            <div className="card-body">
-              <p>Tomorrow</p>
-              <p>Next 7 Days</p>
-            </div>
+            <ul className="list-group list-group-flush small">
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Tomorrow</span> <a href="#">20000</a>
+              </li>
+              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
+                <span className="span">Next 7 Days</span> <a href="#">30000</a>
+              </li>
+            </ul>
           </div>
-        </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  // --- Main Render ---
+  return (
+    <div className="container-fluid">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <AnnouncementBar />
+      </div>
+
+      <div className="row">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <div className="col-md-5">
+            <Droppable droppableId="column1" isDropDisabled={!dragEnabled}>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {cardOrder.column1.map((key, idx) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={idx}
+                      isDragDisabled={!dragEnabled}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity:
+                              dragEnabled && snapshot.isDragging ? 0.7 : 1,
+                            cursor: dragEnabled ? "grab" : "default",
+                          }}
+                        >
+                          {renderCardByKey(key)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+          <div className="col-md-5">
+            <Droppable droppableId="column2" isDropDisabled={!dragEnabled}>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {cardOrder.column2.map((key, idx) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={idx}
+                      isDragDisabled={!dragEnabled}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity:
+                              dragEnabled && snapshot.isDragging ? 0.7 : 1,
+                            cursor: dragEnabled ? "grab" : "default",
+                          }}
+                        >
+                          {renderCardByKey(key)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+          <div className="col-md-2">
+            <Droppable droppableId="column3" isDropDisabled={!dragEnabled}>
+              {(provided) => (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  {cardOrder.column3.map((key, idx) => (
+                    <Draggable
+                      key={key}
+                      draggableId={key}
+                      index={idx}
+                      isDragDisabled={!dragEnabled}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}   
+                          style={{
+                            ...provided.draggableProps.style,
+                            opacity:
+                              dragEnabled && snapshot.isDragging ? 0.7 : 1,
+                            cursor: dragEnabled ? "grab" : "default",
+                          }}
+                        >
+                          {renderCardByKey(key)}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
+        </DragDropContext>
       </div>
     </div>
   );
