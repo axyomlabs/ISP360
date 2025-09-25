@@ -1,0 +1,79 @@
+/* src/css/SubscriberTable.css */
+
+.subscriber-datatable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  /* min-width: 1200px; is moved to the table element for better control */
+}
+
+.subscriber-datatable thead tr {
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.subscriber-datatable th,
+.subscriber-datatable td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+  text-align: left;
+  white-space: nowrap; /* Ensures content stays on one line */
+}
+
+.subscriber-datatable th {
+  cursor: pointer;
+}
+
+.subscriber-datatable th svg {
+  font-size: 0.8em;
+  color: #6c757d;
+}
+
+.subscriber-datatable tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+/* Icons */
+.status-icon,
+.conn-status-icon {
+  font-size: 1em;
+  display: inline-block;
+}
+
+/* Status icon colors (Bootstrap-style colors) */
+.status-icon.text-success { color: #28a745; }
+.status-icon.text-secondary { color: #6c757d; }
+.status-icon.text-warning { color: #ffc107; }
+.status-icon.text-danger { color: #dc3545; }
+
+/* Connection status icon colors */
+.conn-status-icon.text-success { color: #28a745; }
+.conn-status-icon.text-danger { color: #dc3545; }
+
+/* Drag scroll wrapper */
+.drag-scroll {
+  width: 100%;
+  overflow-x: auto; /* Essential for horizontal scrolling */
+  cursor: grab; /* Default cursor for the scrollable area */
+  user-select: none; /* Prevents text selection while dragging */
+}
+
+.drag-scroll.active-drag {
+  cursor: grabbing; /* Cursor when actively dragging */
+}
+
+/* Table Wrapper for full width on the card */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto; 
+  cursor: grab;
+  user-select: none;
+}
+.table-wrapper.active-drag {
+  cursor: grabbing;
+}
