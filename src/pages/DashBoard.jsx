@@ -17,6 +17,7 @@ import {
   Cell,
 } from "recharts";
 import "../css/Dashboard.css";
+import OnlineAdminUsers from "../components/OnlineAdminUsers"
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
 import { IoIosLogOut } from "react-icons/io";
@@ -26,17 +27,17 @@ import Modal from "react-modal";
 
 // --- Data ---
 const onlinePaymentData = [
-  { date: "21-Aug", amount: 1500 },
-  { date: "22-Aug", amount: 2000 },
-  { date: "23-Aug", amount: 1800 },
-  { date: "24-Aug", amount: 2500 },
-  { date: "25-Aug", amount: 2200 },
-  { date: "26-Aug", amount: 3000 },
-  { date: "27-Aug", amount: 2800 },
-  { date: "28-Aug", amount: 3500 },
-  { date: "29-Aug", amount: 3200 },
-  { date: "30-Aug", amount: 4000 },
-  { date: "31-Aug", amount: 3800 },
+  { date: "21-Sep", amount: 1500 },
+  { date: "22-Sep", amount: 2000 },
+  { date: "23-Sep", amount: 1800 },
+  { date: "24-Sep", amount: 2500 },
+  { date: "25-Sep", amount: 2200 },
+  { date: "26-Sep", amount: 3000 },
+  { date: "07-Sep", amount: 2800 },
+  { date: "08-Sep", amount: 3500 },
+  { date: "09-Sep", amount: 3200 },
+  { date: "13-Sep", amount: 4000 },
+  { date: "14-Sep", amount: 3800 },
   { date: "01-Sep", amount: 4500 },
   { date: "02-Sep", amount: 4200 },
   { date: "03-Sep", amount: 5000 },
@@ -44,24 +45,24 @@ const onlinePaymentData = [
   { date: "05-Sep", amount: 5500 },
 ];
 const registrationData = [
-  { date: "21-Aug", registrations: 1, activations: 1 },
-  { date: "22-Aug", registrations: 2, activations: 2 },
+  { date: "21-Sep", registrations: 1, activations: 1 },
+  { date: "22-Sep", registrations: 2, activations: 2 },
 ];
 const paymentData = [
-  { date: "13-Aug", amount: 2700 },
-  { date: "16-Aug", amount: 550 },
-  { date: "17-Aug", amount: 550 },
-  { date: "21-Aug", amount: 5900 },
-  { date: "22-Aug", amount: 575 },
-  { date: "23-Aug", amount: 1200 },
-  { date: "24-Aug", amount: 3000 },
-  { date: "25-Aug", amount: 450 },
-  { date: "26-Aug", amount: 800 },
-  { date: "27-Aug", amount: 1500 },
-  { date: "28-Aug", amount: 900 },
-  { date: "29-Aug", amount: 2100 },
-  { date: "30-Aug", amount: 650 },
-  { date: "31-Aug", amount: 1800 },
+  { date: "13-Sep", amount: 2700 },
+  { date: "16-Sep", amount: 550 },
+  { date: "17-Sep", amount: 550 },
+  { date: "21-Sep", amount: 5900 },
+  { date: "22-Sep", amount: 575 },
+  { date: "23-Sep", amount: 1200 },
+  { date: "24-Sep", amount: 3000 },
+  { date: "25-Sep", amount: 450 },
+  { date: "26-Sep", amount: 800 },
+  { date: "11-Sep", amount: 1500 },
+  { date: "12-Sep", amount: 900 },
+  { date: "29-Sep", amount: 2100 },
+  { date: "13-Sep", amount: 650 },
+  { date: "14-Sep", amount: 1800 },
   { date: "01-Sep", amount: 2500 },
   { date: "02-Sep", amount: 1200 },
   { date: "03-Sep", amount: 750 },
@@ -74,19 +75,19 @@ const paymentData = [
   { date: "10-Sep", amount: 2000 },
 ];
 const complaintData = [
-  { date: "11-Aug", complaints: 1 },
-  { date: "12-Aug", complaints: 2 },
-  { date: "17-Aug", complaints: 3 },
-  { date: "21-Aug", complaints: 4 },
-  { date: "23-Aug", complaints: 5 },
-  { date: "24-Aug", complaints: 6 },
-  { date: "25-Aug", complaints: 7 },
-  { date: "26-Aug", complaints: 8 },
-  { date: "27-Aug", complaints: 9 },
-  { date: "28-Aug", complaints: 10 },
-  { date: "29-Aug", complaints: 11 },
-  { date: "30-Aug", complaints: 12 },
-  { date: "31-Aug", complaints: 13 },
+  { date: "11-Sep", complaints: 1 },
+  { date: "12-Sep", complaints: 2 },
+  { date: "17-Sep", complaints: 3 },
+  { date: "21-Sep", complaints: 4 },
+  { date: "23-Sep", complaints: 5 },
+  { date: "24-Sep", complaints: 6 },
+  { date: "25-Sep", complaints: 7 },
+  { date: "26-Sep", complaints: 8 },
+  { date: "27-Sep", complaints: 9 },
+  { date: "28-Sep", complaints: 10 },
+  { date: "29-Sep", complaints: 11 },
+  { date: "30-Sep", complaints: 12 },
+  { date: "31-Sep", complaints: 13 },
   { date: "01-Sep", complaints: 14 },
   { date: "02-Sep", complaints: 15 },
   { date: "03-Sep", complaints: 16 },
@@ -99,57 +100,24 @@ const complaintData = [
   { date: "10-Sep", complaints: 23 },
 ];
 const leadsData = [
-  { date: "21-Aug", leads: 5 },
-  { date: "22-Aug", leads: 8 },
-  { date: "23-Aug", leads: 12 },
-  { date: "24-Aug", leads: 10 },
-  { date: "25-Aug", leads: 7 },
-  { date: "26-Aug", leads: 9 },
-  { date: "27-Aug", leads: 15 },
-  { date: "28-Aug", leads: 11 },
-  { date: "29-Aug", leads: 14 },
-  { date: "30-Aug", leads: 18 },
-  { date: "31-Aug", leads: 16 },
+  { date: "21-Sep", leads: 5 },
+  { date: "22-Sep", leads: 8 },
+  { date: "23-Sep", leads: 12 },
+  { date: "24-Sep", leads: 10 },
+  { date: "25-Sep", leads: 7 },
+  { date: "26-Sep", leads: 9 },
+  { date: "27-Sep", leads: 15 },
+  { date: "28-Sep", leads: 11 },
+  { date: "29-Sep", leads: 14 },
+  { date: "30-Sep", leads: 18 },
+  { date: "31-Sep", leads: 16 },
   { date: "01-Sep", leads: 20 },
   { date: "02-Sep", leads: 13 },
   { date: "03-Sep", leads: 17 },
   { date: "04-Sep", leads: 19 },
 ];
 const nasWiseData = [{ nas: "103.142.162.1", users: 58 }];
-const onlineAdminUsers = [
-  {
-    user: "Its You!",
-    device: "Windows 10",
-    browser: "Chrome",
-    duration: "1 s",
-    ip: "103.142.163.180",
-    isCurrent: true,
-  },
-  {
-    user: "desk",
-    device: "Android",
-    browser: "Firefox",
-    duration: "2 h 26 m 56 s",
-    ip: "103.142.162.68",
-    isCurrent: false,
-  },
-  {
-    user: "support",
-    device: "iOS",
-    browser: "Safari",
-    duration: "1 h 15 m 30 s",
-    ip: "103.142.162.99",
-    isCurrent: false,
-  },
-  {
-    user: "field_agent",
-    device: "Linux",
-    browser: "Brave",
-    duration: "30 m 10 s",
-    ip: "103.142.162.150",
-    isCurrent: false,
-  },
-];
+
 
 // --- NEW DATA AND COMPONENTS FOR COMPLAINTS DOUGHNUT CHART ---
 const complaintStatusData = [
@@ -762,48 +730,7 @@ function Dashboard() {
       case "onlineAdminUsers":
         return (
           <div className="card mb-3" key={key}>
-            <div className="fw-bold card-header card-header">
-              Online Admin Users
-            </div>
-            <div className="card-body p-2">
-              <p className=" mb-2">
-                Total Online Admin / Staff Users Found : {onlineAdminUsers.length}
-              </p>
-              <table className="table table-sm mb-0">
-                <tbody>
-                  {onlineAdminUsers.map((user, index) => (
-                    <tr
-                      key={index}
-                      className={`align-middle ${user.isCurrent ? "text-success" : ""}`}
-                    >
-                      <td>
-                        {user.isCurrent ? (
-                          <strong>Its You!</strong>
-                        ) : (
-                          <button className="btn btn-lg ">
-                            <IoIosLogOut style={{ color: "red" }} />
-                          </button>
-                        )}
-                      </td>
-                      <td>
-                        <img
-                          src={getDeviceIcon(user.device)}
-                          alt={user.device}
-                          className="me-1"
-                        />
-                        <img
-                          src={getBrowserIcon(user.browser)}
-                          alt={user.browser}
-                        />
-                      </td>
-                      <td>{user.user}</td>
-                      <td>{user.duration}</td>
-                      <td>{user.ip}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+           <OnlineAdminUsers/>
           </div>
         );
       case "complaintStats":

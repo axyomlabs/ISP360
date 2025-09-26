@@ -17,7 +17,7 @@ export default function App() {
   const [dragEnabled, setDragEnabled] = useState(false);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/isp360'>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage />} />
