@@ -11,12 +11,16 @@ import {
   ResponsiveContainer,
   Legend,
   LabelList,
+  // ADD THESE IMPORTS FOR THE COMPLAINTS CHART
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import "../css/Dashboard.css";
 import AnnouncementBar from "../components/AnnouncementBar";
 import { BiFilterAlt } from "react-icons/bi";
 import { IoIosLogOut } from "react-icons/io";
-import { FiSettings } from "react-icons/fi";
+import { FiSettings } from "react-icons/fi"; 
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Modal from "react-modal";
 
@@ -147,6 +151,76 @@ const onlineAdminUsers = [
   },
 ];
 
+// --- NEW DATA AND COMPONENTS FOR COMPLAINTS DOUGHNUT CHART ---
+const complaintStatusData = [
+  { name: "Closed", value: 55, color: "#4facfe" }, // Blue
+  { name: "In Progress", value: 8, color: "#ffa600ff" }, // Orange
+  { name: "Open", value: 12, color: "#e41717ff" }, // Red
+  { name: "Resolved", value: 25, color: "#028d20ff" }, // Green
+];
+const totalComplaints = complaintStatusData.reduce(
+  (sum, entry) => sum + entry.value,
+  0
+);
+
+// Custom Center Label (Simplified to take activeSlice)
+const CustomCenterLabel = ({ cx, cy, activeSlice }) => {
+  const { name, value, color } = activeSlice;
+
+  return (
+    <g>
+      <text
+        x={cx}
+        y={cy - 5}
+        textAnchor="middle"
+        dominantBaseline="central"
+        className="fw-bold"
+        fontSize="18px"
+        fill="#333"
+      >
+        {/* Shows the count/value of the selected/total slice */}
+        {`${value}`} 
+      </text>
+      <text
+        x={cx}
+        y={cy + 15}
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontSize="12px"
+        fill={color}
+        fontWeight="normal"
+      >
+        {name}
+      </text>
+    </g>
+  );
+};
+// --- Removed CustomPieTooltip as it's no longer needed ---
+
+
+// Custom Legend Formatter for Pie Chart (Remains the same)
+const renderColorfulLegendText = (value, entry) => {
+  const percentage =
+    totalComplaints > 0
+      ? ((entry.payload.value / totalComplaints) * 100).toFixed(2)
+      : "0.00";
+  return (
+    <span
+      style={{
+        color: entry.color,
+        fontWeight: 500,
+        fontSize: "12px",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {percentage}% {value}
+    </span>
+  );
+};
+
+// --- END NEW DATA AND COMPONENTS ---
+
+
 const getDeviceIcon = (device) => {
   switch (device) {
     case "Windows 10":
@@ -180,6 +254,25 @@ function Dashboard() {
   const navigate = useNavigate();
   // Use the state and setter from the outlet context
   const { dragEnabled, cardOrder, setCardOrder } = useOutletContext();
+
+  // --- NEW STATE FOR COMPLAINTS CHART (to track selection/hover) ---
+  const [activeSlice, setActiveSlice] = useState({
+    name: "Total",
+    value: totalComplaints,
+    color: "#6c757d", // Default color for total
+  });
+
+  // Handler for mouse enter on a slice
+  const onPieEnter = (_, index) => {
+    setActiveSlice(complaintStatusData[index]);
+  };
+
+  // Handler for mouse leave
+  const onPieLeave = () => {
+    setActiveSlice({ name: "Total", value: totalComplaints, color: "#6c757d" });
+  };
+  // -----------------------------------------------------------------
+
 
   // --- Existing State ---
   const getDefaultDateRange = () => {
@@ -976,7 +1069,7 @@ function Dashboard() {
                   <Tooltip
                     contentStyle={{
                       borderRadius: "10px",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      boxBoxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                       border: "none",
                     }}
                   />
@@ -1028,25 +1121,73 @@ function Dashboard() {
           </div>
         );
       case "complaints":
+        // --- UPDATED DOUGHNUT CHART LOGIC ---
         return (
           <div className="card mb-3" key={key}>
-            <div className="fw-bold card-header">
-              Complaints
+            <div className="fw-bold card-header">Complaints</div>
+            <div
+              className="card-body"
+              style={{
+                height: "300px",
+                display: "flex",
+                flexDirection: "column",
+                padding: "1rem",
+              }}
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                  <Pie
+                    data={complaintStatusData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={3}
+                    fill="#8884d8"
+                    labelLine={false}
+                    // HANDLERS ADDED for "select/click" on hover
+                    onMouseEnter={onPieEnter}
+                    onMouseLeave={onPieLeave}
+                    // This prop is required to make the onMouseEnter/Leave handlers work correctly
+                    activeIndex={activeSlice.name !== "Total" ? complaintStatusData.findIndex(d => d.name === activeSlice.name) : -1} 
+                    activeShape={null} // Prevents default Recharts active slice behavior
+                  >
+                    {complaintStatusData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.color}
+                        // Apply black stroke for the selected slice (Fulfills black border request)
+                        stroke={activeSlice.name === entry.name ? '#000000' : 'none'} 
+                        strokeWidth={activeSlice.name === entry.name ? 3 : 0}
+                      />
+                    ))}
+                    {/* Dynamic center label (Fulfills showing count on select and removing top text) */}
+                    <CustomCenterLabel 
+                        cx="50%" 
+                        cy="50%"
+                        activeSlice={activeSlice}
+                    />
+                  </Pie>
+                  {/* REMOVED: The <Tooltip> component is removed to prevent the "box" from showing */}
+                  
+                  <Legend
+                    layout="horizontal" 
+                    verticalAlign="bottom" 
+                    align="center" 
+                    iconType="circle"
+                    wrapperStyle={{
+                        paddingTop: "10px",
+                        fontSize: "12px",
+                        width: "100%", 
+                    }}
+                    formatter={renderColorfulLegendText}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            <ul className="list-group list-group-flush small">
-              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
-                <span className="span">Open</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
-                <span className="span">In Progress</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
-                <span className="span">Resolved</span> <a href="#">0</a>
-              </li>
-              <li className="list-group-item d-flex flex-wrap justify-content-between align-items-center">
-                <span className="span">Closed</span> <a href="#">0</a>
-              </li>
-            </ul>
+            
           </div>
         );
       case "yesterday":
