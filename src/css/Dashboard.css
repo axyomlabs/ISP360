@@ -18,7 +18,18 @@ body {
   padding-top: 70px;
   /* match or slightly larger than your header height */
 }
+/* Target the container for the complaints chart */
+.complaints-chart-card:focus, 
+.complaints-chart-card:active {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
 
+/* Alternatively, target the element being clicked */
+.recharts-wrapper * { 
+  outline: none; 
+}
 
 .row {
   margin-left: 0 !important;

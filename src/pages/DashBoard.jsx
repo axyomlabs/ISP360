@@ -121,72 +121,71 @@ const nasWiseData = [{ nas: "103.142.162.1", users: 58 }];
 
 // --- NEW DATA AND COMPONENTS FOR COMPLAINTS DOUGHNUT CHART ---
 const complaintStatusData = [
-  { name: "Closed", value: 55, color: "#4facfe" }, // Blue
-  { name: "In Progress", value: 8, color: "#ffa600ff" }, // Orange
-  { name: "Open", value: 12, color: "#e41717ff" }, // Red
-  { name: "Resolved", value: 25, color: "#028d20ff" }, // Green
+  // Updated 'color' field to reference a gradient URL/ID
+  { name: "Closed", value: 55, color: "url(#gradientClosed)", legendColor: "#4facfe" }, // Blue
+  { name: "In Progress", value: 8, color: "url(#gradientInProgress)", legendColor: "#ffa600ff" }, // Orange
+  { name: "Open", value: 12, color: "url(#gradientOpen)", legendColor: "#e41717ff" }, // Red
+  { name: "Resolved", value: 25, color: "url(#gradientResolved)", legendColor: "#028d20ff" }, // Green
 ];
 const totalComplaints = complaintStatusData.reduce(
   (sum, entry) => sum + entry.value,
   0
 );
 
-// Custom Center Label (Simplified to take activeSlice)
-const CustomCenterLabel = ({ cx, cy, activeSlice }) => {
-  const { name, value, color } = activeSlice;
+/**
+ * Custom component to render the count and name of the active slice
+ * in the center of the PieChart.
+ */
+const CustomCenterLabel = ({ activeSlice, totalComplaints }) => {
+  const { name, value } = activeSlice;
+  
+  // If the active slice name is "Total" (initial/unhovered state), do not render.
+  if (name === "Total") {
+    return null;
+  }
 
+  // Use x="50%", y="50%" for center, textAnchor="middle" for horizontal centering,
+  // and dominantBaseline="middle" for vertical centering.
   return (
-    <g>
-      <text
-        x={cx}
-        y={cy - 5}
-        textAnchor="middle"
-        dominantBaseline="central"
-        className="fw-bold"
-        fontSize="18px"
+    <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
+      <tspan
         fill="#333"
+        // Ensure the number is bold and larger
+        style={{ fontSize: "18px", fontWeight: "bold" }}
       >
-        {/* Shows the count/value of the selected/total slice */}
-        {`${value}`} 
-      </text>
-      <text
-        x={cx}
-        y={cy + 15}
-        textAnchor="middle"
-        dominantBaseline="central"
-        fontSize="12px"
-        fill={color}
-        fontWeight="normal"
+        {value}
+      </tspan>
+      <tspan
+        fill="#6c757d"
+        // Ensure the name is smaller, uppercase, and slightly spaced
+        style={{ fontSize: "12px", textTransform: "uppercase" }}
       >
-        {name}
-      </text>
-    </g>
+        {` ${name}`}
+      </tspan>
+    </text>
   );
 };
-// --- Removed CustomPieTooltip as it's no longer needed ---
 
-
-// Custom Legend Formatter for Pie Chart (Remains the same)
+// Custom Legend Formatter for Pie Chart (Shows count not percentage)
 const renderColorfulLegendText = (value, entry) => {
-  const percentage =
-    totalComplaints > 0
-      ? ((entry.payload.value / totalComplaints) * 100).toFixed(2)
-      : "0.00";
+  // Use the separate legendColor field for the text color
+  const color = entry.payload.legendColor || entry.color;
   return (
     <span
       style={{
-        color: entry.color,
+        color: color,
         fontWeight: 500,
         fontSize: "12px",
         whiteSpace: "nowrap",
       }}
     >
-      {percentage}% {value}
+      {entry.payload.value} {value}
     </span>
   );
 };
 
-// --- END NEW DATA AND COMPONENTS ---
+// --- END DATA AND COMPONENTS ---
+
 
 
 const getDeviceIcon = (device) => {
@@ -223,7 +222,7 @@ function Dashboard() {
   // Use the state and setter from the outlet context
   const { dragEnabled, cardOrder, setCardOrder } = useOutletContext();
 
-  // --- NEW STATE FOR COMPLAINTS CHART (to track selection/hover) ---
+  // --- NEW STATE AND HANDLERS FOR COMPLAINTS CHART (to track selection/hover) ---
   const [activeSlice, setActiveSlice] = useState({
     name: "Total",
     value: totalComplaints,
@@ -335,6 +334,7 @@ function Dashboard() {
     setFilteredOnlinePaymentData(filterData(onlinePaymentData, getDefaultDateRange()));
     setFilteredRegistrationData(filterData(registrationData, getDefaultDateRange()));
     setFilteredComplaintData(filterData(complaintData, getDefaultDateRange()));
+    // FIX: Changed 'ILeadsData' to 'leadsData' 
     setFilteredLeadsData(filterData(leadsData, getDefaultDateRange()));
   }, []);
 
@@ -614,6 +614,123 @@ function Dashboard() {
       case "registrationStats":
         return (
           <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
+            {/* CORRECTED: Used 'justify-content-between' and removed 'card-header' from the h6 below. */}
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              {/* CORRECTED: Removed the unnecessary 'card-header' class. */}
+              <h6 className="fw-bold text-dark mb-0">
+                Registrations & Activations
+              </h6>
+              <button
+                className="btn btn-sm btn-light rounded-circle shadow-sm"
+                onClick={() =>
+                  setShowRegistrationFilter(!showRegistrationFilter)
+                }
+              >
+                <BiFilterAlt size={18} className="text-secondary" />
+              </button>
+            </div>
+            {showRegistrationFilter && (
+              <div className="px-3 pb-3">
+                <div className="d-flex flex-wrap gap-2 align-items-end">
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">From</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={registrationDateRange.from}
+                      onChange={(e) =>
+                        setRegistrationDateRange({
+                          ...registrationDateRange,
+                          from: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="flex-grow-1">
+                    <label className="small fw-semibold text-muted">To</label>
+                    <input
+                      type="date"
+                      className="form-control form-control-sm shadow-sm w-100"
+                      value={registrationDateRange.to}
+                      onChange={(e) =>
+                        setRegistrationDateRange({
+                          ...registrationDateRange,
+                          to: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <button
+                      className="btn btn-primary btn-sm shadow-sm w-100"
+                      onClick={() => handleApplyFilter("registration")}
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="card-body" style={{ height: "280px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={filteredRegistrationData}
+                  margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid stroke="#eee" />
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <YAxis
+                    domain={[0, "dataMax + 10"]}
+                    fontSize={12}
+                    tick={{ fill: "#6c757d" }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      border: "none",
+                    }}
+                  />
+                  <Legend verticalAlign="top" height={30} iconType="circle" />
+                  <Bar
+                    dataKey="registrations"
+                    fill="#4facfe"
+                    barSize={30}
+                    radius={[6, 6, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="registrations"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                  <Bar
+                    dataKey="activations"
+                    fill="#00c9a7"
+                    barSize={30}
+                    radius={[6, 6, 0, 0]}
+                    animationDuration={800}
+                  >
+                    <LabelList
+                      dataKey="activations"
+                      position="top"
+                      fontSize={12}
+                      fill="#333"
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        );
+        return (
+          <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
             <div className="bg-white border-0 d-flex justify-content-between align-items-center">
               <h6 className="fw-bold card-header mb-0">
                 Registrations & Activations
@@ -845,11 +962,13 @@ function Dashboard() {
             </div>
           </div>
         );
-      case "leadsStats":
+   case "leadsStats":
         return (
           <div className="card mb-4 border-0 shadow-sm rounded-3" key={key}>
-            <div className="card-header bg-white border-0 d-flex  ">
-              <h6 className="fw-bold card-header text-dark mb-0">Leads Stats</h6>
+            {/* MODIFIED: Added 'justify-content-between' to push the button to the end, and 'align-items-center' for vertical alignment. */}
+            <div className="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+              {/* MODIFIED: Removed the redundant 'card-header' class from the h6 to avoid extra padding/margin interference. */}
+              <h6 className="fw-bold text-dark mb-0">Leads Stats</h6>
               <button
                 className="btn btn-sm btn-light rounded-circle shadow-sm"
                 onClick={() => setShowLeadsFilter(!showLeadsFilter)}
@@ -996,7 +1115,7 @@ function Dashboard() {
                   <Tooltip
                     contentStyle={{
                       borderRadius: "10px",
-                      boxBoxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.1)", 
                       border: "none",
                     }}
                   />
@@ -1047,7 +1166,7 @@ function Dashboard() {
             </ul>
           </div>
         );
-      case "complaints":
+           case "complaints":
         // --- UPDATED DOUGHNUT CHART LOGIC ---
         return (
           <div className="card mb-3" key={key}>
@@ -1063,6 +1182,38 @@ function Dashboard() {
             >
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                  
+                  {/* Define the gradient colors and the NEW shadow filter here */}
+                  <defs>
+                    <linearGradient id="gradientClosed" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#4facfe" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#00f2fe" stopOpacity={0.8} />
+                    </linearGradient>
+                    <linearGradient id="gradientInProgress" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#ffa600ff" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#ffc107" stopOpacity={0.8} />
+                    </linearGradient>
+                    <linearGradient id="gradientOpen" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#e41717ff" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#ff416c" stopOpacity={0.8} />
+                    </linearGradient>
+                    <linearGradient id="gradientResolved" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#028d20ff" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#56ab2f" stopOpacity={0.8} />
+                    </linearGradient>
+                    {/* NEW: Drop Shadow Filter Definition */}
+                    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                        <feOffset dx="0" dy="0" result="offsetblur" />
+                        <feFlood floodColor="#000" floodOpacity="0.4" />
+                        <feComposite in2="offsetblur" operator="in" />
+                        <feMerge>
+                            <feMergeNode />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                  </defs>
+
                   <Pie
                     data={complaintStatusData}
                     dataKey="value"
@@ -1084,20 +1235,21 @@ function Dashboard() {
                     {complaintStatusData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
-                        fill={entry.color}
-                        // Apply black stroke for the selected slice (Fulfills black border request)
-                        stroke={activeSlice.name === entry.name ? '#000000' : 'none'} 
-                        strokeWidth={activeSlice.name === entry.name ? 3 : 0}
+                        // Use the 'color' field which is now the gradient URL
+                        fill={entry.color} 
+                        // FIX: Remove the conditional stroke to eliminate the black box on hover
+                        stroke='none' 
+                        strokeWidth={0}
+                        // NEW: Apply the filter only if the current index matches the active index
+                        filter={index === complaintStatusData.findIndex(d => d.name === activeSlice.name) ? 'url(#shadow)' : ''}
                       />
                     ))}
-                    {/* Dynamic center label (Fulfills showing count on select and removing top text) */}
+                    {/* NEW: CustomCenterLabel to show COUNT and name on hover, and nothing otherwise */}
                     <CustomCenterLabel 
-                        cx="50%" 
-                        cy="50%"
-                        activeSlice={activeSlice}
+                        activeSlice={activeSlice} 
+                        totalComplaints={totalComplaints} 
                     />
                   </Pie>
-                  {/* REMOVED: The <Tooltip> component is removed to prevent the "box" from showing */}
                   
                   <Legend
                     layout="horizontal" 
@@ -1109,12 +1261,14 @@ function Dashboard() {
                         fontSize: "12px",
                         width: "100%", 
                     }}
+                    // UPDATED: Use the new formatter to show counts, not percentages
                     formatter={renderColorfulLegendText}
                   />
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            
+            {/* Keeping the original list for raw counts/links */}
+          
           </div>
         );
       case "yesterday":
