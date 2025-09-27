@@ -34,7 +34,7 @@
     width: 100%;
     overflow-x: auto;
     cursor: grab;
-    user-select: none;
+
   }
 
   .drag-scroll.active-drag {
@@ -79,7 +79,7 @@
     width: 100%;
     overflow-x: auto;
     cursor: grab;
-    user-select: none; /* no text selection */
+
   }
 
   .table-wrapper.active-drag {
@@ -106,7 +106,7 @@
   width: 100%;
   overflow-x: auto; /* Essential for horizontal scrolling */
   cursor: grab; /* Default cursor for the scrollable area */
-  user-select: none;
+  /* user-select: none; */
 }
 
 .drag-scroll.active-drag {
